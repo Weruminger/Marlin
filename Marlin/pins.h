@@ -229,6 +229,7 @@
   #include "pins_SETHI.h"             // ATmega644P, ATmega644, ATmega1284P
 
 //
+//
 // Teensyduino - AT90USB1286, AT90USB1286P
 //
 

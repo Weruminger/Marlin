@@ -573,8 +573,11 @@
 // REMARK CTC X Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
 // REMARK CTC Y Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/16 400 Steps / mm
+// REMARK CTC Z Steps Dircet driven A8 1.8° 1/32 800 Steps / mm
+// REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
+// REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
 // CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 79.00, 79.00, 2545, 390, 1105}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 79.00, 79.00, 1600, 390, 1105}
 // CTC X/Y 1/32Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps

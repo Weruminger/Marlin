@@ -1,5 +1,5 @@
-Eqn coefficients: a: 0.00102014 b: -0.00406317 d: 0.00495327
-Mean of sampled points: -0.28818056
+Eqn coefficients: a: 0.00128507 b: -0.00416700 d: -0.00388381
+Mean of sampled points: -0.28086111
 Bed Height Topography:
    +--- BACK --+
    |           |
@@ -11,16 +11,16 @@ Bed Height Topography:
    |           |
    O-- FRONT --+
  (0,0)
- -0.35869 -0.23057 -0.19694
- -0.08257 +0.05531 +0.08818
- +0.19106 +0.30843 +0.22581
+ -0.36114 -0.23214 -0.19189
+ -0.09076 +0.04761 +0.06336
+ +0.16574 +0.29424 +0.30499
 Corrected Bed Height vs. Bed Topology:
- +0.04175 +0.10866 +0.08108
- +0.06596 +0.14262 +0.11429
- +0.08767 +0.14383 +0.00000
-Bed Level Correction Matrix:+1.000000 +0.000000 +0.001020
-+0.000004 +0.999992 -0.004063
--0.001020 +0.004063 +0.999991
+ +0.00479 +0.05668 +0.01983
+ +0.01681 +0.07808 +0.01673
+ +0.01496 +0.06635 +0.00000
+Bed Level Correction Matrix:+0.999999 +0.000000 +0.001285
++0.000005 +0.999991 -0.004167
+-0.001285 +0.004167 +0.999990
 
 SENDING:G29 V4
 G29 Auto Bed Leveling
@@ -31,27 +31,27 @@ echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 39.000 Y: 35.000 Z: -0.097
+Bed X: 39.000 Y: 35.000 Z: -0.115
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 99.000 Y: 35.000 Z: 0.020
+Bed X: 99.000 Y: 35.000 Z: 0.013
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 159.000 Y: 35.000 Z: -0.062
+Bed X: 159.000 Y: 35.000 Z: 0.024
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 159.000 Y: 97.000 Z: -0.200
+Bed X: 159.000 Y: 97.000 Z: -0.217
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
@@ -64,31 +64,31 @@ echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 39.000 Y: 97.000 Z: -0.371
+Bed X: 39.000 Y: 97.000 Z: -0.372
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 39.000 Y: 159.000 Z: -0.647
+Bed X: 39.000 Y: 159.000 Z: -0.642
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 99.000 Y: 159.000 Z: -0.519
+Bed X: 99.000 Y: 159.000 Z: -0.513
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
 echo:busy: processing
-Bed X: 159.000 Y: 159.000 Z: -0.485
+Bed X: 159.000 Y: 159.000 Z: -0.473
 
 	0		1		2
-0	-0.097	0.020	-0.062
-1	-0.371	-0.223	-0.200
-2	-0.647	-0.519	-0.485
+0	-0.115	0.013	0.024
+1	-0.372	-0.233	-0.217
+2	-0.642	-0.513	-0.473
 
 

@@ -139,6 +139,7 @@
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
+// CTC Chimera Nozzle Shifter (Lift)
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
 #define SINGLENOZZLE
 
@@ -171,6 +172,7 @@
   #endif
 #endif
 
+// CTC Chimera Nozzle Shifter (Lift)
 // A dual-nozzle that uses a servomotor to raise/lower one of the nozzles
 //#define SWITCHING_NOZZLE
 #if ENABLED(SWITCHING_NOZZLE)
@@ -287,6 +289,7 @@
  * :{ '0': "Not used", '1':"100k / 4.7k - EPCOS", '2':"200k / 4.7k - ATC Semitec 204GT-2", '3':"Mendel-parts / 4.7k", '4':"10k !! do not use for a hotend. Bad resolution at high temp. !!", '5':"100K / 4.7k - ATC Semitec 104GT-2 (Used in ParCan & J-Head)", '6':"100k / 4.7k EPCOS - Not as accurate as Table 1", '7':"100k / 4.7k Honeywell 135-104LAG-J01", '8':"100k / 4.7k 0603 SMD Vishay NTCS0603E3104FXT", '9':"100k / 4.7k GE Sensing AL03006-58.2K-97-G1", '10':"100k / 4.7k RS 198-961", '11':"100k / 4.7k beta 3950 1%", '12':"100k / 4.7k 0603 SMD Vishay NTCS0603E3104FXT (calibrated for Makibox hot bed)", '13':"100k Hisens 3950  1% up to 300°C for hotend 'Simple ONE ' & hotend 'All In ONE'", '20':"PT100 (Ultimainboard V2.x)", '51':"100k / 1k - EPCOS", '52':"200k / 1k - ATC Semitec 204GT-2", '55':"100k / 1k - ATC Semitec 104GT-2 (Used in ParCan & J-Head)", '60':"100k Maker's Tool Works Kapton Bed Thermistor beta=3950", '66':"Dyze Design 4.7M High Temperature thermistor", '70':"the 100K thermistor found in the bq Hephestos 2", '71':"100k / 4.7k Honeywell 135-104LAF-J01", '147':"Pt100 / 4.7k", '1047':"Pt1000 / 4.7k", '110':"Pt100 / 1k (non-standard)", '1010':"Pt1000 / 1k (non standard)", '-3':"Thermocouple + MAX31855 (only for sensor 0)", '-2':"Thermocouple + MAX6675 (only for sensor 0)", '-1':"Thermocouple + AD595",'998':"Dummy 1", '999':"Dummy 2" }
  */
 #define TEMP_SENSOR_0 1
+// CTC Chimera Nozzle Shifter (Lift)
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
@@ -354,12 +357,15 @@
 
 
   
+  // CTC Chimera Nozzle Shifter (Lift)
   // NF TC01 Dual non mixing Extruder 12V
     #define  DEFAULT_Kp 28.40
     #define  DEFAULT_Ki 3.94
     #define  DEFAULT_Kd 51.18
 
-  
+
+
+	
   // Geeetech MK8 Extruder
   //#define  DEFAULT_Kp 12.33
   //#define  DEFAULT_Ki 0.51
@@ -559,15 +565,22 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
 
-// REMARK CTC E Steps TEVO Geared 1/16 387,59
-// CTC X/Y 1/16Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 79.84, 79.05, 2545, 152, 152}
+// REMARK CTC E Steps Nut Geared 1/16 388 Steps / mm
+// REMARK CTC E Steps TEVO Geared 1/16 1105 Steps / mm
+// REMARK CTC X Steps 20 Tooth Pitch 2 1.8° 1/16 80 Steps / mm
+// REMARK CTC Y Steps 20 Tooth Pitch 2 1.8° 1/16 80 Steps / mm
+// REMARK CTC Z Steps Dircet driven M8 1.8° 1/16 2545 Steps / mm
+// REMARK CTC X Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
+// REMARK CTC Y Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
+// REMARK CTC Z Steps Dircet driven A8 1.8° 1/16 400 Steps / mm
+// CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 79.00, 79.00, 2545, 390, 1105}
 // CTC X/Y 1/32Steps
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 159.68, 158.10, 2545, 152, 152}
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 319.36, 316.20, 2545, 152, 152}
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 321, 321, 2545, 152, 152}
 // CTC X/Y 1/128 Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 638.73, 632.41, 2545, 152, 152}
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 642, 642, 2545, 152, 152}
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -582,7 +595,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1400, 1400, 100, 80000, 80000 }
+#define DEFAULT_MAX_ACCELERATION      { 800, 800, 50, 80000, 8000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -592,9 +605,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          800    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  5000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1400    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   750   // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
@@ -604,10 +617,10 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define DEFAULT_XJERK                 10.0
-#define DEFAULT_YJERK                 10.0
+#define DEFAULT_XJERK                 8.0
+#define DEFAULT_YJERK                 8.0
 #define DEFAULT_ZJERK                  0.3
-#define DEFAULT_EJERK                  5.0
+#define DEFAULT_EJERK                  0.4
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -721,6 +734,7 @@
  *      O-- FRONT --+
  *    (0,0)
  */
+ // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 35.5  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 13.25  // Y offset: -front +behind [the nozzle]
 #define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
@@ -786,8 +800,8 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false
-#define INVERT_Y_DIR true
+#define INVERT_X_DIR true
+#define INVERT_Y_DIR false
 #define INVERT_Z_DIR false
 
 // Enable this option for Toshiba stepper drivers
@@ -795,9 +809,10 @@
 
 // @section extruder
 
+// CTC Chimera Nozzle Shifter (Lift)
 // For direct drive extruder v9 set to true, for geared extruder set to false.
 #define INVERT_E0_DIR true
-#define INVERT_E1_DIR true
+#define INVERT_E1_DIR false
 #define INVERT_E2_DIR true
 #define INVERT_E3_DIR true
 #define INVERT_E4_DIR true
@@ -818,15 +833,15 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 180
-#define Y_BED_SIZE 160
+#define X_BED_SIZE 200
+#define Y_BED_SIZE 200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
-#define Y_MIN_POS 20
+#define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE + 20
+#define Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 180
 
 /**
@@ -908,9 +923,9 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-//#define AUTO_BED_LEVELING_LINEAR
+#define AUTO_BED_LEVELING_LINEAR
 //#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL
+//#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
@@ -952,10 +967,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define LEFT_PROBE_BED_POSITION 15
-  #define RIGHT_PROBE_BED_POSITION 170
-  #define FRONT_PROBE_BED_POSITION 20
-  #define BACK_PROBE_BED_POSITION 170
+  #define LEFT_PROBE_BED_POSITION 39
+  #define RIGHT_PROBE_BED_POSITION 160
+  #define FRONT_PROBE_BED_POSITION 35
+  #define BACK_PROBE_BED_POSITION 160
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
@@ -985,12 +1000,12 @@
 
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
-  #define ABL_PROBE_PT_1_X 15
-  #define ABL_PROBE_PT_1_Y 180
-  #define ABL_PROBE_PT_2_X 15
-  #define ABL_PROBE_PT_2_Y 20
-  #define ABL_PROBE_PT_3_X 170
-  #define ABL_PROBE_PT_3_Y 20
+  #define ABL_PROBE_PT_1_X 39
+  #define ABL_PROBE_PT_1_Y 160
+  #define ABL_PROBE_PT_2_X 39
+  #define ABL_PROBE_PT_2_Y 35
+  #define ABL_PROBE_PT_3_X 160
+  #define ABL_PROBE_PT_3_Y 97
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1187,12 +1202,12 @@
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED    0 // Value from 0 to 255
 
-#define PREHEAT_2_TEMP_HOTEND 210
-#define PREHEAT_2_TEMP_BED     74
+#define PREHEAT_2_TEMP_HOTEND 240
+#define PREHEAT_2_TEMP_BED     85
 #define PREHEAT_2_FAN_SPEED    0 // Value from 0 to 255
 
 /**
- * Nozzle Park
+ * Nozzle
  *
  * Park the nozzle at the given XYZ position on idle or G27.
  *
@@ -1795,6 +1810,8 @@
  * Set this manually if there are extra servos needing manual control.
  * Leave undefined or set to 0 to entirely disable the servo subsystem.
  */
+ 
+// CTC Chimera Nozzle Shifter (Lift) 
 //#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
 
 // Delay (in milliseconds) before the next move will start, to give the servo time to reach its target angle.

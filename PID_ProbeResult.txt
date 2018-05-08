@@ -1,0 +1,42 @@
+M106
+SENDING:M106
+echo:SD init fail
+>>> M303 E-0 s230 c8
+SENDING:M303 E-0 S230 C8
+PID Autotune start
+ bias: 116 d: 116 min: 226.63 max: 233.94
+ bias: 117 d: 117 min: 226.44 max: 233.00
+ bias: 116 d: 116 min: 226.94 max: 233.00 Ku: 48.72 Tu: 14.25
+ Classic PID
+ Kp: 29.23 Ki: 4.10 Kd: 52.09
+ bias: 116 d: 116 min: 226.88 max: 233.00 Ku: 48.23 Tu: 14.09
+ Classic PID
+ Kp: 28.94 Ki: 4.11 Kd: 50.96
+ bias: 116 d: 116 min: 227.00 max: 233.00 Ku: 49.23 Tu: 14.42
+ Classic PID
+ Kp: 29.54 Ki: 4.10 Kd: 53.24
+ bias: 116 d: 116 min: 227.00 max: 233.00 Ku: 49.23 Tu: 14.42
+ Classic PID
+ Kp: 29.54 Ki: 4.10 Kd: 53.24
+ bias: 115 d: 115 min: 226.88 max: 233.00 Ku: 47.81 Tu: 14.25
+ Classic PID
+ Kp: 28.69 Ki: 4.03 Kd: 51.11
+ bias: 115 d: 115 min: 226.81 max: 233.00 Ku: 47.33 Tu: 14.42
+ Classic PID
+ Kp: 28.40 Ki: 3.94 Kd: 51.18
+PID Autotune finished! Put the last Kp, Ki and Kd constants from below into Configuration.h
+#define  DEFAULT_Kp 28.40
+#define  DEFAULT_Ki 3.94
+#define  DEFAULT_Kd 51.18
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+echo:busy: paused for user
+>>> M106 s0
+SENDING:M106 S0

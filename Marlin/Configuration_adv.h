@@ -552,7 +552,7 @@
   // as SD_DETECT_PIN in your board's pins definitions.
   // This setting should be disabled unless you are using a push button, pulling the pin to ground.
   // Note: This is always disabled for ULTIPANEL (except ELB_FULL_GRAPHIC_CONTROLLER).
-  #define SD_DETECT_INVERTED
+  //#define SD_DETECT_INVERTED
 
   #define SD_FINISHED_STEPPERRELEASE true          // Disable steppers when SD Print is finished
   #define SD_FINISHED_RELEASECOMMAND "M84 X Y Z E" // You might want to keep the z enabled so your bed stays in place.
@@ -818,7 +818,7 @@
 // The minimum pulse width (in Âµs) for stepping a stepper.
 // Set this if you find stepping unreliable, or if using a very fast CPU.
 // 0 is OK for AVR, 0 is OK for A4989 drivers, 2 is needed for DRV8825 drivers
-#define MINIMUM_STEPPER_PULSE 2 // (Âµs)   DRV8825 on 32bit CPUs
+#define MINIMUM_STEPPER_PULSE 0 // (Âµs)   DRV8825 on 32bit CPUs
 
 // @section temperature
 
@@ -912,14 +912,14 @@
 #if ENABLED(FWRETRACT)
   #define MIN_AUTORETRACT 0.1             // When auto-retract is on, convert E moves of this length and over
   #define MAX_AUTORETRACT 10.0            // Upper limit for auto-retract conversion
-  #define RETRACT_LENGTH 3                // Default retract length (positive mm)
-  #define RETRACT_LENGTH_SWAP 13          // Default swap retract length (positive mm), for extruder change
+  #define RETRACT_LENGTH 6                // Default retract length (positive mm)
+  #define RETRACT_LENGTH_SWAP 35         // Default swap retract length (positive mm), for extruder change
   #define RETRACT_FEEDRATE 45             // Default feedrate for retracting (mm/s)
-  #define RETRACT_ZLIFT 0                 // Default retract Z-lift
+  #define RETRACT_ZLIFT 0.6                 // Default retract Z-lift
   #define RETRACT_RECOVER_LENGTH 0        // Default additional recover length (mm, added to retract length when recovering)
   #define RETRACT_RECOVER_LENGTH_SWAP 0   // Default additional swap recover length (mm, added to retract length when recovering from extruder change)
-  #define RETRACT_RECOVER_FEEDRATE 8      // Default feedrate for recovering from retraction (mm/s)
-  #define RETRACT_RECOVER_FEEDRATE_SWAP 8 // Default feedrate for recovering from swap retraction (mm/s)
+  #define RETRACT_RECOVER_FEEDRATE 30      // Default feedrate for recovering from retraction (mm/s)
+  #define RETRACT_RECOVER_FEEDRATE_SWAP 30 // Default feedrate for recovering from swap retraction (mm/s)
 #endif
 
 /**
@@ -929,7 +929,7 @@
  *   'M106 P<fan> T2'     : Use the set secondary speed
  *   'M106 P<fan> T1'     : Restore the previous fan speed
  */
-//#define EXTRA_FAN_SPEED
+#define EXTRA_FAN_SPEED
 
 /**
  * Advanced Pause
@@ -1277,48 +1277,59 @@
   //#define E2_IS_L6470
   //#define E3_IS_L6470
   //#define E4_IS_L6470
-
+// ?_K_VAL may be obsolete
   #define X_MICROSTEPS      16 // number of microsteps
+  #define X_K_VAL           50 // 0 - 255, Higher values, are higher power. Be careful not to go too high
   #define X_OVERCURRENT   2000 // maxc current in mA. If the current goes over this value, the driver will switch off
   #define X_STALLCURRENT  1500 // current in mA where the driver will detect a stall
 
   #define X2_MICROSTEPS     16
+  #define X2_K_VAL          50
   #define X2_OVERCURRENT  2000
   #define X2_STALLCURRENT 1500
 
   #define Y_MICROSTEPS      16
+  #define Y_K_VAL           50
   #define Y_OVERCURRENT   2000
   #define Y_STALLCURRENT  1500
 
   #define Y2_MICROSTEPS     16
+  #define Y2_K_VAL          50
   #define Y2_OVERCURRENT  2000
   #define Y2_STALLCURRENT 1500
 
   #define Z_MICROSTEPS      16
+  #define Z_K_VAL           50
   #define Z_OVERCURRENT   2000
   #define Z_STALLCURRENT  1500
 
   #define Z2_MICROSTEPS     16
+  #define Z2_K_VAL          50
   #define Z2_OVERCURRENT  2000
   #define Z2_STALLCURRENT 1500
 
   #define E0_MICROSTEPS     16
+  #define E0_K_VAL          50
   #define E0_OVERCURRENT  2000
   #define E0_STALLCURRENT 1500
 
   #define E1_MICROSTEPS     16
+  #define E1_K_VAL          50
   #define E1_OVERCURRENT  2000
   #define E1_STALLCURRENT 1500
 
   #define E2_MICROSTEPS     16
+  #define E2_K_VAL          50
   #define E2_OVERCURRENT  2000
   #define E2_STALLCURRENT 1500
 
   #define E3_MICROSTEPS     16
+  #define E3_K_VAL          50
   #define E3_OVERCURRENT  2000
   #define E3_STALLCURRENT 1500
 
   #define E4_MICROSTEPS     16
+  #define E4_K_VAL          50
   #define E4_OVERCURRENT  2000
   #define E4_STALLCURRENT 1500
 
@@ -1504,7 +1515,7 @@
 /**
  * User-defined menu items that execute custom GCode
  */
-//#define CUSTOM_USER_MENUS
+#define CUSTOM_USER_MENUS
 #if ENABLED(CUSTOM_USER_MENUS)
   #define USER_SCRIPT_DONE "M117 User Script Done"
   #define USER_SCRIPT_AUDIBLE_FEEDBACK
@@ -1516,14 +1527,21 @@
   #define USER_DESC_2 "Preheat for PLA"
   #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
 
-  #define USER_DESC_3 "Preheat for ABS"
+  #define USER_DESC_3 "Preheat for PETG"
   #define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
 
-  #define USER_DESC_4 "Heat Bed/Home/Level"
-  #define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
+  //#define USER_DESC_4 "Heat Bed/Home/Level"
+  //#define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
 
-  #define USER_DESC_5 "Home & Info"
-  #define USER_GCODE_5 "G28\nM503"
+  //#define USER_DESC_5 "Home & Info"
+  //#define USER_GCODE_5 "G28\nM503"
+
+  #define USER_DESC_4 "Retract E0"
+  #define USER_GCODE_4 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG1 A-" STRINGIFY(RETRACT_LENGTH_SWAP) " F2400"
+
+  #define USER_DESC_5 "Retract E1"
+  #define USER_GCODE_5 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG1 B-" STRINGIFY(RETRACT_LENGTH_SWAP) " F2400"
+
 #endif
 
 /**
@@ -1531,15 +1549,15 @@
  * Will be sent in the form '//action:ACTION_ON_KILL', e.g. '//action:poweroff'.
  * The host must be configured to handle the action command.
  */
-//#define ACTION_ON_KILL "poweroff"
+#define ACTION_ON_KILL "poweroff"
 
 /**
  * Specify an action command to send to the host on pause and resume.
  * Will be sent in the form '//action:ACTION_ON_PAUSE', e.g. '//action:pause'.
  * The host must be configured to handle the action command.
  */
-//#define ACTION_ON_PAUSE "pause"
-//#define ACTION_ON_RESUME "resume"
+#define ACTION_ON_PAUSE "pause"
+#define ACTION_ON_RESUME "resume"
 
 //===========================================================================
 //====================== I2C Position Encoder Settings ======================

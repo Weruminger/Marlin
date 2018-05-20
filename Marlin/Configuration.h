@@ -577,7 +577,7 @@
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
 // CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 79.00, 79.00, 1600, 390, 1105}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160.00, 160.00, 1600, 415, 415}
 // CTC X/Y 1/32Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps
@@ -590,7 +590,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 400, 400, 8, 45, 45 }
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 16, 45, 45 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -598,7 +598,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 800, 800, 50, 40000, 8000 }
+#define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 50, 8000, 8000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -608,9 +608,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          750    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  1000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   750   // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          1500   // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  750   // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   1500  // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
@@ -622,8 +622,8 @@
  */
 #define DEFAULT_XJERK                 8.0
 #define DEFAULT_YJERK                 8.0
-#define DEFAULT_ZJERK                  0.3
-#define DEFAULT_EJERK                  0.4
+#define DEFAULT_ZJERK                  1
+#define DEFAULT_EJERK                  1
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -740,7 +740,7 @@
  // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 35.5  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 13.25  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.34   // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
@@ -781,7 +781,7 @@
 //#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
-// :{ 0:'Low', 1:'High' }
+// :{ 0:'Low', 1:'High' }+
 #define X_ENABLE_ON 0
 #define Y_ENABLE_ON 0
 #define Z_ENABLE_ON 0
@@ -814,8 +814,8 @@
 
 // CTC Chimera Nozzle Shifter (Lift)
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true
-#define INVERT_E1_DIR false
+#define INVERT_E0_DIR false
+#define INVERT_E1_DIR true // twisted Wire
 #define INVERT_E2_DIR true
 #define INVERT_E3_DIR true
 #define INVERT_E4_DIR true

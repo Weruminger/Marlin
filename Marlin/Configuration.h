@@ -119,7 +119,7 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_ULTIMAKER
+  #define MOTHERBOARD BOARD_GT2560_REV_A_PLUS
 #endif
 
 // Optional custom name for your RepStrap or other custom machine
@@ -176,7 +176,7 @@
 // A dual-nozzle that uses a servomotor to raise/lower one of the nozzles
 //#define SWITCHING_NOZZLE
 #if ENABLED(SWITCHING_NOZZLE)
-  #define SWITCHING_NOZZLE_SERVO_NR 0
+  #define SWITCHING_NOZZLE_SERVO_NR 1
   #define SWITCHING_NOZZLE_SERVO_ANGLES { 0, 90 }   // Angles for E0, E1
   //#define HOTEND_OFFSET_Z { 0.0, 0.0 }
 #endif
@@ -577,7 +577,7 @@
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
 // CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160.00, 160.00, 1600, 415, 415}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160.00, 160.00, 1600, 830, 830}
 // CTC X/Y 1/32Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps
@@ -814,8 +814,8 @@
 
 // CTC Chimera Nozzle Shifter (Lift)
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
-#define INVERT_E1_DIR true // twisted Wire
+#define INVERT_E0_DIR false // Geared
+#define INVERT_E1_DIR true // twisted Wire & Geared
 #define INVERT_E2_DIR true
 #define INVERT_E3_DIR true
 #define INVERT_E4_DIR true
@@ -1433,7 +1433,7 @@
 //
 //  Set this option if CLOCKWISE causes values to DECREASE
 //
-//#define REVERSE_ENCODER_DIRECTION
+#define REVERSE_ENCODER_DIRECTION
 
 //
 // This option reverses the encoder direction for navigating LCD menus.
@@ -1448,7 +1448,7 @@
 //
 // Add individual axis homing items (Home X, Home Y, and Home Z) to the LCD menu.
 //
-//#define INDIVIDUAL_AXIS_HOMING_MENU
+#define INDIVIDUAL_AXIS_HOMING_MENU
 
 //
 // SPEAKER/BUZZER

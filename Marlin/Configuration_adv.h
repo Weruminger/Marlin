@@ -370,7 +370,7 @@
 #define X_HOME_BUMP_MM 5
 #define Y_HOME_BUMP_MM 5
 #define Z_HOME_BUMP_MM 2
-#define HOMING_BUMP_DIVISOR { 2, 2, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#define HOMING_BUMP_DIVISOR { 4, 4, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 //#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
 
 // When G28 is called, this option will make Y home before X
@@ -908,11 +908,11 @@
  * Note that M207 / M208 / M209 settings are saved to EEPROM.
  *
  */
-//#define FWRETRACT  // ONLY PARTIALLY TESTED
+#define FWRETRACT  // ONLY PARTIALLY TESTED
 #if ENABLED(FWRETRACT)
   #define MIN_AUTORETRACT 0.1             // When auto-retract is on, convert E moves of this length and over
   #define MAX_AUTORETRACT 10.0            // Upper limit for auto-retract conversion
-  #define RETRACT_LENGTH 6                // Default retract length (positive mm)
+  #define RETRACT_LENGTH 5                // Default retract length (positive mm)
   #define RETRACT_LENGTH_SWAP 35         // Default swap retract length (positive mm), for extruder change
   #define RETRACT_FEEDRATE 45             // Default feedrate for retracting (mm/s)
   #define RETRACT_ZLIFT 0.6                 // Default retract Z-lift
@@ -1522,25 +1522,52 @@
   //#define USER_SCRIPT_RETURN  // Return to status screen after a script
 
   #define USER_DESC_1 "Home & UBL Info"
-  #define USER_GCODE_1 "G28\nG29 W"
+  #define USER_GCODE_1 "G28\nG29 W\nG0 X0 Y0 Z15.0 F6000"
 
   #define USER_DESC_2 "Preheat for PLA"
   #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
 
-  #define USER_DESC_3 "Preheat for PETG"
-  #define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
+  //#define USER_DESC_3 "Preheat for PETG"
+  //#define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
 
   //#define USER_DESC_4 "Heat Bed/Home/Level"
   //#define USER_GCODE_4 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nG28\nG29"
 
-  //#define USER_DESC_5 "Home & Info"
+  //#define USER_DESC_5 "Desk to front"
   //#define USER_GCODE_5 "G28\nM503"
 
-  #define USER_DESC_4 "Retract E0"
-  #define USER_GCODE_4 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG1 A-" STRINGIFY(RETRACT_LENGTH_SWAP) " F2400"
+  #define USER_DESC_3 "Retract Current"
+  #define USER_GCODE_3 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F2400\n M18 E"
 
-  #define USER_DESC_5 "Retract E1"
-  #define USER_GCODE_5 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG1 B-" STRINGIFY(RETRACT_LENGTH_SWAP) " F2400"
+  #define USER_DESC_4 "Set E0 as Current"
+  #define USER_GCODE_4 "T0"
+
+  #define USER_DESC_5 "Set E1 as Current"
+  #define USER_GCODE_5 "T1"
+
+  #define USER_DESC_6 "Resume Current"
+  #define USER_GCODE_6 "M17 E\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E-" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F600"
+
+  // Additional Menu Entries (must be entered in ultralcd.cpp one Execution part and one Menu enty part)
+
+  #define USER_DESC_7 "Home XY"
+  #define USER_GCODE_7 "G0 X0 Y0 F6000"
+
+  #define USER_DESC_8 "Desk to front"
+  #define USER_GCODE_8 "G0 X0 F6000\nG0 Y160 F6000"
+
+  #define USER_DESC_9 "Accel. No Ghost"
+  #define USER_GCODE_9 "M204 P500\nM204 T1000\nM204 R750\nM201 X500 Y500 Z25 E1500\nM205 X5 Y5 Z1 E1"
+
+  #define USER_DESC_10 "Accel. Moderate"
+  #define USER_GCODE_10 "M204 P1000\nM204 T1500\nM204 R750\nM201 X1000 Y1000 Z50 E1500\nM205 X10 Y10 Z1 E1"
+
+  #define USER_DESC_11 "Accel. High Speed"
+  #define USER_GCODE_11 "M204 P1500\nM204 T1500\nM204 R1000\nM201 X1500 Y1500 Z50 E8000\nM205 X15 Y15 Z3 E3"
+
+  #define USER_DESC_12 "Move nozzle check"
+  #define USER_GCODE_12 "G0 X100 Y100 F6000\nG0 Z5 F2400"
+
 
 #endif
 

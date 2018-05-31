@@ -847,7 +847,7 @@
 #if ENABLED(FWRETRACT)
   #define MIN_AUTORETRACT 0.1             // When auto-retract is on, convert E moves of this length and over
   #define MAX_AUTORETRACT 10.0            // Upper limit for auto-retract conversion
-  #define RETRACT_LENGTH 6                // Default retract length (positive mm)
+  #define RETRACT_LENGTH 4                // Default retract length (positive mm)
   #define RETRACT_LENGTH_SWAP 35         // Default swap retract length (positive mm), for extruder change
   #define RETRACT_FEEDRATE 45             // Default feedrate for retracting (mm/s)
   #define RETRACT_ZLIFT 0.6                 // Default retract Z-lift
@@ -1436,31 +1436,34 @@
   #define USER_DESC_3 "Retract Current"
   #define USER_GCODE_3 "M104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F2400\n M18 E"
 
-  #define USER_DESC_4 "Resume E0"
-  #define USER_GCODE_4 "T0 \nM17 E \nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E-" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F600"
+  #define USER_DESC_4 "Set E0 as Current"
+  #define USER_GCODE_4 "T0"
 
-  #define USER_DESC_5 "Resume E1"
-  #define USER_GCODE_5 "T1 \nM17 E\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E-" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F600"
+  #define USER_DESC_5 "Set E1 as Current"
+  #define USER_GCODE_5 "T1"
+
+  #define USER_DESC_6 "Resume Current"
+  #define USER_GCODE_6 "M17 E\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nG92 E-" STRINGIFY(RETRACT_LENGTH_SWAP) "\nG1 E0 F600"
 
   // Additional Menu Entries (must be entered in ultralcd.cpp one Execution part and one Menu enty part)
 
-  #define USER_DESC_6 "Home XY"
-  #define USER_GCODE_6 "G0 X0 Y0 F6000"
+  #define USER_DESC_7 "Home XY"
+  #define USER_GCODE_7 "G0 X0 Y0 F6000"
 
-  #define USER_DESC_7 "Desk to front"
-  #define USER_GCODE_7 "G0 X0 F6000\nG0 Y160 F6000"
+  #define USER_DESC_8 "Desk to front"
+  #define USER_GCODE_8 "G0 X0 F6000\nG0 Y160 F6000"
 
-  #define USER_DESC_8 "Accel. No Ghost"
-  #define USER_GCODE_8 "M204 P500\nM204 T1000\nM204 R750\nM201 X500 Y500 Z25 E1500\nM205 X5 Y5 Z1 E1"
+  #define USER_DESC_9 "Accel. No Ghost"
+  #define USER_GCODE_9 "M204 P500\nM204 T1000\nM204 R750\nM201 X500 Y500 Z25 E1500\nM205 X5 Y5 Z1 E1"
 
-  #define USER_DESC_9 "Accel. Moderate"
-  #define USER_GCODE_9 "M204 P1000\nM204 T1500\nM204 R750\nM201 X1000 Y1000 Z50 E1500\nM205 X10 Y10 Z1 E1"
+  #define USER_DESC_10 "Accel. Moderate"
+  #define USER_GCODE_10 "M204 P1000\nM204 T1500\nM204 R750\nM201 X1000 Y1000 Z50 E1500\nM205 X10 Y10 Z1 E1"
 
-  #define USER_DESC_10 "Accel. High Speed"
-  #define USER_GCODE_10 "M204 P1500\nM204 T1500\nM204 R1000\nM201 X1500 Y1500 Z50 E8000\nM205 X15 Y15 Z3 E3"
+  #define USER_DESC_11 "Accel. High Speed"
+  #define USER_GCODE_11 "M204 P1500\nM204 T1500\nM204 R1000\nM201 X1500 Y1500 Z50 E8000\nM205 X15 Y15 Z3 E3"
 
-  #define USER_DESC_11 "Move nozzle check"
-  #define USER_GCODE_11 "G0 X100 Y100 F6000\nG0 Z5 F2400"
+  #define USER_DESC_12 "Move nozzle check"
+  #define USER_GCODE_12 "G0 X100 Y100 F6000\nG0 Z5 F2400"
 
 #endif
 

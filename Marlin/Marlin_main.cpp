@@ -3106,33 +3106,49 @@ static void homeaxis(const AxisEnum axis) {
 
     static float hop_amount = 0.0;  // Total amount lifted, for use in recover
 
+    SERIAL_ECHOLNPAIR("ARGS: retracting ", retracting);
+    SERIAL_ECHOLNPAIR("ARGS: swapping ", swapping);
+	
     // Prevent two retracts or recovers in a row
-    if (retracted[active_extruder] == retracting) return;
 
     // Prevent two swap-retract or recovers in a row
     #if EXTRUDERS > 1
       // Allow G10 S1 only after G10
-      if (swapping && retracted_swap[active_extruder] == retracting) return;
+	 
+      SERIAL_ECHOLNPAIR("X: retracting ", retracting);
+	  SERIAL_ECHOLNPAIR("X: swapping ", swapping);
+      SERIAL_ECHOLNPAIR("X: active extruder ", active_extruder);
+      SERIAL_ECHOLNPAIR("X: Retracte Swap ", retracted_swap[active_extruder]);
+      SERIAL_ECHOLNPAIR("X: Compare ", swapping && retracted_swap[active_extruder] == retracting);
+	  
       // G11 priority to recover the long retract if activated
       if (!retracting) swapping = retracted_swap[active_extruder];
+      SERIAL_ECHOLN("A DONE:");
+      if (swapping && retracted_swap[active_extruder] == retracting) return;
+      SERIAL_ECHOLN("B DONE");
+      if (!swapping && retracted[active_extruder] == retracting) return;
+      SERIAL_ECHOLN("C DONE");
     #else
+      if (retracted[active_extruder] == retracting) return;
       const bool swapping = false;
     #endif
 
-    /* // debugging
-      SERIAL_ECHOLNPAIR("retracting ", retracting);
-      SERIAL_ECHOLNPAIR("swapping ", swapping);
-      SERIAL_ECHOLNPAIR("active extruder ", active_extruder);
-      for (uint8_t i = 0; i < EXTRUDERS; ++i) {
-        SERIAL_ECHOPAIR("retracted[", i);
-        SERIAL_ECHOLNPAIR("] ", retracted[i]);
-        SERIAL_ECHOPAIR("retracted_swap[", i);
-        SERIAL_ECHOLNPAIR("] ", retracted_swap[i]);
-      }
-      SERIAL_ECHOLNPAIR("current_position[z] ", current_position[Z_AXIS]);
-      SERIAL_ECHOLNPAIR("hop_amount ", hop_amount);
-    //*/
-
+    /*
+	// debugging
+    SERIAL_ECHOLNPAIR("A: retracting ", retracting);
+    SERIAL_ECHOLNPAIR("A: swapping ", swapping);
+    SERIAL_ECHOLNPAIR("A: active extruder ", active_extruder);
+    for (uint8_t i = 0; i < EXTRUDERS; ++i) {
+      SERIAL_ECHOPAIR("A: retracted[", i);
+      SERIAL_ECHOLNPAIR("] ", retracted[i]);
+      SERIAL_ECHOPAIR("A: retracted_swap[", i);
+      SERIAL_ECHOLNPAIR("] ", retracted_swap[i]);
+    }
+    SERIAL_ECHOLNPAIR("A: current_position[z] ", current_position[Z_AXIS]);
+    SERIAL_ECHOLNPAIR("A: hop_amount ", hop_amount);
+    //
+    */
+	
     const bool has_zhop = retract_zlift > 0.01;     // Is there a hop set?
     const float old_feedrate_mm_s = feedrate_mm_s;
 
@@ -3180,27 +3196,31 @@ static void homeaxis(const AxisEnum axis) {
 
     feedrate_mm_s = old_feedrate_mm_s;                      // Restore original feedrate
 
-    retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
+    // retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
 
     // If swap retract/recover update the retracted_swap flag too
     #if EXTRUDERS > 1
       if (swapping) retracted_swap[active_extruder] = retracting;
+      else retracted[active_extruder] = retracting;
+    #else
+      retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
     #endif
 
-    /* // debugging
-      SERIAL_ECHOLNPAIR("retracting ", retracting);
-      SERIAL_ECHOLNPAIR("swapping ", swapping);
-      SERIAL_ECHOLNPAIR("active_extruder ", active_extruder);
-      for (uint8_t i = 0; i < EXTRUDERS; ++i) {
-        SERIAL_ECHOPAIR("retracted[", i);
-        SERIAL_ECHOLNPAIR("] ", retracted[i]);
-        SERIAL_ECHOPAIR("retracted_swap[", i);
-        SERIAL_ECHOLNPAIR("] ", retracted_swap[i]);
-      }
-      SERIAL_ECHOLNPAIR("current_position[z] ", current_position[Z_AXIS]);
-      SERIAL_ECHOLNPAIR("hop_amount ", hop_amount);
-    //*/
-
+    /*
+    // debugging
+	SERIAL_ECHOLNPAIR("B: retracting ", retracting);
+    SERIAL_ECHOLNPAIR("B: swapping ", swapping);
+    SERIAL_ECHOLNPAIR("B: active_extruder ", active_extruder);
+    for (uint8_t i = 0; i < EXTRUDERS; ++i) {
+      SERIAL_ECHOPAIR("B: retracted[", i);
+      SERIAL_ECHOLNPAIR("] ", retracted[i]);
+      SERIAL_ECHOPAIR("B: retracted_swap[", i);
+      SERIAL_ECHOLNPAIR("] ", retracted_swap[i]);
+    }
+    SERIAL_ECHOLNPAIR("B: current_position[z] ", current_position[Z_AXIS]);
+    SERIAL_ECHOLNPAIR("B: hop_amount ", hop_amount);
+    //
+    */
   }
 
 #endif // FWRETRACT
@@ -3541,7 +3561,7 @@ inline void gcode_G4() {
   inline void gcode_G10() {
     #if EXTRUDERS > 1
       const bool rs = parser.boolval('S');
-      retracted_swap[active_extruder] = rs; // Use 'S' for swap, default to false
+      //retracted_swap[active_extruder] = rs; // Use 'S' for swap, default to false
     #endif
     retract(true
       #if EXTRUDERS > 1
@@ -14307,6 +14327,16 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
+
+  #if ENABLED(FWRETRACT)  
+  // expectation: all extruder are retracted except the first one 
+  #if EXTRUDERS > 1
+  for (uint8_t i = 1; i < EXTRUDERS; ++i) {
+	  retracted_swap[i] = true;
+  }  
+  #endif
+  retracted_swap[0] = false;
+  #endif
 
   #if ENABLED(MAX7219_DEBUG)
     Max7219_init();

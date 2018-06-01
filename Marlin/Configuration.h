@@ -133,16 +133,16 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_FD_V1
+  #define MOTHERBOARD BOARD_RADDS
 #endif
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-//#define CUSTOM_MACHINE_NAME "Weruminger 3D"
+#define CUSTOM_MACHINE_NAME "Weruminger 3D"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
-//#define MACHINE_UUID "821e09e2-ac62-4c0b-8588-90eb97b6cb42"
+#define MACHINE_UUID "821e09e2-ac62-4c0b-8588-90eb97b6cb43"
 
 // @section extruder
 
@@ -545,14 +545,14 @@
 //#define USE_ZMAX_PLUG
 
 // Enable pullup for all endstops to prevent a floating state
-#define ENDSTOPPULLUPS
+//#define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
-  //#define ENDSTOPPULLUP_XMAX
-  //#define ENDSTOPPULLUP_YMAX
-  //#define ENDSTOPPULLUP_ZMAX
-  //#define ENDSTOPPULLUP_XMIN
-  //#define ENDSTOPPULLUP_YMIN
+  #define ENDSTOPPULLUP_XMAX
+  #define ENDSTOPPULLUP_YMAX
+  #define ENDSTOPPULLUP_ZMAX
+  #define ENDSTOPPULLUP_XMIN
+  #define ENDSTOPPULLUP_YMIN
   //#define ENDSTOPPULLUP_ZMIN
   //#define ENDSTOPPULLUP_ZMIN_PROBE
 #endif
@@ -573,11 +573,11 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+#define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 //#define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 //#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 //#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -604,29 +604,53 @@
 #define DISTINCT_E_FACTORS
 
 /**
+ * Weruminger I3
+ * Kinematics Environmental values 
+ * Satic, not overwritable
+ *  X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
+ */
+/* Driver Microsteps swithed/programmed values */
+#define RWE_Microsteps_X  16
+#define RWE_Microsteps_Y  16
+#define RWE_Microsteps_Z  128
+#define RWE_Microsteps_E0 128
+#define RWE_Microsteps_E1 128
+/* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
+#define RWE_StepsPerRotation_X  400
+#define RWE_StepsPerRotation_Y  400
+#define RWE_StepsPerRotation_Z  200
+#define RWE_StepsPerRotation_E0 200
+#define RWE_StepsPerRotation_E1 200
+/* Tooth/pitch count of pully or 1 id not pully or tooth belt is used */
+#define RWE_ToothPerRotation_X  20
+#define RWE_ToothPerRotation_Y  20
+#define RWE_ToothPerRotation_Z  1
+#define RWE_ToothPerRotation_E0 1
+#define RWE_ToothPerRotation_E1 1
+/* legth of any pitch */
+#define RWE_PitchPerTooth_X  2
+#define RWE_PitchPerTooth_Y  2
+#define RWE_PitchPerTooth_Z  8
+#define RWE_PitchPerTooth_E0 7.711
+#define RWE_PitchPerTooth_E1 7.711
+/* length per rotation */
+#define RWE_mmPerRotation_X  (RWE_ToothPerRotation_X *RWE_PitchPerTooth_X )
+#define RWE_mmPerRotation_Y  (RWE_ToothPerRotation_Y *RWE_PitchPerTooth_Y )
+#define RWE_mmPerRotation_Z  (RWE_ToothPerRotation_Z *RWE_PitchPerTooth_Z )
+#define RWE_mmPerRotation_E0 (RWE_ToothPerRotation_E0*RWE_PitchPerTooth_E0)
+#define RWE_mmPerRotation_E1 (RWE_ToothPerRotation_E1*RWE_PitchPerTooth_E1)
+
+#define RWE_STEPS_PER_UNIT_X  ((RWE_Microsteps_X  * RWE_StepsPerRotation_X ) / RWE_mmPerRotation_X )
+#define RWE_STEPS_PER_UNIT_Y  ((RWE_Microsteps_Y  * RWE_StepsPerRotation_Y ) / RWE_mmPerRotation_Y )
+#define RWE_STEPS_PER_UNIT_Z  ((RWE_Microsteps_Z  * RWE_StepsPerRotation_Z ) / RWE_mmPerRotation_Z )
+#define RWE_STEPS_PER_UNIT_E0 ((RWE_Microsteps_E0 * RWE_StepsPerRotation_E0) / RWE_mmPerRotation_E0)
+#define RWE_STEPS_PER_UNIT_E1 ((RWE_Microsteps_E1 * RWE_StepsPerRotation_E1) / RWE_mmPerRotation_E1)
+ /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-// REMARK CTC E Steps Nut Geared 1/16 388 Steps / mm
-// REMARK CTC E Steps TEVO Geared 1/16 1105 Steps / mm
-// REMARK CTC X Steps 20 Tooth Pitch 2 1.8° 1/16 80 Steps / mm
-// REMARK CTC Y Steps 20 Tooth Pitch 2 1.8° 1/16 80 Steps / mm
-// REMARK CTC Z Steps Dircet driven M8 1.8° 1/16 2545 Steps / mm
-// REMARK CTC X Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
-// REMARK CTC Y Steps 20 Tooth Pitch 2 0.9° 1/16 160 Steps / mm
-// REMARK CTC Z Steps Dircet driven A8 1.8° 1/16 400 Steps / mm
-// REMARK CTC Z Steps Dircet driven A8 1.8° 1/32 800 Steps / mm
-// REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
-// REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
-// CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160.00, 160.00, 1600, 830, 830}
-// CTC X/Y 1/32Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
-// CTC X/Y 1/64 Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 321, 321, 2545, 152, 152}
-// CTC X/Y 1/128 Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 642, 642, 2545, 152, 152}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { RWE_STEPS_PER_UNIT_X, RWE_STEPS_PER_UNIT_Y, RWE_STEPS_PER_UNIT_Z, RWE_STEPS_PER_UNIT_E0, RWE_STEPS_PER_UNIT_E1 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -651,7 +675,7 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1500   // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          1000   // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  750   // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION   1500  // X, Y, Z acceleration for travel (non printing) moves
 
@@ -1581,7 +1605,7 @@
 // Original RADDS LCD Display+Encoder+SDCardReader
 // http://doku.radds.org/dokumentation/lcd-display/
 //
-//#define RADDS_DISPLAY
+#define RADDS_DISPLAY
 
 //
 // ULTIMAKER Controller.

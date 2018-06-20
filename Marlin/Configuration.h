@@ -432,14 +432,14 @@
                                   // is more than PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
   // CTC Chimera Nozzle Shifter (Lift)
   // NF TC01 Dual non mixing Extruder 12V
-    #define  DEFAULT_Kp 28.40
-    #define  DEFAULT_Ki 3.94
-    #define  DEFAULT_Kd 51.18
+  //  #define  DEFAULT_Kp 28.40
+  //  #define  DEFAULT_Ki 3.94
+  //  #define  DEFAULT_Kd 51.18
 	
   // Geeetech MK8 Extruder
-  //#define  DEFAULT_Kp 12.33
-  //#define  DEFAULT_Ki 0.51
-  //#define  DEFAULT_Kd 74.50
+  #define  DEFAULT_Kp 11.82
+  #define  DEFAULT_Ki 0.42
+  #define  DEFAULT_Kd 83.20
 
   // CTC MK8 Extruder
   //#define  DEFAULT_Kp 19.86
@@ -1340,11 +1340,11 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing when homing all axes (G28).
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-//#define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2)    // X point for Z homing when homing all axes (G28).
-  #define Z_SAFE_HOMING_Y_POINT ((Y_BED_SIZE) / 2)    // Y point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_X_POINT ((X_BED_SIZE) / 2) // - X_PROBE_OFFSET_FROM_EXTRUDER   // X point for Z homing when homing all axes (G28).
+  #define Z_SAFE_HOMING_Y_POINT ((Y_BED_SIZE) / 2) // - Y_PROBE_OFFSET_FROM_EXTRUDER   // Y point for Z homing when homing all axes (G28).
 #endif
 
 // Homing speeds (mm/m)

@@ -18,16 +18,10 @@
     <None Include="Marlin.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Marlin.vsarduino.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Configuration_adv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="help.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Marlin.h">

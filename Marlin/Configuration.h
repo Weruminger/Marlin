@@ -359,10 +359,14 @@
   
   // CTC Chimera Nozzle Shifter (Lift)
   // NF TC01 Dual non mixing Extruder 12V
-    #define  DEFAULT_Kp 28.40
-    #define  DEFAULT_Ki 3.94
-    #define  DEFAULT_Kd 51.18
+  //  #define  DEFAULT_Kp 28.40
+  //  #define  DEFAULT_Ki 3.94
+  //  #define  DEFAULT_Kd 51.18
 
+  // CTC MKS Replacement (cheap)
+    #define  DEFAULT_Kp 13.16
+    #define  DEFAULT_Ki 0.49
+    #define  DEFAULT_Kd 87.59
 
 
 	
@@ -598,7 +602,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1500, 1500, 50, 8000, 8000 }
+#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 50, 8000, 8000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -608,9 +612,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1500   // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          1000   // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  750   // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1500  // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   1000  // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)

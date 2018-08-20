@@ -198,13 +198,28 @@
 // CTC MPE (Magnetic Parking Extruder)
 /**
  * Two separate X-carriages with extruders that connect to a moving part
+ * via a magnetic docking mechanism. only with movements and no solenoid
+ */
+#define MAGNETIC_PARKING_EXTRUDER
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+  #define MAGNETIC_PARKING_EXTRUDER_PARKING_X { 0, 109 }        // X positions for parking the extruders
+  #define MAGNETIC_PARKING_EXTRUDER_GRAB_DISTANCE 32   // mm to move beyond the parking point to grab the extruder
+  #define MAGNETIC_PARKING_EXTRUDER_SECURITY_RAISE 5            // Z-raise before parking
+  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 150             // Speed for trtavel before last diastance point mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 50             // Speed for last diastnance travel to park and couple mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10           // Last distance point mm
+  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                          // Z-offsets of the two hotends. The first must be 0.
+#endif
+
+/**
+ * Two separate X-carriages with extruders that connect to a moving part
  * via a magnetic docking mechanism. Requires SOL1_PIN and SOL2_PIN.
  */
-#define PARKING_EXTRUDER
+//#define PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER)
   #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
   #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
-  #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // Delay (ms) for magnetic field. No delay if 0 or not defined.
+  #define PARKING_EXTRUDER_SOLENOIDS_DELAY 0        // Delay (ms) for magnetic field. No delay if 0 or not defined.
   #define PARKING_EXTRUDER_PARKING_X { 0, 109 }      // X positions for parking the extruders
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder
   #define PARKING_EXTRUDER_SECURITY_RAISE 5           // Z-raise before parking
@@ -871,7 +886,7 @@
 #define Z_PROBE_OFFSET_FROM_EXTRUDER -0.8   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
-#define MIN_PROBE_EDGE 10
+#define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
@@ -1530,7 +1545,7 @@
  * IMPORTANT: The U8glib library is required for Full Graphic Display!
  *            https://github.com/olikraus/U8glib_Arduino
  */
-#define ULTRA_LCD   // Character based
+//#define ULTRA_LCD   // Character based
 //#define DOGLCD      // Full graphics display
 
 /**
@@ -1649,12 +1664,12 @@
 // Original RADDS LCD Display+Encoder+SDCardReader
 // http://doku.radds.org/dokumentation/lcd-display/
 //
-//#define RADDS_DISPLAY
+#define RADDS_DISPLAY
 
 //
 // ULTIMAKER Controller.
 //
-#define ULTIMAKERCONTROLLER
+// #define ULTIMAKERCONTROLLER
 
 //
 // ULTIPANEL as seen on Thingiverse.
@@ -1725,7 +1740,7 @@
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
 //
 //#define LCD_SAINSMART_I2C_1602
-#define LCD_SAINSMART_I2C_2004
+//#define LCD_SAINSMART_I2C_2004
 
 //
 // Generic LCM1602 LCD adapter
@@ -1928,6 +1943,8 @@
 //=============================================================================
 
 // @section extras
+// Auto fan selection for multi extruder multi fan solution
+#define AUTO_FILAMENT_FAN_SELECTION
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN

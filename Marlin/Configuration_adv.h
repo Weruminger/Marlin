@@ -373,10 +373,10 @@
 // Activate a solenoid on the active extruder with M380. Disable all with M381.
 // Define SOL0_PIN, SOL1_PIN, etc., for each extruder that has a solenoid.
 // CTC MPE (Magnetic Parking Extruder)
-#define EXT_SOLENOID
+//#define EXT_SOLENOID
 #define SOL0_PIN 66
-#define SOL1_PIN 66
-#define SOL2_PIN 66
+#define SOL1_PIN 25
+//#define SOL2_PIN -1
 
 // @section homing
 

@@ -104,7 +104,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 1
+#define SERIAL_PORT 0
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
@@ -193,6 +193,7 @@
   #define SWITCHING_NOZZLE_SERVO_ANGLES { 0, 90 }   // Angles for E0, E1
 #endif
 
+// CTC MPE (Magnetic Parking Extruder)
 /**
  * Two separate X-carriages with extruders that connect to a moving part
  * via a solenoid docking mechanism. Requires SOL1_PIN and SOL2_PIN.
@@ -200,7 +201,7 @@
  * for cooling multi extruder with separate fans 
  * see on Configuration_adv.h and look for "Part-Cooling"
  */
-//#define PARKING_EXTRUDER
+#define PARKING_EXTRUDER
 /**
  * Two separate X-carriages with extruders that connect to a moving part
  * via a magnetic docking mechanism using movements and no solenoid
@@ -273,9 +274,9 @@
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
-//#define HOTEND_OFFSET_X {0.0, 20.00} // (mm) relative X-offset for each nozzle
-//#define HOTEND_OFFSET_Y {0.0, 5.00}  // (mm) relative Y-offset for each nozzle
-//#define HOTEND_OFFSET_Z {0.0, 0.00}  // (mm) relative Z-offset for each nozzle
+// CTC MPE (Magnetic Parking Extruder)
+#define HOTEND_OFFSET_X {0.0, 0.80} // (in mm) for each extruder, offset of the hotend on the X axis
+#define HOTEND_OFFSET_Y {0.0, 0.20}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // @section machine
 
@@ -929,7 +930,7 @@
  // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.34   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.8   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 10
@@ -1239,12 +1240,12 @@
 
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
-  #define ABL_PROBE_PT_1_X 39
-  #define ABL_PROBE_PT_1_Y 160
-  #define ABL_PROBE_PT_2_X 39
-  #define ABL_PROBE_PT_2_Y 35
-  #define ABL_PROBE_PT_3_X 160
-  #define ABL_PROBE_PT_3_Y 97
+  #define ABL_PROBE_PT_1_X 0
+  #define ABL_PROBE_PT_1_Y 168
+  #define ABL_PROBE_PT_2_X 54
+  #define ABL_PROBE_PT_2_Y 97
+  #define ABL_PROBE_PT_3_X 109
+  #define ABL_PROBE_PT_3_Y 32
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1476,7 +1477,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-#define NOZZLE_PARK_FEATURE
+// #define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z }
@@ -1523,7 +1524,7 @@
  * Attention: EXPERIMENTAL. G-code arguments may change.
  *
  */
-#define NOZZLE_CLEAN_FEATURE
+// #define NOZZLE_CLEAN_FEATURE
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   // Default number of pattern repetitions
@@ -1743,7 +1744,7 @@
 // Original RADDS LCD Display+Encoder+SDCardReader
 // http://doku.radds.org/dokumentation/lcd-display/
 //
-#define RADDS_DISPLAY
+//#define RADDS_DISPLAY
 
 //
 // ULTIMAKER Controller.
@@ -1792,7 +1793,7 @@
 //
 // Generic 16x2, 16x4, 20x2, or 20x4 character-based LCD.
 //
-//#define ULTRA_LCD
+#define ULTRA_LCD
 
 //=============================================================================
 //======================== LCD / Controller Selection =========================
@@ -1819,7 +1820,7 @@
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
 //
 //#define LCD_SAINSMART_I2C_1602
-//#define LCD_SAINSMART_I2C_2004
+#define LCD_SAINSMART_I2C_2004
 
 //
 // Generic LCM1602 LCD adapter

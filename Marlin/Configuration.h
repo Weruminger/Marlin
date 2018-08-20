@@ -201,7 +201,7 @@
  * for cooling multi extruder with separate fans 
  * see on Configuration_adv.h and look for "Part-Cooling"
  */
-#define PARKING_EXTRUDER
+//#define PARKING_EXTRUDER
 /**
  * Two separate X-carriages with extruders that connect to a moving part
  * via a magnetic docking mechanism using movements and no solenoid
@@ -219,8 +219,8 @@
  */
 //#define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_PARKING_X { -78, 184 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
-  #define PARKING_EXTRUDER_GRAB_DISTANCE 1            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
+  #define PARKING_EXTRUDER_PARKING_X { 0, 109 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
+  #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
 // RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
   #if ENABLED(PARKING_EXTRUDER)
     #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
@@ -933,7 +933,7 @@
 #define Z_PROBE_OFFSET_FROM_EXTRUDER -0.8   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
-#define MIN_PROBE_EDGE 10
+#define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
@@ -1744,12 +1744,12 @@
 // Original RADDS LCD Display+Encoder+SDCardReader
 // http://doku.radds.org/dokumentation/lcd-display/
 //
-//#define RADDS_DISPLAY
+#define RADDS_DISPLAY
 
 //
 // ULTIMAKER Controller.
 //
-#define ULTIMAKERCONTROLLER
+// #define ULTIMAKERCONTROLLER
 
 //
 // ULTIPANEL as seen on Thingiverse.
@@ -1820,7 +1820,7 @@
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
 //
 //#define LCD_SAINSMART_I2C_1602
-#define LCD_SAINSMART_I2C_2004
+//#define LCD_SAINSMART_I2C_2004
 
 //
 // Generic LCM1602 LCD adapter
@@ -2042,6 +2042,8 @@
 //=============================================================================
 
 // @section extras
+// Auto fan selection for multi extruder multi fan solution
+#define AUTO_FILAMENT_FAN_SELECTION
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN

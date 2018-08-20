@@ -45,6 +45,9 @@
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER) || (ENABLED(PARKING_EXTRUDER) && PARKING_EXTRUDER_SOLENOIDS_DELAY > 0)
   #include "../gcode/gcode.h" // for dwell()
 #endif
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+ #include "../gcode/gcode.h" // for dwell()
+#endif
 
 #if ENABLED(SWITCHING_EXTRUDER) || ENABLED(SWITCHING_NOZZLE) || ENABLED(SWITCHING_TOOLHEAD)
   #include "../module/servo.h"

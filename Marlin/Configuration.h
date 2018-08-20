@@ -202,13 +202,15 @@
  */
 #define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define MAGNETIC_PARKING_EXTRUDER_PARKING_X { 0, 109 }        // X positions for parking the extruders
-  #define MAGNETIC_PARKING_EXTRUDER_GRAB_DISTANCE 32   // mm to move beyond the parking point to grab the extruder
-  #define MAGNETIC_PARKING_EXTRUDER_SECURITY_RAISE 5            // Z-raise before parking
-  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 150             // Speed for trtavel before last diastance point mm/s
-  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 50             // Speed for last diastnance travel to park and couple mm/s
-  #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10           // Last distance point mm
-  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                          // Z-offsets of the two hotends. The first must be 0.
+  #define MAGNETIC_PARKING_EXTRUDER_PARKING_X { 32, 141 }    // X positions for parking the extruders
+  #define MAGNETIC_PARKING_EXTRUDER_GRAB_DISTANCE 32        // mm to move beyond the parking point to grab the extruder
+  #define MAGNETIC_PARKING_EXTRUDER_SECURITY_RAISE 5        // Z-raise before parking
+  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 150          // Speed for trtavel before last diastance point mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 50           // Speed for last diastnance travel to park and couple mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10      // Last distance point mm
+  #define MAGNETIC_PARKING_EXTRUDER_COMPENSATION 0          // Offset Compensation -1 , 0 , 1 (multiplier)
+  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                      // Z-offsets of the two hotends. The first must be 0.
+  
 #endif
 
 /**

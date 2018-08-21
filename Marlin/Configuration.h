@@ -438,9 +438,9 @@
   //  #define  DEFAULT_Kd 51.18
 	
   // Geeetech MK8 Extruder
-  #define  DEFAULT_Kp 11.82
-  #define  DEFAULT_Ki 0.42
-  #define  DEFAULT_Kd 83.20
+  #define DEFAULT_Kp 31.45
+  #define DEFAULT_Ki 3.195
+  #define DEFAULT_Kd 77.605
 
   // CTC MK8 Extruder
   //#define  DEFAULT_Kp 19.86
@@ -703,7 +703,7 @@
 /* Driver Microsteps swithed/programmed values */
 #define RWE_Microsteps_X  16
 #define RWE_Microsteps_Y  16
-#define RWE_Microsteps_Z  128
+#define RWE_Microsteps_Z  64
 #define RWE_Microsteps_E0 128
 #define RWE_Microsteps_E1 128
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
@@ -930,13 +930,13 @@
  // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.8   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -1.0   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 8000
+#define XY_PROBE_SPEED 9000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1347,8 +1347,8 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (25*60)
-#define HOMING_FEEDRATE_Z  (4*60)
+#define HOMING_FEEDRATE_XY (25*75)
+#define HOMING_FEEDRATE_Z  (4*75)
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -1424,7 +1424,7 @@
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //
-//#define EEPROM_SETTINGS // Enable for M500 and M501 commands
+#define EEPROM_SETTINGS // Enable for M500 and M501 commands
 //#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
 //#define EEPROM_CHITCHAT   // Give feedback on EEPROM commands. Disable to save PROGMEM.
 
@@ -1577,7 +1577,7 @@
  *
  * View the current statistics with M78.
  */
-//#define PRINTCOUNTER
+#define PRINTCOUNTER
 
 //=============================================================================
 //============================= LCD and SD support ============================

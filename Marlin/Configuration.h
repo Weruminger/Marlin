@@ -564,7 +564,7 @@
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
-#define USE_XMAX_PLUG 
+#define USE_XMAX_PLUG // RWE Change MPE
 //#define USE_YMAX_PLUG
 //#define USE_ZMAX_PLUG
 
@@ -572,13 +572,13 @@
 //#define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
-  #define ENDSTOPPULLUP_XMAX
+  // #define ENDSTOPPULLUP_XMAX // RWE Change MPE
   #define ENDSTOPPULLUP_YMAX
   #define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
-  //#define ENDSTOPPULLUP_ZMIN
-  //#define ENDSTOPPULLUP_ZMIN_PROBE
+  //#define ENDSTOPPULLUP_ZMIN // RWE Change BLT
+  //#define ENDSTOPPULLUP_ZMIN_PROBE // RWE Change BLT
 #endif
 
 // Enable pulldown for all endstops to prevent a floating state
@@ -595,10 +595,10 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop. // RWE Change MPE
 #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.  // RWE Change MPE
 //#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 //#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.

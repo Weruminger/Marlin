@@ -96,16 +96,18 @@
   void est_init();
 #endif
 
-#if ENABLED(MAGNETIC_PARKING_EXTRUDER) 
-  const float parkingposx[] = PARKING_EXTRUDER_PARKING_X,                        // Mxxx R L
-              parkinggrabdistance = PARKING_EXTRUDER_GRAB_DISTANCE,              // Mxxx G
-              parkingslowspeed = MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED,           // Mxxx N
-              parkinghighspeed = MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED,           // Mxxx H
-              parkingtraveldistance = MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE; // Mxxx D
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+  extern float parkingposx[2] ,           // M951 R L
+               parkinggrabdistance ,      // M951 G
+               parkingslowspeed,          // M951 N
+               parkinghighspeed ,         // M951 H
+               parkingtraveldistance;     // M951 D
 				  
-  const bool compensationmultiplier = MAGNETIC_PARKING_EXTRUDER_COMPENSATION;    // Mxxx C
-#endif
+  extern float compensationmultiplier;    // M951 C
 
+  void mpe_para_init();
+  void mpe_para_report();
+#endif
 
 /**
  * Perform a tool-change, which may result in moving the

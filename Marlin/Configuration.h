@@ -202,14 +202,14 @@
  */
 #define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define MAGNETIC_PARKING_EXTRUDER_PARKING_X { 32, 140 }    // X positions for parking the extruders
-  #define MAGNETIC_PARKING_EXTRUDER_GRAB_DISTANCE 32        // mm to move beyond the parking point to grab the extruder
-  #define MAGNETIC_PARKING_EXTRUDER_SECURITY_RAISE 5        // Z-raise before parking
-  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 150          // Speed for trtavel before last diastance point mm/s
-  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 50           // Speed for last diastnance travel to park and couple mm/s
+  #define PARKING_EXTRUDER_PARKING_X { 32, 138 }    // X positions for parking the extruders
+  #define PARKING_EXTRUDER_GRAB_DISTANCE 32        // mm to move beyond the parking point to grab the extruder
+  #define PARKING_EXTRUDER_SECURITY_RAISE 5        // Z-raise before parking
+  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 300          // Speed for trtavel before last diastance point mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 75           // Speed for last diastnance travel to park and couple mm/s
   #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10      // Last distance point mm
   #define MAGNETIC_PARKING_EXTRUDER_COMPENSATION 0          // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
-  #define HOTEND_OFFSET_Z { 0.0, 0.3 }                      // Z-offsets of the two hotends. The first must be 0.
+  #define HOTEND_OFFSET_Z { 0.0, -0.6 }                      // Z-offsets of the two hotends. The first must be 0.
   
 #endif
 
@@ -225,7 +225,7 @@
   #define PARKING_EXTRUDER_PARKING_X { 0, 109 }      // X positions for parking the extruders
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder
   #define PARKING_EXTRUDER_SECURITY_RAISE 5           // Z-raise before parking
-  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                // Z-offsets of the two hotends. The first must be 0.
+  #define HOTEND_OFFSET_Z { 0.0, -0.1 }                // Z-offsets of the two hotends. The first must be 0.
 #endif
 
 /**
@@ -247,8 +247,8 @@
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
 // CTC MPE (Magnetic Parking Extruder)
-#define HOTEND_OFFSET_X {0.0, 0.80} // (in mm) for each extruder, offset of the hotend on the X axis
-#define HOTEND_OFFSET_Y {0.0, 0.20}  // (in mm) for each extruder, offset of the hotend on the Y axis
+#define HOTEND_OFFSET_X {0.0, 0.65} // (in mm) for each extruder, offset of the hotend on the X axis
+#define HOTEND_OFFSET_Y {0.0, 0.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // @section machine
 
@@ -676,7 +676,7 @@
 /* Driver Microsteps swithed/programmed values */
 #define RWE_Microsteps_X  16
 #define RWE_Microsteps_Y  16
-#define RWE_Microsteps_Z  64
+#define RWE_Microsteps_Z  128
 #define RWE_Microsteps_E0 128
 #define RWE_Microsteps_E1 128
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
@@ -885,7 +885,7 @@
  // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.8  // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.75 // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 0
@@ -1083,8 +1083,8 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR
+//#define AUTO_BED_LEVELING_LINEAR
+#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 

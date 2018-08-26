@@ -249,6 +249,7 @@
  *
  * ************ Custom codes - This can change to suit future G-code regulations
  * M928 - Start SD logging: "M928 filename.gco". Stop with M29. (Requires SDSUPPORT)
+ * M951 - Parking extruder setting values
  * M999 - Restart after being stopped by error
  *
  * "T" Codes

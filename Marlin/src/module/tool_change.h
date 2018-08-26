@@ -88,6 +88,17 @@
   #endif
 #endif
 
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER) 
+  const float parkingposx[] = PARKING_EXTRUDER_PARKING_X,                        // Mxxx R L
+              parkinggrabdistance = PARKING_EXTRUDER_GRAB_DISTANCE,              // Mxxx G
+              parkingslowspeed = MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED,           // Mxxx N
+              parkinghighspeed = MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED,           // Mxxx H
+              parkingtraveldistance = MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE; // Mxxx D
+				  
+  const bool compensationmultiplier = MAGNETIC_PARKING_EXTRUDER_COMPENSATION;    // Mxxx C
+#endif
+
+
 /**
  * Perform a tool-change, which may result in moving the
  * previous tool out of the way and the new tool into place.

@@ -209,7 +209,7 @@
   #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 75           // Speed for last diastnance travel to park and couple mm/s
   #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10      // Last distance point mm
   #define MAGNETIC_PARKING_EXTRUDER_COMPENSATION 0          // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
-  #define HOTEND_OFFSET_Z { 0.0, -0.6 }                      // Z-offsets of the two hotends. The first must be 0.
+  #define HOTEND_OFFSET_Z { 0.0, -0.75 }                      // Z-offsets of the two hotends. The first must be 0.
   
 #endif
 
@@ -247,8 +247,8 @@
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
 // CTC MPE (Magnetic Parking Extruder)
-#define HOTEND_OFFSET_X {0.0, 0.65} // (in mm) for each extruder, offset of the hotend on the X axis
-#define HOTEND_OFFSET_Y {0.0, 0.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
+#define HOTEND_OFFSET_X {0.0, 0.7} // (in mm) for each extruder, offset of the hotend on the X axis
+#define HOTEND_OFFSET_Y {0.0, 0.1}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // @section machine
 
@@ -885,7 +885,7 @@
  // CTC Chimera Nozzle Shifter (Lift)
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.75 // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.65 // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 0
@@ -1949,18 +1949,18 @@
 #define AUTO_FILAMENT_FAN_SELECTION
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
-//#define FAST_PWM_FAN
+// #define FAST_PWM_FAN
 
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-//#define FAN_SOFT_PWM
+// #define FAN_SOFT_PWM
 
 // Incrementing this by 1 will double the software PWM frequency,
 // affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
 // However, control resolution will be halved for each increment;
 // at zero value, there are 128 effective control positions.
-#define SOFT_PWM_SCALE 4
+#define SOFT_PWM_SCALE 8
 
 // If SOFT_PWM_SCALE is set to a value higher than 0, dithering can
 // be used to mitigate the associated resolution loss. If enabled,

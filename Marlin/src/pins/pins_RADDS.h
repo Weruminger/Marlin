@@ -229,6 +229,27 @@
     #define SDSS            10
     #define SD_DETECT_PIN   14
 
+   #elif ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER) | ENABLED(LCD_SAINSMART_I2C_2004) | ENABLED(ULTRA_LCD)
+    #define LCD_PINS_RS     46
+    #define LCD_PINS_ENABLE 47
+    #define LCD_PINS_D4     44
+    #define LCD_PINS_D5     45
+    #define LCD_PINS_D6     42
+    #define LCD_PINS_D7     43
+
+    #define BEEPER_PIN      41
+
+    #define BTN_EN1         50
+    #define BTN_EN2         52
+    #define BTN_ENC         48
+
+    // #define BTN_BACK        71
+
+    //#undef SDSS
+    //#define SDSS            10
+    //#define SD_DETECT_PIN   14
+  
+  
   #elif ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
 
     // The REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER requires
@@ -237,6 +258,9 @@
     #define LCD_PINS_RS     42
     #define LCD_PINS_ENABLE 43
     #define LCD_PINS_D4     44
+    #define LCD_PINS_D5     45
+    #define LCD_PINS_D6     42
+    #define LCD_PINS_D7     43
 
     #define BEEPER_PIN      41
 
@@ -244,8 +268,18 @@
     #define BTN_EN2         52
     #define BTN_ENC         48
 
-    #define SDSS            10
-    #define SD_DETECT_PIN   14
+  #elif ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
+
+    #define LCD_PINS_RS     46
+    #define LCD_PINS_ENABLE 47
+    #define LCD_PINS_D4     44
+
+    #define BEEPER_PIN      41
+
+    #define BTN_EN1         50
+    #define BTN_EN2         52
+    #define BTN_ENC         48
+
 
   #elif ENABLED(SSD1306_OLED_I2C_CONTROLLER)
 

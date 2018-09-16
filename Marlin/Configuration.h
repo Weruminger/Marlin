@@ -104,7 +104,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 1
+#define SERIAL_PORT 0
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
@@ -1619,7 +1619,8 @@
  *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
-#define DISPLAY_CHARSET_HD44780 JAPANESE
+// CTC
+// #define DISPLAY_CHARSET_HD44780 JAPANESE
 
 /**
  * Info Screen Style (0:Classic, 1:Prusa)
@@ -1669,7 +1670,7 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-#define ENCODER_PULSES_PER_STEP 5
+//#define ENCODER_PULSES_PER_STEP 5
 
 //
 // Use this option to override the number of step signals required to
@@ -1749,7 +1750,8 @@
 //
 // ULTIMAKER Controller.
 //
-#define ULTIMAKERCONTROLLER
+// CTC
+//#define ULTIMAKERCONTROLLER
 
 //
 // ULTIPANEL as seen on Thingiverse.
@@ -1870,7 +1872,8 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+// ENDER
+#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
 //
 // ReprapWorld Graphical LCD

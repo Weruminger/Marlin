@@ -37,7 +37,7 @@
  */
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
-#define CONFIGURATION_H_VERSION 010107
+#define CONFIGURATION_H_VERSION 010109
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -98,6 +98,9 @@
 // example configuration folder.
 //
 //#define SHOW_CUSTOM_BOOTSCREEN
+// Enable to show the bitmap in Marlin/_Statusscreen.h on the status screen.
+//#define CUSTOM_STATUS_SCREEN_IMAGE
+
 // @section machine
 
 /**
@@ -546,9 +549,52 @@
 //#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 
+/**
+ * Stepper Drivers
+ *
+ * These settings allow Marlin to tune stepper driver timing and enable advanced options for
+ * stepper drivers that support them. You may also override timing options in Configuration_adv.h.
+ *
+ * A4988 is assumed for unspecified drivers.
+ *
+ * Options: A4988, DRV8825, LV8729, L6470, TB6560, TB6600, TMC2100,
+ *          TMC2130, TMC2130_STANDALONE, TMC2208, TMC2208_STANDALONE,
+ *          TMC26X,  TMC26X_STANDALONE,  TMC2660, TMC2660_STANDALONE,
+ *          TMC5130, TMC5130_STANDALONE
+ * :['A4988', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE']
+ */
+//#define X_DRIVER_TYPE  A4988
+//#define Y_DRIVER_TYPE  A4988
+//#define Z_DRIVER_TYPE  A4988
+//#define X2_DRIVER_TYPE A4988
+//#define Y2_DRIVER_TYPE A4988
+//#define Z2_DRIVER_TYPE A4988
+//#define E0_DRIVER_TYPE A4988
+//#define E1_DRIVER_TYPE A4988
+//#define E2_DRIVER_TYPE A4988
+//#define E3_DRIVER_TYPE A4988
+//#define E4_DRIVER_TYPE A4988
+
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
 //#define ENDSTOP_INTERRUPTS_FEATURE
+
+/**
+ * Endstop Noise Filter
+ *
+ * Enable this option if endstops falsely trigger due to noise.
+ * NOTE: Enabling this feature means adds an error of +/-0.2mm, so homing
+ * will end up at a slightly different position on each G28. This will also
+ * reduce accuracy of some bed probes.
+ * For mechanical switches, the better approach to reduce noise is to install
+ * a 100 nanofarads ceramic capacitor in parallel with the switch, making it
+ * essentially noise-proof without sacrificing accuracy.
+ * This option also increases MCU load when endstops or the probe are enabled.
+ * So this is not recommended. USE AT YOUR OWN RISK.
+ * (This feature is not required for common micro-switches mounted on PCBs
+ * based on the Makerbot design, since they already include the 100nF capacitor.)
+ */
+//#define ENDSTOP_NOISE_FILTER
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -636,6 +682,16 @@
 #define DEFAULT_ZJERK                  1
 #define DEFAULT_EJERK                  1
 
+/**
+ * S-Curve Acceleration
+ *
+ * This option eliminates vibration during printing by fitting a Bézier
+ * curve to move acceleration, producing much smoother direction changes.
+ *
+ * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
+ */
+//#define S_CURVE_ACCELERATION
+
 //===========================================================================
 //============================= Z Probe Options =============================
 //===========================================================================
@@ -686,6 +742,7 @@
  * or (with LCD_BED_LEVELING) the LCD controller.
  */
 //#define PROBE_MANUALLY
+//#define MANUAL_PROBE_START_Z 0.2
 
 /**
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
@@ -715,8 +772,11 @@
  * readings with inductive probes and piezo sensors.
  */
 #define PROBING_HEATERS_OFF       // Turn heaters off when probing
-#define PROBING_FANS_OFF          // Turn fans off when probing
-#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
+#if ENABLED(PROBING_HEATERS_OFF)
+  //#define WAIT_FOR_BED_HEATER     // Wait for bed to heat back up between probes (to improve accuracy)
+#endif
+//#define PROBING_FANS_OFF          // Turn fans off when probing
+//#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
 
 // A probe that is deployed and stowed with a solenoid pin (SOL1_PIN)
 //#define SOLENOID_PROBE
@@ -783,6 +843,10 @@
  */
 #define Z_CLEARANCE_DEPLOY_PROBE   15 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
+#define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
+//#define Z_AFTER_PROBING           5 // Z position after probing is done
+
+#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
@@ -883,6 +947,10 @@
   #define MAX_SOFTWARE_ENDSTOP_Z
 #endif
 
+#if ENABLED(MIN_SOFTWARE_ENDSTOPS) || ENABLED(MAX_SOFTWARE_ENDSTOPS)
+  //#define SOFT_ENDSTOPS_MENU_ITEM  // Enable/Disable software endstops from the LCD
+#endif
+
 /**
  * Filament Runout Sensor
  * A mechanical or opto endstop is used to check for the presence of filament.
@@ -893,8 +961,9 @@
  */
 //#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+  #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #define FIL_RUNOUT_INVERTING false // set to true to invert the logic of the sensor.
-  #define ENDSTOPPULLUP_FIL_RUNOUT // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
+  #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
   #define FILAMENT_RUNOUT_SCRIPT "M600"
 #endif
 
@@ -941,6 +1010,12 @@
 //#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
+
+/**
+ * Normally G28 leaves leveling disabled on completion. Enable
+ * this option to have G28 restore the prior leveling state.
+ */
+//#define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1043,6 +1118,9 @@
   #define UBL_MESH_EDIT_MOVES_Z     // Sophisticated users prefer no movement of nozzle
   #define UBL_SAVE_ACTIVE_ON_M500   // Save the currently active mesh in the current slot on M500
 
+  //#define UBL_Z_RAISE_WHEN_OFF_MESH 2.5 // When the nozzle is off the mesh, this value is used
+                                          // as the Z-Height correction value.
+
 #elif ENABLED(MESH_BED_LEVELING)
 
   //===========================================================================
@@ -1070,6 +1148,11 @@
 
 // Add a menu item to move between bed corners for manual bed adjustment
 //#define LEVEL_BED_CORNERS
+
+#if ENABLED(LEVEL_BED_CORNERS)
+  #define LEVEL_CORNERS_INSET 30    // (mm) An inset for corner leveling
+  //#define LEVEL_CENTER_TOO        // Move to the center after the last corner
+#endif
 
 /**
  * Commands to execute at the end of G29 probing.
@@ -1344,13 +1427,13 @@
  *
  * Select the language to display on the LCD. These languages are available:
  *
- *    en, an, bg, ca, cn, cz, cz_utf8, de, el, el-gr, es, eu, fi, fr, fr_utf8, gl,
- *    hr, it, kana, kana_utf8, nl, pl, pt, pt_utf8, pt-br, pt-br_utf8, ru, sk_utf8,
- *    tr, uk, zh_CN, zh_TW, test
+ *    en, an, bg, ca, cn, cz, cz_utf8, de, el, el-gr, es, es_utf8,
+ *    eu, fi, fr, fr_utf8, gl, hr, it, kana, kana_utf8, nl, pl, pt,
+ *    pt_utf8, pt-br, pt-br_utf8, ru, sk_utf8, tr, uk, zh_CN, zh_TW, test
  *
- * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cn':'Chinese', 'cz':'Czech', 'cz_utf8':'Czech (UTF8)', 'de':'German', 'el':'Greek', 'el-gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'fr_utf8':'French (UTF8)', 'gl':'Galician', 'hr':'Croatian', 'it':'Italian', 'kana':'Japanese', 'kana_utf8':'Japanese (UTF8)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt-br':'Portuguese (Brazilian)', 'pt-br_utf8':'Portuguese (Brazilian UTF8)', 'pt_utf8':'Portuguese (UTF8)', 'ru':'Russian', 'sk_utf8':'Slovak (UTF8)', 'tr':'Turkish', 'uk':'Ukrainian', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Taiwan)', test':'TEST' }
+ * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cn':'Chinese', 'cz':'Czech', 'cz_utf8':'Czech (UTF8)', 'de':'German', 'el':'Greek', 'el-gr':'Greek (Greece)', 'es':'Spanish', 'es_utf8':'Spanish (UTF8)', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'fr_utf8':'French (UTF8)', 'gl':'Galician', 'hr':'Croatian', 'it':'Italian', 'kana':'Japanese', 'kana_utf8':'Japanese (UTF8)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt-br':'Portuguese (Brazilian)', 'pt-br_utf8':'Portuguese (Brazilian UTF8)', 'pt_utf8':'Portuguese (UTF8)', 'ru':'Russian', 'sk_utf8':'Slovak (UTF8)', 'tr':'Turkish', 'uk':'Ukrainian', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Taiwan)', 'test':'TEST' }
  */
-#define LCD_LANGUAGE de
+#define LCD_LANGUAGE en
 
 /**
  * LCD Character Set
@@ -1374,7 +1457,7 @@
  *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
-#define DISPLAY_CHARSET_HD44780 JAPANESE
+//#define DISPLAY_CHARSET_HD44780 JAPANESE
 
 /**
  * LCD TYPE
@@ -1387,7 +1470,7 @@
  *            https://github.com/olikraus/U8glib_Arduino
  */
 //#define ULTRA_LCD   // Character based
-//#define DOGLCD      // Full graphics display
+#define DOGLCD      // Full graphics display
 
 /**
  * SD CARD
@@ -1414,6 +1497,15 @@
  * Use CRC checks and retries on the SD communication.
  */
 #define SD_CHECK_AND_RETRY
+
+/**
+ * LCD Menu Items
+ *
+ * Disable all menus and only display the Status Screen, or
+ * just remove some extraneous menu items to recover space.
+ */
+//#define NO_LCD_MENUS
+//#define SLIM_LCD_MENUS
 
 //
 // ENCODER SETTINGS
@@ -1479,17 +1571,23 @@
 #define LCD_FEEDBACK_FREQUENCY_DURATION_MS 0
 #define LCD_FEEDBACK_FREQUENCY_HZ 0
 
+//=============================================================================
+//======================== LCD / Controller Selection =========================
+//========================   (Character-based LCDs)   =========================
+//=============================================================================
+
 //
-// CONTROLLER TYPE: Standard
+// RepRapDiscount Smart Controller.
+// http://reprap.org/wiki/RepRapDiscount_Smart_Controller
 //
-// Marlin supports a wide variety of controllers.
-// Enable one of the following options to specify your controller.
+// Note: Usually sold with a white PCB.
 //
+//#define REPRAP_DISCOUNT_SMART_CONTROLLER
 
 //
 // ULTIMAKER Controller.
 //
-#define ULTIMAKERCONTROLLER
+//#define ULTIMAKERCONTROLLER
 
 //
 // ULTIPANEL as seen on Thingiverse.
@@ -1646,6 +1744,83 @@
 //#define LCD_I2C_VIKI
 
 //
+// CONTROLLER TYPE: Shift register panels
+//
+
+//
+// 2 wire Non-latching LCD SR from https://goo.gl/aJJ4sH
+// LCD configuration: http://reprap.org/wiki/SAV_3D_LCD
+//
+//#define SAV_3DLCD
+
+//=============================================================================
+//=======================   LCD / Controller Selection  =======================
+//=========================      (Graphical LCDs)      ========================
+//=============================================================================
+
+//
+// CONTROLLER TYPE: Graphical 128x64 (DOGM)
+//
+// IMPORTANT: The U8glib library is required for Graphical Display!
+//            https://github.com/olikraus/U8glib_Arduino
+//
+
+//
+// RepRapDiscount FULL GRAPHIC Smart Controller
+// http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
+//
+#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+
+//
+// ReprapWorld Graphical LCD
+// https://reprapworld.com/?products_details&products_id/1218
+//
+//#define REPRAPWORLD_GRAPHICAL_LCD
+
+//
+// Activate one of these if you have a Panucatt Devices
+// Viki 2.0 or mini Viki with Graphic LCD
+// http://panucatt.com
+//
+//#define VIKI2
+//#define miniVIKI
+
+//
+// MakerLab Mini Panel with graphic
+// controller and SD support - http://reprap.org/wiki/Mini_panel
+//
+//#define MINIPANEL
+
+//
+// MaKr3d Makr-Panel with graphic controller and SD support.
+// http://reprap.org/wiki/MaKr3d_MaKrPanel
+//
+//#define MAKRPANEL
+
+//
+// Adafruit ST7565 Full Graphic Controller.
+// https://github.com/eboston/Adafruit-ST7565-Full-Graphic-Controller/
+//
+//#define ELB_FULL_GRAPHIC_CONTROLLER
+
+//
+// BQ LCD Smart Controller shipped by
+// default with the BQ Hephestos 2 and Witbox 2.
+//
+//#define BQ_LCD_SMART_CONTROLLER
+
+//
+// Cartesio UI
+// http://mauk.cc/webshop/cartesio-shop/electronics/user-interface
+//
+//#define CARTESIO_UI
+
+//
+// LCD for Melzi Card with Graphical LCD
+//
+//#define LCD_FOR_MELZI
+
+//
 // SSD1306 OLED full graphics generic display
 //
 //#define U8GLIB_SSD1306
@@ -1660,11 +1835,10 @@
 #endif
 
 //
-// CONTROLLER TYPE: Shift register panels
+// Original Ulticontroller from Ultimaker 2 printer with SSD1309 I2C display and encoder
+// https://github.com/Ultimaker/Ultimaker2/tree/master/1249_Ulticontroller_Board_(x1)
 //
-// 2 wire Non-latching LCD SR from https://goo.gl/aJJ4sH
-// LCD configuration: http://reprap.org/wiki/SAV_3D_LCD
-//
+//#define ULTI_CONTROLLER
 //#define SAV_3DLCD
 
 //
@@ -1694,6 +1868,13 @@
 //#define CR10_STOCKDISPLAY
 
 //
+// ANET and Tronxy Graphical Controller
+//
+//#define ANET_FULL_GRAPHICS_LCD  // Anet 128x64 full graphics lcd with rotary encoder as used on Anet A6
+                                  // A clone of the RepRapDiscount full graphics display but with
+                                  // different pins/wiring (see pins_ANET_10.h).
+
+//
 // MKS OLED 1.3" 128 × 64 FULL GRAPHICS CONTROLLER
 // http://reprap.org/wiki/MKS_12864OLED
 //
@@ -1706,6 +1887,34 @@
 // http://github.com/android444/Silvergate
 //
 //#define SILVER_GATE_GLCD_CONTROLLER
+
+//=============================================================================
+//============================  Other Controllers  ============================
+//=============================================================================
+
+//
+// CONTROLLER TYPE: Standalone / Serial
+//
+
+//
+// LCD for Malyan M200 printers.
+// This requires SDSUPPORT to be enabled
+//
+//#define MALYAN_LCD
+
+//
+// CONTROLLER TYPE: Keypad / Add-on
+//
+
+//
+// RepRapWorld REPRAPWORLD_KEYPAD v1.1
+// http://reprapworld.com/?products_details&products_id=202&cPath=1591_1626
+//
+// REPRAPWORLD_KEYPAD_MOVE_STEP sets how much should the robot move when a key
+// is pressed, a value of 10.0 means 10mm per click.
+//
+//#define REPRAPWORLD_KEYPAD
+//#define REPRAPWORLD_KEYPAD_MOVE_STEP 10.0
 
 //=============================================================================
 //=============================== Extra Features ==============================

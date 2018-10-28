@@ -144,14 +144,14 @@
 
 // This defines the number of extruders
 // :[1, 2, 3, 4, 5]
-#define EXTRUDERS 2
+#define EXTRUDERS 1
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // CTC Chimera Nozzle Shifter (Lift)
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-#define SINGLENOZZLE
+//#define SINGLENOZZLE
 
 /**
  * Průša MK2 Single Nozzle Multi-Material Multiplexer, and variants.
@@ -317,8 +317,8 @@
 
 // Extruder temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 10  // (seconds)
-#define TEMP_HYSTERESIS 3       // (degC) range of +/- temperatures considered "close" to the target one
-#define TEMP_WINDOW     1       // (degC) Window around target to start the residency timer x degC early.
+#define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
+#define TEMP_WINDOW     2       // (degC) Window around target to start the residency timer x degC early.
 
 // Bed temperature must be close to target for this long before M190 returns success
 #define TEMP_BED_RESIDENCY_TIME 10  // (seconds)
@@ -358,6 +358,7 @@
 #if ENABLED(PIDTEMP)
   #define PID_AUTOTUNE_MENU // Add PID Autotune to the LCD "Temperature" menu to run M303 and apply the result.
   //#define PID_DEBUG // Sends debug data to the serial port.
+  
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
   //#define SLOW_PWM_HEATERS // PWM with very low frequency (roughly 0.125Hz=8s) and minimum state time of approximately 1s useful for heaters driven by a relay
   //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
@@ -374,10 +375,19 @@
   //  #define  DEFAULT_Kd 51.18
 
   // CTC MKS Replacement (cheap)
-    #define  DEFAULT_Kp 13.16
-    #define  DEFAULT_Ki 0.49
-    #define  DEFAULT_Kd 87.59
+  //    #define  DEFAULT_Kp 13.16
+  //    #define  DEFAULT_Ki 0.49
+  //    #define  DEFAULT_Kd 87.59
 
+// ENDER 3 Original
+#define DEFAULT_Kp 9.45
+#define DEFAULT_Ki 1.78
+#define DEFAULT_Kd 12.58
+
+
+//#define DEFAULT_Kp 40.59
+//#define DEFAULT_Ki 4.16
+//#define DEFAULT_Kd 98.92
 
 	
   // Geeetech MK8 Extruder
@@ -436,10 +446,14 @@
   //#define PID_BED_DEBUG // Sends debug data to the serial port.
 
   // 12v (120 watt?) CTC I3 ALU Bett 
-  #define  DEFAULT_bedKp 453.27
-  #define  DEFAULT_bedKi 38.16
-  #define  DEFAULT_bedKd 1346.04
+  //   #define  DEFAULT_bedKp 453.27
+  //   #define  DEFAULT_bedKi 38.16
+  //   #define  DEFAULT_bedKd 1346.04
 
+// ENDER 3 Original
+#define DEFAULT_bedKp 246.94
+#define DEFAULT_bedKi 46.37
+#define DEFAULT_bedKd 328.74
 
   //12v (120 watt?) MK2a PCB Heatbed into 4mm borosilicate (Geeetech Prusa i3 Pro, Pro/B/C/X)
   //#define  DEFAULT_bedKp 234.88
@@ -563,13 +577,13 @@
  *          TMC5130, TMC5130_STANDALONE
  * :['A4988', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE']
  */
-//#define X_DRIVER_TYPE  A4988
-//#define Y_DRIVER_TYPE  A4988
-//#define Z_DRIVER_TYPE  A4988
+#define X_DRIVER_TYPE  TMC2100
+#define Y_DRIVER_TYPE  TMC2100
+#define Z_DRIVER_TYPE  TMC2100
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
-//#define E0_DRIVER_TYPE A4988
+#define E0_DRIVER_TYPE TMC2100
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -633,8 +647,8 @@
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/32 800 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
-// CTC X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160.00, 160.00, 1600, 830, 830}
+// Ender 3 X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80.00, 80.00, 400, 100}
 // CTC X/Y 1/32Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps
@@ -647,7 +661,7 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 400, 400, 16, 45, 45 }
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 100, 45}
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -655,7 +669,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 50, 8000, 8000 }
+#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 50, 8000}
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -690,7 +704,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-//#define S_CURVE_ACCELERATION
+#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -748,7 +762,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+//#define FIX_MOUNTED_PROBE
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
@@ -759,7 +773,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#define BLTOUCH
 #if ENABLED(BLTOUCH)
   //#define BLTOUCH_DELAY 375   // (ms) Enable and increase if needed
 #endif
@@ -809,9 +823,9 @@
  *    (0,0)
  */
  // CTC Chimera Nozzle Shifter (Lift)
-#define X_PROBE_OFFSET_FROM_EXTRUDER 35  // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER 13  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -4.3   // Z offset: -below +above  [the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER -39  // X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER -3  // Y offset: -front +behind [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -2.0   // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 8000
@@ -878,9 +892,9 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true
+#define INVERT_X_DIR false
 #define INVERT_Y_DIR false
-#define INVERT_Z_DIR false
+#define INVERT_Z_DIR true
 
 // Enable this option for Toshiba stepper drivers
 //#define CONFIG_STEPPERS_TOSHIBA
@@ -889,7 +903,7 @@
 
 // CTC Chimera Nozzle Shifter (Lift)
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false // Geared
+#define INVERT_E0_DIR false // TMC 2100
 #define INVERT_E1_DIR true // twisted Wire & Geared
 #define INVERT_E2_DIR true
 #define INVERT_E3_DIR true
@@ -911,8 +925,8 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 200
-#define Y_BED_SIZE 200
+#define X_BED_SIZE 230
+#define Y_BED_SIZE 230
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -920,7 +934,7 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 180
+#define Z_MAX_POS 200
 
 /**
  * Software Endstops
@@ -1043,11 +1057,14 @@
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE     0.4   // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT    0.2   // (mm) Default layer height for the G26 Mesh Validation Tool.
-    #define MESH_TEST_HOTEND_TEMP   205.0   // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
+    #define MESH_TEST_HOTEND_TEMP   200.0   // (°C) Default nozzle temperature for the G26 Mesh Validation Tool.
     #define MESH_TEST_BED_TEMP       60.0   // (°C) Default bed temperature for the G26 Mesh Validation Tool.
   #endif
 
 #endif
+
+
+//#define RWE_MeshMin_X ((X_PROBE_OFFSET_FROM_EXTRUDER<0)?(-X_PROBE_OFFSET_FROM_EXTRUDER):(X_PROBE_OFFSET_FROM_EXTRUDER))
 
 #if ENABLED(AUTO_BED_LEVELING_LINEAR) || ENABLED(AUTO_BED_LEVELING_BILINEAR)
 
@@ -1057,9 +1074,9 @@
 
   // Set the boundaries for probing (where the probe can reach).
   #define LEFT_PROBE_BED_POSITION 39
-  #define RIGHT_PROBE_BED_POSITION 160
+  #define RIGHT_PROBE_BED_POSITION 180
   #define FRONT_PROBE_BED_POSITION 35
-  #define BACK_PROBE_BED_POSITION 160
+  #define BACK_PROBE_BED_POSITION 180
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
@@ -1090,11 +1107,11 @@
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
   #define ABL_PROBE_PT_1_X 39
-  #define ABL_PROBE_PT_1_Y 160
+  #define ABL_PROBE_PT_1_Y 180
   #define ABL_PROBE_PT_2_X 39
   #define ABL_PROBE_PT_2_Y 35
-  #define ABL_PROBE_PT_3_X 160
-  #define ABL_PROBE_PT_3_Y 97
+  #define ABL_PROBE_PT_3_X 180
+  #define ABL_PROBE_PT_3_Y 108
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1109,10 +1126,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_PROBE_PT_1_X 39       // Probing points for 3-Point leveling of the mesh
-  #define UBL_PROBE_PT_1_Y 160
+  #define UBL_PROBE_PT_1_Y 180
   #define UBL_PROBE_PT_2_X 39
   #define UBL_PROBE_PT_2_Y 35
-  #define UBL_PROBE_PT_3_X 160
+  #define UBL_PROBE_PT_3_X 180
   #define UBL_PROBE_PT_3_Y 35
 
   #define UBL_MESH_EDIT_MOVES_Z     // Sophisticated users prefer no movement of nozzle
@@ -1299,8 +1316,8 @@
 #define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_FAN_SPEED    0 // Value from 0 to 255
 
-#define PREHEAT_2_TEMP_HOTEND 240
-#define PREHEAT_2_TEMP_BED     85
+#define PREHEAT_2_TEMP_HOTEND 245
+#define PREHEAT_2_TEMP_BED     100
 #define PREHEAT_2_FAN_SPEED    0 // Value from 0 to 255
 
 /**
@@ -1314,7 +1331,7 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-#define NOZZLE_PARK_FEATURE
+// #define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z }
@@ -2035,12 +2052,12 @@
  */
  
 // CTC Chimera Nozzle Shifter (Lift) 
-//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 
 // Delay (in milliseconds) before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
 // If the servo can't reach the requested position, increase it.
-#define SERVO_DELAY { 300 }
+// #define SERVO_DELAY { 300 }
 
 // Only power servos during movement, otherwise leave off to prevent jitter
 //#define DEACTIVATE_SERVOS_AFTER_MOVE

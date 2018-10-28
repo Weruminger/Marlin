@@ -67,8 +67,8 @@
 
   typedef struct MPESettings {
       float parking_xpos[2],    // M951 L R
-          grab_distance,        // M951 G
-          slow_feedrate,        // M951 N
+          grab_distance,        // M951 I
+          slow_feedrate,        // M951 J
           fast_feedrate,        // M951 H
           travel_distance,      // M951 D
           compensation_factor;  // M951 C
@@ -90,8 +90,8 @@
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
   extern float parkingposx[2] ,           // M951 R L
-               parkinggrabdistance ,      // M951 G
-               parkingslowspeed,          // M951 N
+               parkinggrabdistance ,      // M951 I
+               parkingslowspeed,          // M951 J
                parkinghighspeed ,         // M951 H
                parkingtraveldistance;     // M951 D
 				  

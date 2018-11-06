@@ -85,6 +85,19 @@
 
 #endif
 
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+  extern float parkingposx[2] ,           // M951 R L
+               parkinggrabdistance ,      // M951 G
+               parkingslowspeed,          // M951 N
+               parkinghighspeed ,         // M951 H
+               parkingtraveldistance;     // M951 D
+				  
+  extern float compensationmultiplier;    // M951 C
+
+  void mpe_para_init();
+  void mpe_para_report();
+#endif
+
 #if ENABLED(SINGLENOZZLE)
   extern uint16_t singlenozzle_temp[EXTRUDERS];
   #if FAN_COUNT > 0

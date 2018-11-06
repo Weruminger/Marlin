@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include "../../inc/MarlinConfig.h"
+
 
 #include "../gcode.h"
 #include "../../module/motion.h"
@@ -67,7 +69,21 @@ void GcodeSuite::G0_G1(
     #endif
 
     get_destination_from_command(); // For X Y Z E F
-
+	#ifdef MAGNETIC_PARKING_EXTRUDER 
+		#if HAS_HOTEND_OFFSET
+			#ifdef MPE_Z_OFFSET & HAS_HOTEND_OFFSET
+			if ( active_extruder > 0 ){
+				destination[Z_AXIS] -= hotend_offset[Z_AXIS][active_extruder];
+			}		
+			#endif
+			#ifdef MPE_XY_OFFSET & HAS_HOTEND_OFFSET
+			if ( active_extruder > 0 ){
+				destination[X_AXIS] -= hotend_offset[X_AXIS][active_extruder];
+				destination[Y_AXIS] -= hotend_offset[Y_AXIS][active_extruder];
+			}		
+			#endif
+		#endif
+	#endif
     #ifdef G0_FEEDRATE
       if (fast_move) {
         #if ENABLED(VARIABLE_G0_FEEDRATE)

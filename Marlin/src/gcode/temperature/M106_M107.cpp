@@ -21,13 +21,17 @@
  */
 
 #include "../../inc/MarlinConfig.h"
+#include "../../module/planner.h"
 
 #if FAN_COUNT > 0
 
 #include "../gcode.h"
-#include "../../module/motion.h"
-#include "../../module/temperature.h"
+#include "../../Marlin.h" // for fan_speed — should move those to Planner
 
+#if ENABLED(SINGLENOZZLE)
+  #include "../../module/motion.h"
+  #include "../../module/tool_change.h"
+#endif
 
 /**
  * M106: Set Fan Speed
@@ -43,19 +47,47 @@
  *           3-255 = Set the speed for use with T2
  */
 void GcodeSuite::M106() {
-  const uint8_t p = parser.byteval('P', MIN(active_extruder, FAN_COUNT - 1));
 
-  if (p < MIN(EXTRUDERS, FAN_COUNT)) {
+  #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+    const bool autofanselect = true; 
+  #else
+    const bool autofanselect = false; 	  
+  #endif
 
+  uint8_t p = parser.byteval('P');
+  if (autofanselect && p<=0 )
+  {
+	  p = active_extruder;
+  }
+  const uint16_t s = parser.ushortval('S', 255);
+
+  #if ENABLED(SINGLENOZZLE)
+    if (p != active_extruder) {
+      if (p < EXTRUDERS) singlenozzle_fan_speed[p] = MIN(s, 255U);
+      return;
+    }
+  #endif
+
+  if (p < FAN_COUNT) {
     #if ENABLED(EXTRA_FAN_SPEED)
       const int16_t t = parser.intval('T');
-      if (t > 0) return thermalManager.set_temp_fan_speed(p, t);
-    #endif
-
-    uint16_t s = parser.ushortval('S', 255);
-    NOMORE(s, 255U);
-
-    thermalManager.set_fan_speed(p, s);
+      if (t > 0) {
+        switch (t) {
+          case 1:
+            fan_speed[p] = old_fan_speed[p];
+            break;
+          case 2:
+            old_fan_speed[p] = fan_speed[p];
+            fan_speed[p] = new_fan_speed[p];
+            break;
+          default:
+            new_fan_speed[p] = MIN(t, 255U);
+            break;
+        }
+        return;
+      }
+    #endif // EXTRA_FAN_SPEED
+    fan_speed[p] = MIN(s, 255U);
   }
 }
 
@@ -63,7 +95,25 @@ void GcodeSuite::M106() {
  * M107: Fan Off
  */
 void GcodeSuite::M107() {
-  thermalManager.set_fan_speed(parser.byteval('P', active_extruder), 0);
+  #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+    const bool autofanselect = true; 
+  #else
+    const bool autofanselect = false; 	  
+  #endif
+
+  uint8_t p = parser.byteval('P');
+  if (autofanselect && p<=0 )
+  {
+	  p = active_extruder;
+  }
+  #if ENABLED(SINGLENOZZLE)
+    if (p != active_extruder) {
+      if (p < EXTRUDERS) singlenozzle_fan_speed[p] = 0;
+      return;
+    }
+  #endif
+
+  if (p < FAN_COUNT) fan_speed[p] = 0;
 }
 
 #endif // FAN_COUNT > 0

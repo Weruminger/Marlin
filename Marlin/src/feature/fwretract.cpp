@@ -98,6 +98,8 @@ void FWRetract::retract(const bool retracting
     , bool swapping /* =false */
   #endif
 ) {
+  
+  /*
   // Prevent two retracts or recovers in a row
   if (retracted[active_extruder] == retracting) return;
 
@@ -110,7 +112,33 @@ void FWRetract::retract(const bool retracting
   #else
     constexpr bool swapping = false;
   #endif
-
+  */
+  
+    #if EXTRUDERS > 1
+      // Allow G10 S1 only after G10
+	 
+      SERIAL_ECHOLNPAIR("X: retracting ", retracting);
+	  SERIAL_ECHOLNPAIR("X: swapping ", swapping);
+      SERIAL_ECHOLNPAIR("X: active extruder ", active_extruder);
+      SERIAL_ECHOLNPAIR("X: Retracte Swap ", retracted_swap[active_extruder]);
+      SERIAL_ECHOLNPAIR("X: Compare ", swapping && retracted_swap[active_extruder] == retracting);
+	  
+      // G11 priority to recover the long retract if activated
+      if (!retracting) swapping = retracted_swap[active_extruder];
+      SERIAL_ECHOLN("A DONE:");
+      if (swapping && retracted_swap[active_extruder] == retracting) return;
+      SERIAL_ECHOLN("B DONE");
+      if (!swapping && retracted[active_extruder] == retracting) return;
+      SERIAL_ECHOLN("C DONE");
+    #else
+      if (retracted[active_extruder] == retracting) return;
+      const bool swapping = false;
+    #endif
+  
+  
+  
+  
+  
   /* // debugging
     SERIAL_ECHOLNPAIR("retracting ", retracting);
     SERIAL_ECHOLNPAIR("swapping ", swapping);
@@ -201,7 +229,10 @@ void FWRetract::retract(const bool retracting
 
   // If swap retract/recover update the retracted_swap flag too
   #if EXTRUDERS > 1
-    if (swapping) retracted_swap[active_extruder] = retracting;
+      if (swapping) retracted_swap[active_extruder] = retracting;
+      else retracted[active_extruder] = retracting;
+  #else
+      retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
   #endif
 
   /* // debugging

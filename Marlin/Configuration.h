@@ -200,6 +200,11 @@
  *
  * for cooling multi extruder with separate fans 
  * see on Configuration_adv.h and look for "Part-Cooling"
+ *
+ * project   : https://www.thingiverse.com/thing:3080893
+ * movements : https://youtu.be/0xCEiG9VS3k
+ *             https://youtu.be/Bqbcs0CU2FE
+ * 
  */
 //#define PARKING_EXTRUDER
 /**
@@ -2044,9 +2049,6 @@
 //=============================================================================
 
 // @section extras
-// Auto fan selection for multi extruder multi fan solution
-#define AUTO_FILAMENT_FAN_SELECTION
-
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN
 

@@ -918,10 +918,6 @@ void setup() {
   #if ENABLED(PARKING_EXTRUDER)
     pe_magnet_init();
   #endif
-  
-  #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
-    mpe_para_init();
-  #endif
 
   #if ENABLED(POWER_LOSS_RECOVERY)
     recovery.check();

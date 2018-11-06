@@ -53,29 +53,31 @@
   #if ENABLED(PARKING_EXTRUDER_SOLENOIDS_INVERT)
     #define PE_MAGNET_ON_STATE !PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE
   #else
-    #define PE_MAGNET_ON_STATE PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE
+    #define PE_MAGNET_ON_STATE  PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE
   #endif
 
   void pe_set_magnet(const uint8_t extruder_num, const uint8_t state);
 
-  inline void pe_activate_magnet(const uint8_t extruder_num) { pe_set_magnet(extruder_num, PE_MAGNET_ON_STATE); }
+  inline void pe_activate_magnet(const uint8_t extruder_num)   { pe_set_magnet(extruder_num,  PE_MAGNET_ON_STATE); }
   inline void pe_deactivate_magnet(const uint8_t extruder_num) { pe_set_magnet(extruder_num, !PE_MAGNET_ON_STATE); }
 
   void pe_magnet_init();
 
-#endif // PARKING_EXTRUDER
+#elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
 
-#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  extern float parkingposx[2] ,           // M951 R L
-               parkinggrabdistance ,      // M951 G
-               parkingslowspeed,          // M951 N
-               parkinghighspeed ,         // M951 H
-               parkingtraveldistance;     // M951 D
-				  
-  extern float compensationmultiplier;    // M951 C
+  typedef struct MPESettings {
+    float parking_xpos[2],         // M951 L R
+          grab_distance,        // M951 G
+          slow_feedrate,        // M951 N
+          fast_feedrate,        // M951 H
+          travel_distance,      // M951 D
+          compensation_factor;  // M951 C
+  } mpe_settings_t;
 
-  void mpe_para_init();
-  void mpe_para_report();
+  extern mpe_settings_t mpe_settings;
+
+  void mpe_settings_init();
+
 #endif
 
 #if ENABLED(SINGLENOZZLE)

@@ -193,6 +193,30 @@
 
 /**
  * Two separate X-carriages with extruders that connect to a moving part
+ * via a magnetic docking mechanism. only with movements and no solenoid
+ *
+ * project   : https://www.thingiverse.com/thing:3080893
+ * movements : https://youtu.be/0xCEiG9VS3k
+ *             https://youtu.be/Bqbcs0CU2FE
+ * 
+ */
+#define MAGNETIC_PARKING_EXTRUDER
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+  #define PARKING_EXTRUDER_PARKING_X { 32, 138 }            // X positions for parking the extruders
+  #define PARKING_EXTRUDER_GRAB_DISTANCE 32                 // mm to move beyond the parking point to grab the extruder
+  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
+  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 300          // Speed for travel before last diastance point mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 75           // Speed for last diastnance travel to park and couple mm/s
+  #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10      // Last distance point mm
+  #define MAGNETIC_PARKING_EXTRUDER_COMPENSATION 0          // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
+  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                      // Z-offsets of the two hotends. The first must be 0.
+  #define MPE_Z_OFFSET                                      // If set, the Tool related Offset will be subtractes on every Z axis move (otherwise M218 will have no effect)
+  // #define MPE_YX_OFFSET                                  // If set, the Tool related Offsets will be subtractes on every X and Y axis move (otherwise M218 will have no effect)
+  #define AUTO_FILAMENT_FAN_SELECTION                       // Auto fan selection for multi extruder multi fan solution (M106 & M107 Option for easy usage of board related multiple PWM Fan outs)
+#endif
+
+/**
+ * Two separate X-carriages with extruders that connect to a moving part
  * via a magnetic docking mechanism. Requires SOL1_PIN and SOL2_PIN.
  */
 //#define PARKING_EXTRUDER

@@ -146,7 +146,7 @@
   #include "feature/fanmux.h"
 #endif
 
-#if DO_SWITCH_EXTRUDER || ENABLED(SWITCHING_NOZZLE) || ENABLED(PARKING_EXTRUDER)
+#if DO_SWITCH_EXTRUDER || ENABLED(SWITCHING_NOZZLE) || ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
   #include "module/tool_change.h"
 #endif
 
@@ -933,6 +933,10 @@ void setup() {
 
   #if ENABLED(PARKING_EXTRUDER)
     pe_magnet_init();
+  #endif
+  
+  #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+    mpe_para_init();
   #endif
 
   #if ENABLED(POWER_LOSS_RECOVERY)

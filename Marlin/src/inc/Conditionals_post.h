@@ -405,7 +405,6 @@
 /**
  * Default hotend offsets, if not defined
  */
-#define HAS_HOTEND_OFFSET_Z (HOTENDS > 1 && (ENABLED(DUAL_X_CARRIAGE) || ENABLED(SWITCHING_NOZZLE) || ENABLED(PARKING_EXTRUDER)|| ENABLED(MAGNETIC_PARKING_EXTRUDER)))
 #if HOTENDS > 1
   #ifndef HOTEND_OFFSET_X
     #define HOTEND_OFFSET_X { 0 } // X offsets for each extruder

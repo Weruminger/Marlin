@@ -193,16 +193,44 @@
 
 /**
  * Two separate X-carriages with extruders that connect to a moving part
- * via a magnetic docking mechanism. Requires SOL1_PIN and SOL2_PIN.
+ * via a solenoid docking mechanism. Requires SOL1_PIN and SOL2_PIN.
  */
 //#define PARKING_EXTRUDER
-#if ENABLED(PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
-  #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
-  #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // Delay (ms) for magnetic field. No delay if 0 or not defined.
+
+/**
+ * Two separate X-carriages with extruders that connect to a moving part
+ * via a magnetic docking mechanism using movements and no solenoid
+ *
+ * project   : https://www.thingiverse.com/thing:3080893
+ * movements : https://youtu.be/0xCEiG9VS3k
+ *             https://youtu.be/Bqbcs0CU2FE
+ */
+//#define MAGNETIC_PARKING_EXTRUDER
+
+#if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
+
   #define PARKING_EXTRUDER_PARKING_X { -78, 184 }     // X positions for parking the extruders
   #define PARKING_EXTRUDER_GRAB_DISTANCE 1            // mm to move beyond the parking point to grab the extruder
-  //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
+
+  #if ENABLED(PARKING_EXTRUDER)
+
+    #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
+    #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
+    #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // (ms) Delay for magnetic field. No delay if 0 or not defined.
+    //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
+
+  #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
+
+    #define MPE_FAST_SPEED      9000      // (mm/m) Speed for travel before last distance point
+    #define MPE_SLOW_SPEED      4500      // (mm/m) Speed for last distance travel to park and couple
+    #define MPE_TRAVEL_DISTANCE   10      // (mm) Last distance point
+    #define MPE_COMPENSATION       0      // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
+    #define MPE_Z_OFFSET                  // If set, the tool-relative Z offset are subtracted on all Z axis moves (otherwise M218 will have no effect)
+    //#define MPE_YX_OFFSET               // If set, the tool-relative XY offsets are subtracted on all X and Y axis moves (otherwise M218 will have no effect)
+    #define AUTO_FILAMENT_FAN_SELECTION   // Auto fan selection in M106/M107 for multi-extruder multi-fan solution
+
+  #endif
+
 #endif
 
 /**

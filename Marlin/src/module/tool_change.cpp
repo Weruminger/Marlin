@@ -42,11 +42,8 @@
   #endif
 #endif
 
-#if ENABLED(PARKING_EXTRUDER) && PARKING_EXTRUDER_SOLENOIDS_DELAY > 0
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER) || (ENABLED(PARKING_EXTRUDER) && PARKING_EXTRUDER_SOLENOIDS_DELAY > 0)
   #include "../gcode/gcode.h" // for dwell()
-#endif
-#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
- #include "../gcode/gcode.h" // for dwell()
 #endif
 
 #if ENABLED(SWITCHING_EXTRUDER) || ENABLED(SWITCHING_NOZZLE) || ENABLED(SWITCHING_TOOLHEAD)
@@ -110,154 +107,149 @@
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
 
-   float parkingposx[2] ,           // M951 R L
-               parkinggrabdistance ,      // M951 G
-               parkingslowspeed,          // M951 N
-               parkinghighspeed ,         // M951 H
-               parkingtraveldistance;     // M951 D
-				  
-  float compensationmultiplier;    // M951 C
+  inline void magnetic_parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move/*=false*/) {
 
+    const float oldx = current_position[X_AXIS],
+                grabpos = mpe_settings.parking_xpos[tmp_extruder] + (tmp_extruder ? mpe_settings.grab_distance : -mpe_settings.grab_distance),
+                offsetcompensation =
+                  #if HAS_HOTEND_OFFSET
+                    hotend_offset[X_AXIS][active_extruder] * mpe_settings.compensation_factor
+                  #else
+                    0
+                  #endif
+              ;
 
- inline void magnetic_parking_extruder_tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool no_move/*=false*/) {
-	  
-     #if HAS_HOTEND_OFFSET
- 	  const float backupposition = current_position[X_AXIS],
-                  midpos = (parkingposx[0] + parkingposx[1]) * 0.5,
-                  grabpos = parkingposx[tmp_extruder] + (tmp_extruder == 0 ? -(parkinggrabdistance) : parkinggrabdistance),
-				  offsetcompensation =  hotend_offset[X_AXIS][active_extruder] * compensationmultiplier;
-      #else
- 	  const float backupposition = current_position[X_AXIS],
-                  midpos = (parkingposx[0] + parkingposx[1]) * 0.5,
-                  grabpos = parkingposx[tmp_extruder] + (tmp_extruder == 0 ? -(parkinggrabdistance) : parkinggrabdistance),
-				  offsetcompensation = 0.0 ;
-      #endif
-	  if (axis_unhomed_error(true,false,false))
-	  {
-		  SERIAL_ECHOLNPGM("No parking kinematic on tool change without x homing");
-		  return;
-	  }
-	  /**
-       *  Steps:
-       *    1. Raise Z-Axis to give enough clearance
-       *    2. Move high speed to park position of new extruder
-       *    3. Move to couple position of new extruder (this also discouple the old extruder)
-       *    4. Move to park position of new extruder
-       *    5. Move high speed to approach park position of old extruder
-       *    6. Move to park position of old extruder
-       *    7. Move to starting position incl. offset of new extruder
-       *    8. Lower Z-Axis
-	  **/
-      // STEP 1
-	  
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
+    if (axis_unhomed_error(true, false, false)) return;
+
+    /**
+     * Steps:
+     *   1. Raise Z-Axis to give enough clearance
+     *   2. Move high speed to park position of new extruder
+     *   3. Move to couple position of new extruder (this also discouple the old extruder)
+     *   4. Move to park position of new extruder
+     *   5. Move high speed to approach park position of old extruder
+     *   6. Move to park position of old extruder
+     *   7. Move to starting position incl. offset of new extruder
+     *   8. Lower Z-Axis
+     */
+
+    // STEP 1
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
         SERIAL_ECHOLNPGM("Starting Autopark");
-        if (DEBUGGING(LEVELING)) DEBUG_POS("current position:", current_position);
-      #endif
-      current_position[Z_AXIS] += TOOLCHANGE_ZRAISE;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPGM("(1) Raise Z-Axis ");
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving to Raised Z-Position", current_position);
-      #endif
-      planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Z_AXIS], active_extruder);
-      planner.synchronize();
-
-      // STEP 2
-      current_position[X_AXIS] = parkingposx[tmp_extruder] + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(2) approaching new extruder ", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving to new extruder ParkPos", current_position);
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED, tmp_extruder);
-      planner.synchronize();
- 
-      // STEP 3
-      current_position[X_AXIS] = grabpos + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(3) couple new extruder ", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving to new extruder GrabPos", current_position);
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED, tmp_extruder);
-      planner.synchronize();
-	  // Delay before moviin tool, to grant magnetic coupling
-	  gcode.dwell(150);
-	  // STEP 4
-      current_position[X_AXIS] = parkingposx[tmp_extruder] + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(4) pick up new extruder ", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving back to new extruder ParkPos", current_position);
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED, tmp_extruder);
-      planner.synchronize();
-      // STEP 5
-      current_position[X_AXIS] = parkingposx[active_extruder] + (active_extruder == 0 ? MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE : -MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE) + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(5) approaching old extruder ParkPos", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving clodse to old extruder ParkPos", current_position);
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED, tmp_extruder);
-      planner.synchronize();
-      // STEP 6
-      current_position[X_AXIS] = parkingposx[active_extruder] + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(6) Park old extruder", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Moving to old extruder ParkPos", current_position);
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED, tmp_extruder);
-      planner.synchronize();
-      // STEP 7
-      current_position[X_AXIS] = backupposition + offsetcompensation;
-      #if ENABLED(DEBUG_LEVELING_FEATURE)
-        SERIAL_ECHOLNPAIR("(7) move to starting position", tmp_extruder);
-        if (DEBUGGING(LEVELING)) DEBUG_POS("Move to starting position", current_position);
-        SERIAL_ECHOLNPGM("Autopark done.");
-      #endif
-      planner.buffer_line(current_position, MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED, tmp_extruder);
-      planner.synchronize();
-	
-    #if HAS_HOTEND_OFFSET	
-    current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+        DEBUG_POS("current position:", current_position);
+      }
     #endif
-	
+
+    current_position[Z_AXIS] += TOOLCHANGE_ZRAISE;
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPGM("(1) Raise Z-Axis ");
+        DEBUG_POS("Moving to Raised Z-Position", current_position);
+      }
+    #endif
+
+    planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Z_AXIS], active_extruder);
+    planner.synchronize();
+
+    // STEP 2
+
+    current_position[X_AXIS] = mpe_settings.parking_xpos[tmp_extruder] + offsetcompensation;
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(2) approaching new extruder ", tmp_extruder);
+        DEBUG_POS("Moving to new extruder ParkPos", current_position);
+      }
+    #endif
+
+    planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
+    planner.synchronize();
+
+    // STEP 3
+
+    current_position[X_AXIS] = grabpos + offsetcompensation;
+  
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(3) couple new extruder ", tmp_extruder);
+        DEBUG_POS("Moving to new extruder GrabPos", current_position);
+      }
+    #endif
+  
+    planner.buffer_line(current_position, mpe_settings.slow_feedrate, tmp_extruder);
+    planner.synchronize();
+  
+    // Delay before moving tool, to allow magnetic coupling
+    gcode.dwell(150);
+  
+    // STEP 4
+
+    current_position[X_AXIS] = mpe_settings.parking_xpos[tmp_extruder] + offsetcompensation;
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(4) pick up new extruder ", tmp_extruder);
+        DEBUG_POS("Moving back to new extruder ParkPos", current_position);
+      }
+    #endif
+
+    planner.buffer_line(current_position, mpe_settings.slow_feedrate, tmp_extruder);
+    planner.synchronize();
+
+    // STEP 5
+
+    current_position[X_AXIS] = mpe_settings.parking_xpos[active_extruder] + (active_extruder == 0 ? MPE_TRAVEL_DISTANCE : -MPE_TRAVEL_DISTANCE) + offsetcompensation;
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(5) approaching old extruder ParkPos", tmp_extruder);
+        DEBUG_POS("Moving clodse to old extruder ParkPos", current_position);
+      }
+    #endif
+
+    planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
+    planner.synchronize();
+
+    // STEP 6
+
+    current_position[X_AXIS] = mpe_settings.parking_xpos[active_extruder] + offsetcompensation;
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(6) Park old extruder", tmp_extruder);
+        DEBUG_POS("Moving to old extruder ParkPos", current_position);
+      }
+    #endif
+
+    planner.buffer_line(current_position, mpe_settings.slow_feedrate, tmp_extruder);
+    planner.synchronize();
+
+    // STEP 7
+
+    current_position[X_AXIS] = oldx + offsetcompensation;
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) {
+        SERIAL_ECHOLNPAIR("(7) move to starting position", tmp_extruder);
+        DEBUG_POS("Move to starting position", current_position);
+        SERIAL_ECHOLNPGM("Autopark done.");
+      }
+    #endif
+
+    planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
+    planner.synchronize();
+
+    #if HAS_HOTEND_OFFSET
+      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+    #endif
+
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) DEBUG_POS("Applying Z-offset", current_position);
     #endif
   }
-  
-  void mpe_para_init()
-  {
-	  
-	SERIAL_ECHOLNPGM("executing mpe_para_init"); 
-	
-    float dummy[2] = PARKING_EXTRUDER_PARKING_X;
-    parkingposx[0]           = dummy[0];                 // M951 R L
-    parkingposx[1]           = dummy[1];                 // M951 R L
-    parkinggrabdistance   = PARKING_EXTRUDER_GRAB_DISTANCE;             // M951 G
-    parkingslowspeed      = MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED;       // M951 N
-    parkinghighspeed      = MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED;       // M951 H
-    parkingtraveldistance = MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE;  // M951 D
-				  
-    compensationmultiplier = MAGNETIC_PARKING_EXTRUDER_COMPENSATION;    // M951 C
- 
-    mpe_para_report();
 
-  }
-  
-  void mpe_para_report()
-  {
-    SERIAL_ECHO_START();
-    SERIAL_ECHOPGM("Parking Extruder Values set by M951");
-    SERIAL_ECHOLNPAIR("L: Left parking  :", parkingposx[0]);
-    SERIAL_ECHOLNPAIR("R: Right parking :", parkingposx[1]);
-    SERIAL_ECHOLNPAIR("G: Grab Offset   :", parkinggrabdistance);
-    SERIAL_ECHOLNPAIR("N: Normal speed  :", parkingslowspeed);
-    SERIAL_ECHOLNPAIR("H: High speed    :", parkinghighspeed);
-    SERIAL_ECHOLNPAIR("D: Distance trav.:", parkingtraveldistance);
-    SERIAL_ECHOLNPAIR("C: Compenstion   :", compensationmultiplier);
-  }
-#endif // MAGNETIC_PARKING_EXTRUDER
-
-#if ENABLED(PARKING_EXTRUDER)
+#elif ENABLED(PARKING_EXTRUDER)
 
   void pe_magnet_init() {
     for (uint8_t n = 0; n <= 1; ++n)
@@ -281,7 +273,7 @@
   inline void parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move) {
     if (!no_move) {
 
-      constexpr float parkingposx[] = PARKING_EXTRUDER_PARKING_X;
+      constexpr float parkingxpos[2] = PARKING_EXTRUDER_PARKING_X;
 
       #if HAS_HOTEND_OFFSET
         const float x_offset = hotend_offset[X_AXIS][active_extruder];
@@ -289,8 +281,8 @@
         constexpr float x_offset = 0;
       #endif
 
-      const float midpos = (parkingposx[0] + parkingposx[1]) * 0.5 + x_offset,
-                  grabpos = parkingposx[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
+      const float midpos = (parkingxpos[0] + parkingxpos[1]) * 0.5 + x_offset,
+                  grabpos = parkingxpos[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
 
       /**
        * 1. Raise Z-Axis to give enough clearance
@@ -319,7 +311,7 @@
 
       // STEP 2
 
-      current_position[X_AXIS] = parkingposx[active_extruder] + x_offset;
+      current_position[X_AXIS] = parkingxpos[active_extruder] + x_offset;
 
       #if ENABLED(DEBUG_LEVELING_FEATURE)
         if (DEBUGGING(LEVELING)) {
@@ -778,7 +770,7 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
       #elif ENABLED(PARKING_EXTRUDER) // Dual Parking extruder
         parking_extruder_tool_change(tmp_extruder, no_move);
       #elif ENABLED(MAGNETIC_PARKING_EXTRUDER) // Magnetic Parking extruder
-        magnetic_parking_extruder_tool_change(tmp_extruder,70.0, no_move);
+        magnetic_parking_extruder_tool_change(tmp_extruder, no_move);
       #elif ENABLED(SWITCHING_TOOLHEAD) // Switching Toolhead
         switching_toolhead_tool_change(tmp_extruder, fr_mm_s, no_move);
       #elif ENABLED(SWITCHING_NOZZLE)

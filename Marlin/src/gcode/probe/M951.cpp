@@ -20,49 +20,47 @@
  *
  */
 
- 
-#include "../../inc/MarlinConfig.h"
+#include "../../inc/MarlinConfigPre.h"
 
-#if ENABLED(MAGNETIC_PARKING_EXTRUDER) 
+#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
 
 #include "../gcode.h"
 #include "../../module/tool_change.h"
 
-void GcodeSuite::M951() {
+mpe_settings_t mpe_settings;
 
-  if (parser.seenval('L')) {
-    const float value = parser.value_linear_units();
-	parkingposx[0]=value;
-  }
-  if (parser.seenval('R')) {
-    const float value = parser.value_linear_units();
-	parkingposx[1]=value;
-  }
-  if (parser.seenval('G')) {
-    const float value = parser.value_linear_units();
-	parkinggrabdistance=value;
-  }
-  if (parser.seenval('N')) {
-    const float value = parser.value_linear_units();
-	parkingslowspeed=value;
-  }
-  if (parser.seenval('H')) {
-    const float value = parser.value_linear_units();
-	parkinghighspeed=value;
-  }
-  if (parser.seenval('D')) {
-    const float value = parser.value_linear_units();
-	parkingtraveldistance=value;
-  }
-  if (parser.seenval('C')) {
-    const float value = parser.value_float();
-	compensationmultiplier=value;
-  }
-  mpe_para_report();  
-  return;
-
-  SERIAL_ECHO_START();
-  SERIAL_ECHOPGM("Parking Extruder not defined");
-
+inline void mpe_settings_report() {
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPGM("Magnetic Parking Extruder");
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("L: Left parking  :", mpe_settings.parking_xpos[0]);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("R: Right parking :", mpe_settings.parking_xpos[1]);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("G: Grab Offset   :", mpe_settings.grab_distance);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("N: Normal speed  :", long(MMS_TO_MMM(mpe_settings.slow_feedrate)));
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("H: High speed    :", long(MMS_TO_MMM(mpe_settings.fast_feedrate)));
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("D: Distance trav.:", mpe_settings.travel_distance);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("C: Compenstion   :", mpe_settings.compensation_factor);
 }
-#endif 
+
+void mpe_settings_init() {
+  constexpr float pex[2] = PARKING_EXTRUDER_PARKING_X;
+  mpe_settings.parking_xpos[0]      = pex[0];                         // M951 L
+  mpe_settings.parking_xpos[1]      = pex[1];                         // M951 R
+  mpe_settings.grab_distance        = PARKING_EXTRUDER_GRAB_DISTANCE; // M951 G
+  mpe_settings.slow_feedrate        = MMM_TO_MMS(MPE_SLOW_SPEED);     // M951 N
+  mpe_settings.fast_feedrate        = MMM_TO_MMS(MPE_FAST_SPEED);     // M951 H
+  mpe_settings.travel_distance      = MPE_TRAVEL_DISTANCE;            // M951 D
+  mpe_settings.compensation_factor  = MPE_COMPENSATION;               // M951 C
+  mpe_settings_report();
+}
+
+void GcodeSuite::M951() {
+  if (parser.seenval('L')) mpe_settings.parking_xpos[0]     = parser.value_linear_units();
+  if (parser.seenval('R')) mpe_settings.parking_xpos[1]     = parser.value_linear_units();
+  if (parser.seenval('G')) mpe_settings.grab_distance       = parser.value_linear_units();
+  if (parser.seenval('N')) mpe_settings.slow_feedrate       = MMM_TO_MMS(parser.value_linear_units());
+  if (parser.seenval('H')) mpe_settings.fast_feedrate       = MMM_TO_MMS(parser.value_linear_units());
+  if (parser.seenval('D')) mpe_settings.travel_distance     = parser.value_linear_units();
+  if (parser.seenval('C')) mpe_settings.compensation_factor = parser.value_float();
+  if (!parser.seen("CDGHLNR")) mpe_settings_report();
+}
+
+#endif // MAGNETIC_PARKING_EXTRUDER

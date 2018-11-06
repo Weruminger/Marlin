@@ -21,7 +21,6 @@
  */
 
 #include "../../inc/MarlinConfig.h"
-#include "../../module/planner.h"
 
 #if FAN_COUNT > 0
 
@@ -31,6 +30,10 @@
 #if ENABLED(SINGLENOZZLE)
   #include "../../module/motion.h"
   #include "../../module/tool_change.h"
+#endif
+
+#if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+  #include "../../module/planner.h"
 #endif
 
 /**
@@ -48,17 +51,12 @@
  */
 void GcodeSuite::M106() {
 
-  #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
-    const bool autofanselect = true; 
-  #else
-    const bool autofanselect = false; 	  
-  #endif
+  const uint8_t p = parser.byteval('P'
+    #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+      , active_extruder
+    #endif
+  );
 
-  uint8_t p = parser.byteval('P');
-  if (autofanselect && p<=0 )
-  {
-	  p = active_extruder;
-  }
   const uint16_t s = parser.ushortval('S', 255);
 
   #if ENABLED(SINGLENOZZLE)
@@ -95,17 +93,13 @@ void GcodeSuite::M106() {
  * M107: Fan Off
  */
 void GcodeSuite::M107() {
-  #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
-    const bool autofanselect = true; 
-  #else
-    const bool autofanselect = false; 	  
-  #endif
 
-  uint8_t p = parser.byteval('P');
-  if (autofanselect && p<=0 )
-  {
-	  p = active_extruder;
-  }
+  const uint8_t p = parser.byteval('P'
+    #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+      , active_extruder
+    #endif
+  );
+
   #if ENABLED(SINGLENOZZLE)
     if (p != active_extruder) {
       if (p < EXTRUDERS) singlenozzle_fan_speed[p] = 0;

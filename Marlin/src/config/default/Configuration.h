@@ -193,40 +193,44 @@
 
 /**
  * Two separate X-carriages with extruders that connect to a moving part
- * via a magnetic docking mechanism. only with movements and no solenoid
+ * via a solenoid docking mechanism. Requires SOL1_PIN and SOL2_PIN.
+ */
+//#define PARKING_EXTRUDER
+
+/**
+ * Two separate X-carriages with extruders that connect to a moving part
+ * via a magnetic docking mechanism using movements and no solenoid
  *
  * project   : https://www.thingiverse.com/thing:3080893
  * movements : https://youtu.be/0xCEiG9VS3k
  *             https://youtu.be/Bqbcs0CU2FE
- * 
  */
-#define MAGNETIC_PARKING_EXTRUDER
-#if ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_PARKING_X { 32, 138 }            // X positions for parking the extruders
-  #define PARKING_EXTRUDER_GRAB_DISTANCE 32                 // mm to move beyond the parking point to grab the extruder
-  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
-  #define MAGNETIC_PARKING_EXTRUDER_HIGH_SPEED 300          // Speed for travel before last diastance point mm/s
-  #define MAGNETIC_PARKING_EXTRUDER_SLOW_SPEED 75           // Speed for last diastnance travel to park and couple mm/s
-  #define MAGNETIC_PARKING_EXTRUDER_TRAVEL_DISTANCE 10      // Last distance point mm
-  #define MAGNETIC_PARKING_EXTRUDER_COMPENSATION 0          // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
-  #define HOTEND_OFFSET_Z { 0.0, 0.2 }                      // Z-offsets of the two hotends. The first must be 0.
-  #define MPE_Z_OFFSET                                      // If set, the Tool related Offset will be subtractes on every Z axis move (otherwise M218 will have no effect)
-  // #define MPE_YX_OFFSET                                  // If set, the Tool related Offsets will be subtractes on every X and Y axis move (otherwise M218 will have no effect)
-  #define AUTO_FILAMENT_FAN_SELECTION                       // Auto fan selection for multi extruder multi fan solution (M106 & M107 Option for easy usage of board related multiple PWM Fan outs)
-#endif
+//#define MAGNETIC_PARKING_EXTRUDER
 
-/**
- * Two separate X-carriages with extruders that connect to a moving part
- * via a magnetic docking mechanism. Requires SOL1_PIN and SOL2_PIN.
- */
-//#define PARKING_EXTRUDER
-#if ENABLED(PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
-  #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
-  #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // Delay (ms) for magnetic field. No delay if 0 or not defined.
+#if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
+
   #define PARKING_EXTRUDER_PARKING_X { -78, 184 }     // X positions for parking the extruders
   #define PARKING_EXTRUDER_GRAB_DISTANCE 1            // mm to move beyond the parking point to grab the extruder
-  //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
+
+  #if ENABLED(PARKING_EXTRUDER)
+
+    #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
+    #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
+    #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // (ms) Delay for magnetic field. No delay if 0 or not defined.
+    //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
+
+  #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
+
+    #define MPE_FAST_SPEED      9000      // (mm/m) Speed for travel before last distance point
+    #define MPE_SLOW_SPEED      4500      // (mm/m) Speed for last distance travel to park and couple
+    #define MPE_TRAVEL_DISTANCE   10      // (mm) Last distance point
+    #define MPE_COMPENSATION       0      // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
+    #define MPE_Z_OFFSET                  // If set, the tool-relative Z offset are subtracted on all Z axis moves (otherwise M218 will have no effect)
+    //#define MPE_YX_OFFSET               // If set, the tool-relative XY offsets are subtracted on all X and Y axis moves (otherwise M218 will have no effect)
+    #define AUTO_FILAMENT_FAN_SELECTION   // Auto fan selection in M106/M107 for multi-extruder multi-fan solution
+
+  #endif
+
 #endif
 
 /**

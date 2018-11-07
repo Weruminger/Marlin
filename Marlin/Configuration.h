@@ -225,8 +225,6 @@
     #define MPE_SLOW_SPEED      4500      // (mm/m) Speed for last distance travel to park and couple
     #define MPE_TRAVEL_DISTANCE   10      // (mm) Last distance point
     #define MPE_COMPENSATION       0      // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
-    #define MPE_Z_OFFSET                  // If set, the tool-relative Z offset are subtracted on all Z axis moves (otherwise M218 will have no effect)
-    //#define MPE_YX_OFFSET               // If set, the tool-relative XY offsets are subtracted on all X and Y axis moves (otherwise M218 will have no effect)
     #define AUTO_FILAMENT_FAN_SELECTION   // Auto fan selection in M106/M107 for multi-extruder multi-fan solution
 
   #endif

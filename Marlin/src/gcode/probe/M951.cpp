@@ -44,8 +44,8 @@ void mpe_settings_init() {
   constexpr float pex[2] = PARKING_EXTRUDER_PARKING_X;
   mpe_settings.parking_xpos[0]      = pex[0];                         // M951 L
   mpe_settings.parking_xpos[1]      = pex[1];                         // M951 R
-  mpe_settings.grab_distance        = PARKING_EXTRUDER_GRAB_DISTANCE; // M951 G
-  mpe_settings.slow_feedrate        = MMM_TO_MMS(MPE_SLOW_SPEED);     // M951 N
+  mpe_settings.grab_distance        = PARKING_EXTRUDER_GRAB_DISTANCE; // M951 I
+  mpe_settings.slow_feedrate        = MMM_TO_MMS(MPE_SLOW_SPEED);     // M951 J
   mpe_settings.fast_feedrate        = MMM_TO_MMS(MPE_FAST_SPEED);     // M951 H
   mpe_settings.travel_distance      = MPE_TRAVEL_DISTANCE;            // M951 D
   mpe_settings.compensation_factor  = MPE_COMPENSATION;               // M951 C

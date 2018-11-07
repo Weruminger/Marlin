@@ -73,13 +73,13 @@ void GcodeSuite::G0_G1(
 		#if HAS_HOTEND_OFFSET
 			#ifdef MPE_Z_OFFSET & HAS_HOTEND_OFFSET
 			if ( active_extruder > 0 ){
-				destination[Z_AXIS] -= hotend_offset[Z_AXIS][active_extruder];
+				destination[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder];
 			}		
 			#endif
 			#ifdef MPE_XY_OFFSET & HAS_HOTEND_OFFSET
 			if ( active_extruder > 0 ){
-				destination[X_AXIS] -= hotend_offset[X_AXIS][active_extruder];
-				destination[Y_AXIS] -= hotend_offset[Y_AXIS][active_extruder];
+				destination[X_AXIS] += hotend_offset[X_AXIS][active_extruder];
+				destination[Y_AXIS] += hotend_offset[Y_AXIS][active_extruder];
 			}		
 			#endif
 		#endif

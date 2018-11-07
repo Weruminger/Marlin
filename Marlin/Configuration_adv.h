@@ -258,6 +258,20 @@
 #define FANMUX2_PIN -1
 
 /**
+ * Part-Cooling Fan M106/M107 Auto Selection
+ *
+ * This feature allows you to set the P value for M106/M107 
+ * automatically to the currend used extruder index
+ * e.g. on RADDS board are 2 PWM Controlled fan outs 
+ *      using a Dual Extruder solution,
+ *      at M106/M107 the P-value will be automatically set 
+ *      to the current Extruder index and the Extruder related
+ *      blower will cool the model. 
+ */
+
+// #define AUTO_FILAMENT_FAN_SELECTION 
+
+/**
  * M355 Case Light on-off / brightness
  */
 //#define CASE_LIGHT_ENABLE

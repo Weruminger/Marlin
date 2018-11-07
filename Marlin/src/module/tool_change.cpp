@@ -127,7 +127,7 @@
      *   4. Move to park position of new extruder
      *   5. Move high speed to approach park position of old extruder
      *   6. Move to park position of old extruder
-     *   7. Move to starting position incl. offset of new extruder
+     *   7. Move to starting position
      *   8. Lower Z-Axis
      */
 
@@ -225,7 +225,7 @@
 
     // STEP 7
 
-    current_position[X_AXIS] = oldx + offsetcompensation;
+    current_position[X_AXIS] = oldx;
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) {
@@ -237,10 +237,6 @@
 
     planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
     planner.synchronize();
-
-    #if HAS_HOTEND_OFFSET
-      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
-    #endif
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) DEBUG_POS("Applying Z-offset", current_position);
@@ -392,10 +388,6 @@
         pe_activate_magnet(active_extruder); // Just save power for inverted magnets
       #endif
     }
-
-    #if HAS_HOTEND_OFFSET
-      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
-    #endif
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) DEBUG_POS("Applying Z-offset", current_position);

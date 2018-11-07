@@ -130,39 +130,18 @@
     if (axis_unhomed_error(true, false, false)) return;
 
     /**
+	 * Z Lift and Nozzle Offset shift ar defined in caller method to work equal with any Multi Hotend realization
+	 *
      * Steps:
-     *   1. Raise Z-Axis to give enough clearance
-     *   2. Move high speed to park position of new extruder
-     *   3. Move to couple position of new extruder (this also discouple the old extruder)
-     *   4. Move to park position of new extruder
-     *   5. Move high speed to approach park position of old extruder
-     *   6. Move to park position of old extruder
-     *   7. Move to starting position
-     *   8. Lower Z-Axis
+     *   1. Move high speed to park position of new extruder
+     *   2. Move to couple position of new extruder (this also discouple the old extruder)
+     *   3. Move to park position of new extruder
+     *   4. Move high speed to approach park position of old extruder
+     *   5. Move to park position of old extruder
+     *   6. Move to starting position
      */
 
     // STEP 1
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) {
-        SERIAL_ECHOLNPGM("Starting Autopark");
-        DEBUG_POS("current position:", current_position);
-      }
-    #endif
-
-    current_position[Z_AXIS] += TOOLCHANGE_ZRAISE;
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) {
-        SERIAL_ECHOLNPGM("(1) Raise Z-Axis ");
-        DEBUG_POS("Moving to Raised Z-Position", current_position);
-      }
-    #endif
-
-    planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Z_AXIS], active_extruder);
-    planner.synchronize();
-
-    // STEP 2
 
     current_position[X_AXIS] = mpe_settings.parking_xpos[tmp_extruder] + offsetcompensation;
 
@@ -176,7 +155,7 @@
     planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
     planner.synchronize();
 
-    // STEP 3
+    // STEP 2
 
     current_position[X_AXIS] = grabpos + offsetcompensation;
   
@@ -193,7 +172,7 @@
     // Delay before moving tool, to allow magnetic coupling
     gcode.dwell(150);
   
-    // STEP 4
+    // STEP 3
 
     current_position[X_AXIS] = mpe_settings.parking_xpos[tmp_extruder] + offsetcompensation;
     #if ENABLED(DEBUG_LEVELING_FEATURE)
@@ -206,7 +185,7 @@
     planner.buffer_line(current_position, mpe_settings.slow_feedrate, tmp_extruder);
     planner.synchronize();
 
-    // STEP 5
+    // STEP 4
 
     current_position[X_AXIS] = mpe_settings.parking_xpos[active_extruder] + (active_extruder == 0 ? MPE_TRAVEL_DISTANCE : -MPE_TRAVEL_DISTANCE) + offsetcompensation;
     #if ENABLED(DEBUG_LEVELING_FEATURE)
@@ -219,7 +198,7 @@
     planner.buffer_line(current_position, mpe_settings.fast_feedrate, tmp_extruder);
     planner.synchronize();
 
-    // STEP 6
+    // STEP 5
 
     current_position[X_AXIS] = mpe_settings.parking_xpos[active_extruder] + offsetcompensation;
 
@@ -233,7 +212,7 @@
     planner.buffer_line(current_position, mpe_settings.slow_feedrate, tmp_extruder);
     planner.synchronize();
 
-    // STEP 7
+    // STEP 6
 
     current_position[X_AXIS] = oldx;
 
@@ -418,30 +397,15 @@
                 grabxpos = toolheadposx[tmp_extruder];
 
     /**
-     * 1. Raise Z to give enough clearance
-     * 2. Move to switch position of current toolhead
-     * 3. Unlock tool and drop it in the dock
-     * 4. Move to the new toolhead
-     * 5. Grab and lock the new toolhead
-     * 6. Apply the z-offset of the new toolhead
+	 * Z Lift and Nozzle Offset shift ar defined in caller method to work equal with any Multi Hotend realization
+	 *
+     * 1. Move to switch position of current toolhead
+     * 2. Unlock tool and drop it in the dock
+     * 3. Move to the new toolhead
+     * 4. Grab and lock the new toolhead
      */
 
     // STEP 1
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) DEBUG_POS("Starting Toolhead change", current_position);
-    #endif
-
-    current_position[Z_AXIS] += toolchange_settings.z_raise;
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) DEBUG_POS("(1) Raise Z-Axis", current_position);
-    #endif
-
-    planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Z_AXIS], active_extruder);
-    planner.synchronize();
-
-    // STEP 2
 
     current_position[X_AXIS] = placexpos;
 
@@ -464,7 +428,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder);
     planner.synchronize();
 
-    // STEP 3
+    // STEP 2
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(3) Unlock and Place Toolhead");
@@ -491,7 +455,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder); // move away from docked toolhead
     planner.synchronize();
 
-    // STEP 4
+    // STEP 3
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(4) Move to new toolhead position");
@@ -514,7 +478,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder);
     planner.synchronize();
 
-    // STEP 5
+    // STEP 4
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(5) Grab and lock new toolhead ");
@@ -542,19 +506,6 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder); // move away from docked toolhead
     planner.synchronize();
 
-    // STEP 6
-
-    #if HAS_HOTEND_OFFSET
-      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
-    #endif
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) DEBUG_POS("(6) Apply Z offset", current_position);
-    #endif
-
-    #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("Toolhead change done.");
-    #endif
   }
 
 #endif // SWITCHING_TOOLHEAD

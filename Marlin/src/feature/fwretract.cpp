@@ -98,6 +98,8 @@ void FWRetract::retract(const bool retracting
     , bool swapping /* =false */
   #endif
 ) {
+
+  /*
   // Prevent two retracts or recovers in a row
   if (retracted[active_extruder] == retracting) return;
 
@@ -110,8 +112,32 @@ void FWRetract::retract(const bool retracting
   #else
     constexpr bool swapping = false;
   #endif
+  */
 
-  /* // debugging
+  #if EXTRUDERS > 1
+
+    /* debugging
+      SERIAL_ECHOLNPAIR("retracting ", retracting);
+      SERIAL_ECHOLNPAIR("swapping ", swapping);
+      SERIAL_ECHOLNPAIR("active extruder ", active_extruder);
+      SERIAL_ECHOLNPAIR("retracted_swap ", retracted_swap[active_extruder]);
+      SERIAL_ECHOLNPAIR("Compare ", int(swapping && retracted_swap[active_extruder] == retracting));
+    //*/
+
+    // G11 priority to recover the long retract if activated
+    if (!retracting) swapping = retracted_swap[active_extruder];              //SERIAL_ECHOLN("A DONE");
+    // Allow G10 &  G10 S1 retract/recover only once
+    if (swapping && retracted_swap[active_extruder] == retracting) return;    //SERIAL_ECHOLN("B DONE");
+    if (!swapping && retracted[active_extruder] == retracting) return;        //SERIAL_ECHOLN("C DONE");
+
+  #else
+
+    if (retracted[active_extruder] == retracting) return;
+    const bool swapping = false;
+
+  #endif
+
+  /* debugging
     SERIAL_ECHOLNPAIR("retracting ", retracting);
     SERIAL_ECHOLNPAIR("swapping ", swapping);
     SERIAL_ECHOLNPAIR("active extruder ", active_extruder);
@@ -197,11 +223,13 @@ void FWRetract::retract(const bool retracting
   #endif
 
   feedrate_mm_s = old_feedrate_mm_s;                      // Restore original feedrate
-  retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
 
-  // If swap retract/recover update the retracted_swap flag too
+  // If swap retract/recover update the retracted_swap flag otherwise the retracted flag
   #if EXTRUDERS > 1
-    if (swapping) retracted_swap[active_extruder] = retracting;
+    if (swapping) retracted_swap[active_extruder] = retracting;    // Active extruder now swap retracted / swap recovered
+    else   retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
+  #else
+    retracted[active_extruder] = retracting;                       // Active extruder now retracted / recovered
   #endif
 
   /* // debugging

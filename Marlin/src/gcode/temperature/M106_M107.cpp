@@ -32,6 +32,10 @@
   #include "../../module/tool_change.h"
 #endif
 
+#if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+  #include "../../module/planner.h"
+#endif
+
 /**
  * M106: Set Fan Speed
  *
@@ -46,7 +50,13 @@
  *           3-255 = Set the speed for use with T2
  */
 void GcodeSuite::M106() {
-  const uint8_t p = parser.byteval('P');
+
+  const uint8_t p = parser.byteval('P'
+    #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+      , active_extruder
+    #endif
+  );
+
   const uint16_t s = parser.ushortval('S', 255);
 
   #if ENABLED(SINGLENOZZLE)
@@ -83,7 +93,13 @@ void GcodeSuite::M106() {
  * M107: Fan Off
  */
 void GcodeSuite::M107() {
-  const uint16_t p = parser.ushortval('P');
+
+  const uint8_t p = parser.byteval('P'
+    #if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+      , active_extruder
+    #endif
+  );
+
   #if ENABLED(SINGLENOZZLE)
     if (p != active_extruder) {
       if (p < EXTRUDERS) singlenozzle_fan_speed[p] = 0;

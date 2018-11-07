@@ -105,6 +105,14 @@
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
 
+  float parkingposx[2] ,           // M951 R L
+        parkinggrabdistance ,      // M951 I
+        parkingslowspeed,          // M951 J
+        parkinghighspeed ,         // M951 H
+        parkingtraveldistance,    // M951 D
+        compensationmultiplier;  
+
+
   inline void magnetic_parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move/*=false*/) {
 
     const float oldx = current_position[X_AXIS],

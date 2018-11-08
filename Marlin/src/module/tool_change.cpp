@@ -256,7 +256,7 @@
   inline void parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move) {
     if (!no_move) {
 
-      constexpr float parkingxpos[2] = PARKING_EXTRUDER_PARKING_X;
+      constexpr float parkingposx[] = PARKING_EXTRUDER_PARKING_X;
 
       #if HAS_HOTEND_OFFSET
         const float x_offset = hotend_offset[X_AXIS][active_extruder];
@@ -264,8 +264,8 @@
         constexpr float x_offset = 0;
       #endif
 
-      const float midpos = (parkingxpos[0] + parkingxpos[1]) * 0.5 + x_offset,
-                  grabpos = parkingxpos[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
+      const float midpos = (parkingposx[0] + parkingposx[1]) * 0.5 + x_offset,
+                  grabpos = parkingposx[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
 
       /**
        * 1. Raise Z-Axis to give enough clearance
@@ -294,7 +294,7 @@
 
       // STEP 2
 
-      current_position[X_AXIS] = parkingxpos[active_extruder] + x_offset;
+      current_position[X_AXIS] = parkingposx[active_extruder] + x_offset;
 
       #if ENABLED(DEBUG_LEVELING_FEATURE)
         if (DEBUGGING(LEVELING)) {
@@ -378,6 +378,10 @@
       #endif
     }
 
+    #if HAS_HOTEND_OFFSET
+      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+    #endif
+
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) DEBUG_POS("Applying Z-offset", current_position);
     #endif
@@ -397,15 +401,30 @@
                 grabxpos = toolheadposx[tmp_extruder];
 
     /**
-	 * Z Lift and Nozzle Offset shift ar defined in caller method to work equal with any Multi Hotend realization
-	 *
-     * 1. Move to switch position of current toolhead
-     * 2. Unlock tool and drop it in the dock
-     * 3. Move to the new toolhead
-     * 4. Grab and lock the new toolhead
+     * 1. Raise Z to give enough clearance
+     * 2. Move to switch position of current toolhead
+     * 3. Unlock tool and drop it in the dock
+     * 4. Move to the new toolhead
+     * 5. Grab and lock the new toolhead
+     * 6. Apply the z-offset of the new toolhead
      */
 
     // STEP 1
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) DEBUG_POS("Starting Toolhead change", current_position);
+    #endif
+
+    current_position[Z_AXIS] += toolchange_settings.z_raise;
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) DEBUG_POS("(1) Raise Z-Axis", current_position);
+    #endif
+
+    planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Z_AXIS], active_extruder);
+    planner.synchronize();
+
+    // STEP 2
 
     current_position[X_AXIS] = placexpos;
 
@@ -428,7 +447,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder);
     planner.synchronize();
 
-    // STEP 2
+    // STEP 3
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(3) Unlock and Place Toolhead");
@@ -455,7 +474,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder); // move away from docked toolhead
     planner.synchronize();
 
-    // STEP 3
+    // STEP 4
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(4) Move to new toolhead position");
@@ -478,7 +497,7 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder);
     planner.synchronize();
 
-    // STEP 4
+    // STEP 5
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
       if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("(5) Grab and lock new toolhead ");
@@ -506,6 +525,19 @@
     planner.buffer_line(current_position, planner.settings.max_feedrate_mm_s[Y_AXIS], active_extruder); // move away from docked toolhead
     planner.synchronize();
 
+    // STEP 6
+
+    #if HAS_HOTEND_OFFSET
+      current_position[Z_AXIS] += hotend_offset[Z_AXIS][active_extruder] - hotend_offset[Z_AXIS][tmp_extruder];
+    #endif
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) DEBUG_POS("(6) Apply Z offset", current_position);
+    #endif
+
+    #if ENABLED(DEBUG_LEVELING_FEATURE)
+      if (DEBUGGING(LEVELING)) SERIAL_ECHOLNPGM("Toolhead change done.");
+    #endif
   }
 
 #endif // SWITCHING_TOOLHEAD

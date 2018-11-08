@@ -224,13 +224,12 @@ void FWRetract::retract(const bool retracting
 
   feedrate_mm_s = old_feedrate_mm_s;                      // Restore original feedrate
 
-  // If swap retract/recover update the retracted_swap flag otherwise the retracted flag
+  // If swapping just update retracted_swap
   #if EXTRUDERS > 1
     if (swapping) retracted_swap[active_extruder] = retracting;    // Active extruder now swap retracted / swap recovered
-    else   retracted[active_extruder] = retracting;                // Active extruder now retracted / recovered
-  #else
-    retracted[active_extruder] = retracting;                       // Active extruder now retracted / recovered
+    else
   #endif
+      retracted[active_extruder] = retracting;                     // Active extruder now retracted / recovered
 
   /* // debugging
     SERIAL_ECHOLNPAIR("retracting ", retracting);

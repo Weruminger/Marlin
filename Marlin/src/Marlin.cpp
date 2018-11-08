@@ -931,6 +931,10 @@ void setup() {
     move_nozzle_servo(0);  // Initialize nozzle servo
   #endif
 
+  #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
+    mpe_settings_init();
+  #endif
+
   #if ENABLED(PARKING_EXTRUDER)
     pe_magnet_init();
   #endif

@@ -256,7 +256,7 @@
   inline void parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move) {
     if (!no_move) {
 
-      constexpr float parkingxpos[2] = PARKING_EXTRUDER_PARKING_X;
+      constexpr float parkingposx[2] = PARKING_EXTRUDER_PARKING_X;
 
       #if HAS_HOTEND_OFFSET
         const float x_offset = hotend_offset[X_AXIS][active_extruder];
@@ -264,8 +264,8 @@
         constexpr float x_offset = 0;
       #endif
 
-      const float midpos = (parkingxpos[0] + parkingxpos[1]) * 0.5 + x_offset,
-                  grabpos = parkingxpos[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
+      const float midpos = (parkingposx[0] + parkingposx[1]) * 0.5 + x_offset,
+                  grabpos = parkingposx[tmp_extruder] + (tmp_extruder ? PARKING_EXTRUDER_GRAB_DISTANCE : -(PARKING_EXTRUDER_GRAB_DISTANCE)) + x_offset;
 
       /**
        * 1. Raise Z-Axis to give enough clearance
@@ -294,7 +294,7 @@
 
       // STEP 2
 
-      current_position[X_AXIS] = parkingxpos[active_extruder] + x_offset;
+      current_position[X_AXIS] = parkingposx[active_extruder] + x_offset;
 
       #if ENABLED(DEBUG_LEVELING_FEATURE)
         if (DEBUGGING(LEVELING)) {

@@ -37,11 +37,14 @@ inline void mpe_settings_report() {
   SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("J: Normal speed  :", long(MMS_TO_MMM(mpe_settings.slow_feedrate)));
   SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("H: High speed    :", long(MMS_TO_MMM(mpe_settings.fast_feedrate)));
   SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("D: Distance trav.:", mpe_settings.travel_distance);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("A: Safe Pos X    :", mpe_settings.safe_posiotion[0]);
+  SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("B: Safe Pos Y    :", mpe_settings.safe_posiotion[1]);
   SERIAL_ECHO_START(); SERIAL_ECHOLNPAIR("C: Compenstion   :", mpe_settings.compensation_factor);
 }
 
 void mpe_settings_init() {
-  constexpr float pex[2] = PARKING_EXTRUDER_PARKING_X;
+  constexpr float pex[2] = PARKING_EXTRUDER_PARKING_X,
+                  pes[2] = MPE_SAFEPOSITION;
   mpe_settings.parking_xpos[0]      = pex[0];                         // M951 L
   mpe_settings.parking_xpos[1]      = pex[1];                         // M951 R
   mpe_settings.grab_distance        = PARKING_EXTRUDER_GRAB_DISTANCE; // M951 I
@@ -49,6 +52,8 @@ void mpe_settings_init() {
   mpe_settings.fast_feedrate        = MMM_TO_MMS(MPE_FAST_SPEED);     // M951 H
   mpe_settings.travel_distance      = MPE_TRAVEL_DISTANCE;            // M951 D
   mpe_settings.compensation_factor  = MPE_COMPENSATION;               // M951 C
+  mpe_settings.safe_posiotion[0]    = pes[0];                         // M951 A
+  mpe_settings.safe_posiotion[1]    = pes[1];                         // M951 B
   mpe_settings_report();
 }
 
@@ -59,7 +64,9 @@ void GcodeSuite::M951() {
   if (parser.seenval('J')) mpe_settings.slow_feedrate       = MMM_TO_MMS(parser.value_linear_units());
   if (parser.seenval('H')) mpe_settings.fast_feedrate       = MMM_TO_MMS(parser.value_linear_units());
   if (parser.seenval('D')) mpe_settings.travel_distance     = parser.value_linear_units();
-  if (parser.seenval('C')) mpe_settings.compensation_factor = parser.value_float();
+  if (parser.seenval('A')) mpe_settings.safe_posiotion[0]   = parser.value_linear_units();
+  if (parser.seenval('D')) mpe_settings.safe_posiotion[1]   = parser.value_linear_units();
+  if (parser.seenval('B')) mpe_settings.compensation_factor = parser.value_float();
   if (!parser.seen("CDGHLNR")) mpe_settings_report();
 }
 

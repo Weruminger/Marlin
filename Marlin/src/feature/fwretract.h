@@ -71,12 +71,12 @@ public:
     LOOP_L_N(i, EXTRUDERS) retracted[i] = false;
   }
 
-  static void enable_autoretract(const bool enable) {
-    #if ENABLED(FWRETRACT_AUTORETRACT)
+  #if ENABLED(FWRETRACT_AUTORETRACT)
+    static void enable_autoretract(const bool enable) {
       autoretract_enabled = enable;
       refresh_autoretract();
-    #endif
-  }
+    }
+  #endif
 
   static void retract(const bool retracting
     #if EXTRUDERS > 1

@@ -724,13 +724,6 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
           #if ENABLED(TOOLCHANGE_PARK)
             current_position[X_AXIS] = toolchange_settings.change_point.x;
             current_position[Y_AXIS] = toolchange_settings.change_point.y;
-// RWE MPE_SP           #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
-// RWE MPE_SP             if( mpe_settings.safe_posiotion[0] >= 0 ){
-// RWE MPE_SP               current_position[X_AXIS] = mpe_settings.safe_posiotion[0];
-// RWE MPE_SP             }
-// RWE MPE_SP 
-// RWE MPE_SP               current_position[Y_AXIS] = mpe_settings.safe_posiotion[1];
-// RWE MPE_SP             }
           #endif
           #if HAS_SOFTWARE_ENDSTOPS
             NOMORE(current_position[Z_AXIS], soft_endstop_max[Z_AXIS]);

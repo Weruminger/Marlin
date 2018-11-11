@@ -223,43 +223,22 @@
  * for cooling multi extruder with separate fans 
  * see on Configuration_adv.h and look for "Part-Cooling"
  */
-//#define MAGNETIC_PARKING_EXTRUDER
+#define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
   #define PARKING_EXTRUDER_PARKING_X { 0, 109 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
 // RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
   #if ENABLED(PARKING_EXTRUDER)
-    #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
-    #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
-    #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250        // (ms) Delay for magnetic field. No delay if 0 or not defined.
-    //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
+    #define PARKING_EXTRUDER_SOLENOIDS_INVERT                                    // If enabled, the solenoid is NOT magnetized with applied voltage
+    #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW                           // LOW or HIGH pin signal energizes the coil
+    #define PARKING_EXTRUDER_SOLENOIDS_DELAY 250                                 // (ms) Delay for magnetic field. No delay if 0 or not defined.
+    //#define MANUAL_SOLENOID_CONTROL                                            // Manual control of docking solenoids with M380 S / M381
   #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
-    #define MPE_FAST_SPEED      9000      // (mm/m) Speed for travel before last distance point. M951 H{Fast_Feedspeed}
-    #define MPE_SLOW_SPEED      4500      // (mm/m) Speed for last distance travel to park and couple. M951 J{Slow_Feedspeed}
-    #define MPE_TRAVEL_DISTANCE   10      // (mm) Last distance point. M951 D{Travel_Distance}
-    #define MPE_COMPENSATION       0      // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling. M951 C{Offset_Compensation}
-// RWE MPE_SP    #define MPE_SAFEPOSITION  (100, 180)  // X and Y Position to to move to at tool change to prevent oozing on the model. 
-// RWE MPE_SP                                          // If you use a prime tower, it's recommended to set MPE_SAFEPOSITION to Prime Tower position.
-// RWE MPE_SP                                          // Negative values disables the Safe Position movement. 
-// RWE MPE_SP                                          // The safe position can be setup by M951 A{X-Value} B{Y-Value}
+    #define MPE_FAST_SPEED      9000                                             // (mm/m) Speed for travel before last distance point. M951 H{Fast_Feedspeed}
+    #define MPE_SLOW_SPEED      MPE_FAST_SPEED/2                                 // (mm/m) Speed for last distance travel to park and couple. M951 J{Slow_Feedspeed}
+    #define MPE_TRAVEL_DISTANCE   10                                             // (mm) Last distance point. M951 D{Travel_Distance}
+    #define MPE_COMPENSATION       0                                             // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling. M951 C{Offset_Compensation}
   #endif
-#endif
-
-
-/**
- * Switching Toolhead
- *
- * Support for swappable and dockable toolheads, such as
- * the E3D Tool Changer. Toolheads are locked with a servo.
- */
-//#define SWITCHING_TOOLHEAD
-#if ENABLED(SWITCHING_TOOLHEAD)
-  #define SWITCHING_TOOLHEAD_SERVO_NR       2         // Index of the servo connector
-  #define SWITCHING_TOOLHEAD_SERVO_ANGLES { 0, 180 }  // (degrees) Angles for Lock, Unlock
-  #define SWITCHING_TOOLHEAD_Y_POS        235         // (mm) Y position of the toolhead dock
-  #define SWITCHING_TOOLHEAD_Y_SECURITY    10         // (mm) Security distance Y axis
-  #define SWITCHING_TOOLHEAD_Y_CLEAR       60         // (mm) Minimum distance from dock for unobstructed X axis
-  #define SWITCHING_TOOLHEAD_X_POS        { 215, 0 }  // (mm) X positions for parking the extruders
 #endif
 
 /**
@@ -659,7 +638,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-//#define ENDSTOP_INTERRUPTS_FEATURE
+#define ENDSTOP_INTERRUPTS_FEATURE
 
 /**
  * Endstop Noise Filter
@@ -806,7 +785,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-//#define S_CURVE_ACCELERATION
+#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -1030,7 +1009,7 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 200
+#define X_BED_SIZE 140
 #define Y_BED_SIZE 200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
@@ -1126,7 +1105,7 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT
-#define AUTO_BED_LEVELING_LINEAR
+//#define AUTO_BED_LEVELING_LINEAR
 #define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
@@ -1440,11 +1419,11 @@
  *    P1  Raise the nozzle always to Z-park height.
  *    P2  Raise the nozzle by Z-park amount, limited to Z_MAX_POS.
  */
-// #define NOZZLE_PARK_FEATURE
+#define NOZZLE_PARK_FEATURE
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z }
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
+  #define NOZZLE_PARK_POINT { (X_MAX_POS - 52 ), (Y_MAX_POS - 10), 20 }
   #define NOZZLE_PARK_XY_FEEDRATE 100   // X and Y axes feedrate in mm/s (also used for delta printers Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 5      // Z axis feedrate in mm/s (not used for delta printers)
 #endif
@@ -1487,7 +1466,7 @@
  * Attention: EXPERIMENTAL. G-code arguments may change.
  *
  */
-// #define NOZZLE_CLEAN_FEATURE
+#define NOZZLE_CLEAN_FEATURE
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
   // Default number of pattern repetitions

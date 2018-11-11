@@ -96,11 +96,13 @@
 #endif // DO_SWITCH_EXTRUDER
 
 #if ENABLED(SWITCHING_NOZZLE)
+
   void move_nozzle_servo(const uint8_t e) {
     planner.synchronize();
     MOVE_SERVO(SWITCHING_NOZZLE_SERVO_NR, servo_angles[SWITCHING_NOZZLE_SERVO_NR][e]);
     safe_delay(500);
   }
+
 #endif // SWITCHING_NOZZLE
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
@@ -536,8 +538,10 @@
 
 inline void invalid_extruder_error(const uint8_t e) {
   SERIAL_ECHO_START();
-  SERIAL_CHAR('T'); SERIAL_ECHO(int(e));
-  SERIAL_CHAR(' '); SERIAL_ECHOLNPGM(MSG_INVALID_EXTRUDER);
+  SERIAL_CHAR('T');
+  SERIAL_ECHO_F(e, DEC);
+  SERIAL_CHAR(' ');
+  SERIAL_ECHOLNPGM(MSG_INVALID_EXTRUDER);
 }
 
 #if ENABLED(DUAL_X_CARRIAGE)
@@ -598,8 +602,6 @@ inline void invalid_extruder_error(const uint8_t e) {
         active_extruder_parked = true;
         delayed_move_time = 0;
         break;
-      default:
-        break;
     }
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
@@ -617,28 +619,24 @@ inline void invalid_extruder_error(const uint8_t e) {
  * previous tool out of the way and the new tool into place.
  */
 void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool no_move/*=false*/) {
-  #if ENABLED(MIXING_EXTRUDER)
+  #if EXTRUDERS < 2
 
-    UNUSED(fr_mm_s); UNUSED(no_move);
+    return invalid_extruder_error(tmp_extruder);
 
-    if (tmp_extruder >= MIXING_VIRTUAL_TOOLS)
-      return invalid_extruder_error(tmp_extruder);
+  #elif ENABLED(MIXING_EXTRUDER) && MIXING_VIRTUAL_TOOLS > 1
 
-    #if MIXING_VIRTUAL_TOOLS >  1
+      if (tmp_extruder >= MIXING_VIRTUAL_TOOLS)
+        return invalid_extruder_error(tmp_extruder);
       // T0-Tnnn: Switch virtual tool by changing the index to the mix
       mixer.T(uint_fast8_t(tmp_extruder));
+      UNUSED(fr_mm_s);
+      UNUSED(no_move);
+
+  #else
+
+    #if DISABLED(MIXING_EXTRUDER)
+      planner.synchronize();
     #endif
-
-  #elif EXTRUDERS < 2
-
-    UNUSED(fr_mm_s); UNUSED(no_move);
-
-    if (tmp_extruder) invalid_extruder_error(tmp_extruder);
-    return;
-
-  #else // EXTRUDERS > 1
-
-    planner.synchronize();
 
     #if ENABLED(DUAL_X_CARRIAGE)  // Only T0 allowed if the Printer is in DXC_DUPLICATION_MODE or DXC_SCALED_DUPLICATION_MODE
       if (tmp_extruder != 0 && dxc_is_duplicating())
@@ -662,7 +660,7 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
     }
 
     #if HAS_LCD_MENU
-      ui.return_to_status();
+      lcd_return_to_status();
     #endif
 
     #if ENABLED(TOOLCHANGE_FILAMENT_SWAP)
@@ -674,7 +672,8 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
       #endif
       if (should_swap) {
         if (too_cold) {
-          SERIAL_ERROR_MSG(MSG_ERR_HOTEND_TOO_COLD);
+          SERIAL_ERROR_START();
+          SERIAL_ERRORLNPGM(MSG_ERR_HOTEND_TOO_COLD);
           #if ENABLED(SINGLENOZZLE)
             active_extruder = tmp_extruder;
             return;
@@ -714,22 +713,21 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
 
       #endif
 
-      set_destination_from_current();
-
       if (!no_move) {
+        set_destination_from_current();
         #if DISABLED(SWITCHING_NOZZLE)
           // Do a small lift to avoid the workpiece in the move back (below)
           current_position[Z_AXIS] += toolchange_settings.z_raise;
           #if ENABLED(TOOLCHANGE_PARK)
             current_position[X_AXIS] = toolchange_settings.change_point.x;
             current_position[Y_AXIS] = toolchange_settings.change_point.y;
-          #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
-            if( mpe_settings.safe_posiotion[0] >= 0 ){
-              current_position[X_AXIS] = mpe_settings.safe_posiotion[0];
-            }
-            if( mpe_settings.safe_posiotion[1] >= 0 ){
-              current_position[Y_AXIS] = mpe_settings.safe_posiotion[1];
-            }
+// RWE MPE_SP           #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
+// RWE MPE_SP             if( mpe_settings.safe_posiotion[0] >= 0 ){
+// RWE MPE_SP               current_position[X_AXIS] = mpe_settings.safe_posiotion[0];
+// RWE MPE_SP             }
+// RWE MPE_SP 
+// RWE MPE_SP               current_position[Y_AXIS] = mpe_settings.safe_posiotion[1];
+// RWE MPE_SP             }
           #endif
           #if HAS_SOFTWARE_ENDSTOPS
             NOMORE(current_position[Z_AXIS], soft_endstop_max[Z_AXIS]);
@@ -804,14 +802,14 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
 
         #if ENABLED(SINGLENOZZLE)
           #if FAN_COUNT > 0
-            singlenozzle_fan_speed[active_extruder] = thermalManager.fan_speed[0];
-            thermalManager.fan_speed[0] = singlenozzle_fan_speed[tmp_extruder];
+            singlenozzle_fan_speed[active_extruder] = fan_speed[0];
+            fan_speed[0] = singlenozzle_fan_speed[tmp_extruder];
           #endif
 
           singlenozzle_temp[active_extruder] = thermalManager.target_temperature[0];
           if (singlenozzle_temp[tmp_extruder] && singlenozzle_temp[tmp_extruder] != singlenozzle_temp[active_extruder]) {
             thermalManager.setTargetHotend(singlenozzle_temp[tmp_extruder], 0);
-            #if ENABLED(ULTRA_LCD) || ENABLED(EXTENSIBLE_UI)
+            #if ENABLED(ULTRA_LCD)
               thermalManager.set_heating_message(0);
             #endif
             (void)thermalManager.wait_for_hotend(0, false);  // Wait for heating or cooling
@@ -879,5 +877,5 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
     SERIAL_ECHO_START();
     SERIAL_ECHOLNPAIR(MSG_ACTIVE_EXTRUDER, int(active_extruder));
 
-  #endif // EXTRUDERS > 1
+  #endif // EXTRUDERS <= 1 && (!MIXING_EXTRUDER || MIXING_VIRTUAL_TOOLS <= 1)
 }

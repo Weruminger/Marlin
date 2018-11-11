@@ -232,7 +232,7 @@
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
   #define PARKING_EXTRUDER_PARKING_X { -78, 184 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
   #define PARKING_EXTRUDER_GRAB_DISTANCE 1            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
-  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
+// RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking in adv
   #if ENABLED(PARKING_EXTRUDER)
     #define PARKING_EXTRUDER_SOLENOIDS_INVERT           // If enabled, the solenoid is NOT magnetized with applied voltage
     #define PARKING_EXTRUDER_SOLENOIDS_PINS_ACTIVE LOW  // LOW or HIGH pin signal energizes the coil
@@ -243,10 +243,10 @@
     #define MPE_SLOW_SPEED      4500      // (mm/m) Speed for last distance travel to park and couple. M951 J{Slow_Feedspeed}
     #define MPE_TRAVEL_DISTANCE   10      // (mm) Last distance point. M951 D{Travel_Distance}
     #define MPE_COMPENSATION       0      // Offset Compensation -1 , 0 , 1 (multiplier) only for coupling. M951 C{Offset_Compensation}
-    #define MPE_SAFEPOSITION  (100, 180)  // X and Y Position to to move to at tool change to prevent oozing on the model. 
-                                          // If you use a prime tower, it's recommended to set MPE_SAFEPOSITION to Prime Tower position.
-                                          // Negative values disables the Safe Position movement. 
-                                          // The safe position can be setup by M951 A{X-Value} B{Y-Value}
+// RWE MPE_SP    #define MPE_SAFEPOSITION  (100, 180)  // X and Y Position to to move to at tool change to prevent oozing on the model. 
+// RWE MPE_SP                                          // If you use a prime tower, it's recommended to set MPE_SAFEPOSITION to Prime Tower position.
+// RWE MPE_SP                                          // Negative values disables the Safe Position movement. 
+// RWE MPE_SP                                          // The safe position can be setup by M951 A{X-Value} B{Y-Value}
   #endif
 #endif
 

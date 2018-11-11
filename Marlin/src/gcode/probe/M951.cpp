@@ -65,9 +65,9 @@ void GcodeSuite::M951() {
   if (parser.seenval('H')) mpe_settings.fast_feedrate       = MMM_TO_MMS(parser.value_linear_units());
   if (parser.seenval('D')) mpe_settings.travel_distance     = parser.value_linear_units();
   if (parser.seenval('A')) mpe_settings.safe_posiotion[0]   = parser.value_linear_units();
-  if (parser.seenval('D')) mpe_settings.safe_posiotion[1]   = parser.value_linear_units();
-  if (parser.seenval('B')) mpe_settings.compensation_factor = parser.value_float();
-  if (!parser.seen("CDGHLNR")) mpe_settings_report();
+  if (parser.seenval('B')) mpe_settings.safe_posiotion[1]   = parser.value_linear_units();
+  if (parser.seenval('C')) mpe_settings.compensation_factor = parser.value_float();
+  if (!parser.seen("ABCDGHLNR")) mpe_settings_report();
 }
 
 #endif // MAGNETIC_PARKING_EXTRUDER

@@ -107,14 +107,6 @@
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
 
-  float parkingposx[2] ,           // M951 R L
-        parkinggrabdistance ,      // M951 I
-        parkingslowspeed,          // M951 J
-        parkinghighspeed ,         // M951 H
-        parkingtraveldistance,    // M951 D
-        compensationmultiplier;  
-
-
   inline void magnetic_parking_extruder_tool_change(const uint8_t tmp_extruder, bool no_move/*=false*/) {
 
     const float oldx = current_position[X_AXIS],
@@ -130,16 +122,16 @@
     if (axis_unhomed_error(true, false, false)) return;
 
     /**
-	 * Z Lift and Nozzle Offset shift ar defined in caller method to work equal with any Multi Hotend realization
-	 *
-     * Steps:
-     *   1. Move high speed to park position of new extruder
-     *   2. Move to couple position of new extruder (this also discouple the old extruder)
-     *   3. Move to park position of new extruder
-     *   4. Move high speed to approach park position of old extruder
-     *   5. Move to park position of old extruder
-     *   6. Move to starting position
-     */
+    * Z Lift and Nozzle Offset shift ar defined in caller method to work equal with any Multi Hotend realization
+    *
+    * Steps:
+    *   1. Move high speed to park position of new extruder
+    *   2. Move to couple position of new extruder (this also discouple the old extruder)
+    *   3. Move to park position of new extruder
+    *   4. Move high speed to approach park position of old extruder
+    *   5. Move to park position of old extruder
+    *   6. Move to Safe Position if given else to starting position 
+    */
 
     // STEP 1
 
@@ -233,6 +225,8 @@
   }
 
 #elif ENABLED(PARKING_EXTRUDER)
+
+  float parkingposx[2],           // M951 R L
 
   void pe_magnet_init() {
     for (uint8_t n = 0; n <= 1; ++n)
@@ -723,11 +717,18 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
         set_destination_from_current();
         #if DISABLED(SWITCHING_NOZZLE)
           // Do a small lift to avoid the workpiece in the move back (below)
+          current_position[Z_AXIS] += toolchange_settings.z_raise;
           #if ENABLED(TOOLCHANGE_PARK)
             current_position[X_AXIS] = toolchange_settings.change_point.x;
             current_position[Y_AXIS] = toolchange_settings.change_point.y;
+          #elif ENABLED(MAGNETIC_PARKING_EXTRUDER)
+            if( mpe_settings.safe_posiotion[0] >= 0 ){
+              current_position[X_AXIS] = mpe_settings.safe_posiotion[0];
+            }
+            if( mpe_settings.safe_posiotion[1] >= 0 ){
+              current_position[Y_AXIS] = mpe_settings.safe_posiotion[1];
+            }
           #endif
-          current_position[Z_AXIS] += toolchange_settings.z_raise;
           #if HAS_SOFTWARE_ENDSTOPS
             NOMORE(current_position[Z_AXIS], soft_endstop_max[Z_AXIS]);
           #endif

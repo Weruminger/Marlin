@@ -72,7 +72,6 @@
           fast_feedrate,        // M951 H
           travel_distance,      // M951 D
           compensation_factor,  // M951 C
-          safe_position[2];     // M951 A B
   } mpe_settings_t;
 
   extern mpe_settings_t mpe_settings;

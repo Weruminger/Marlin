@@ -171,3 +171,8 @@ CMakeListsPrivate.txt
 
 #CLion
 cmake-build-*
+/Marlin/CONFIG_ORIGINAL
+/Marlin/CONFIG_CTC_RADDS_DUAL
+/Marlin/CONFIG_CTC_RADDS_DUAL/Configuration_adv.h
+/Marlin/CONFIG_ORIGINAL/Configuration_adv.h
+/Marlin/CONFIG_ORIGINAL/Configuration.h

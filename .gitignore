@@ -176,3 +176,6 @@ cmake-build-*
 /Marlin/CONFIG_CTC_RADDS_DUAL/Configuration_adv.h
 /Marlin/CONFIG_ORIGINAL/Configuration_adv.h
 /Marlin/CONFIG_ORIGINAL/Configuration.h
+/.tgitconfig
+/Marlin/Changelog.txt
+/Marlin/Configuration - Kopie.h

@@ -96,13 +96,11 @@
 #endif // DO_SWITCH_EXTRUDER
 
 #if ENABLED(SWITCHING_NOZZLE)
-
   void move_nozzle_servo(const uint8_t e) {
     planner.synchronize();
     MOVE_SERVO(SWITCHING_NOZZLE_SERVO_NR, servo_angles[SWITCHING_NOZZLE_SERVO_NR][e]);
     safe_delay(500);
   }
-
 #endif // SWITCHING_NOZZLE
 
 #if ENABLED(MAGNETIC_PARKING_EXTRUDER)
@@ -542,10 +540,8 @@
 
 inline void invalid_extruder_error(const uint8_t e) {
   SERIAL_ECHO_START();
-  SERIAL_CHAR('T');
-  SERIAL_ECHO_F(e, DEC);
-  SERIAL_CHAR(' ');
-  SERIAL_ECHOLNPGM(MSG_INVALID_EXTRUDER);
+  SERIAL_CHAR('T'); SERIAL_ECHO(int(e));
+  SERIAL_CHAR(' '); SERIAL_ECHOLNPGM(MSG_INVALID_EXTRUDER);
 }
 
 #if ENABLED(DUAL_X_CARRIAGE)
@@ -606,6 +602,8 @@ inline void invalid_extruder_error(const uint8_t e) {
         active_extruder_parked = true;
         delayed_move_time = 0;
         break;
+      default:
+        break;
     }
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
@@ -625,8 +623,8 @@ inline void invalid_extruder_error(const uint8_t e) {
 void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool no_move/*=false*/) {
   #if ENABLED(MIXING_EXTRUDER)
 
-    UNUSED(fr_mm_s);
-    UNUSED(no_move);
+    UNUSED(fr_mm_s); UNUSED(no_move);
+
     if (tmp_extruder >= MIXING_VIRTUAL_TOOLS)
       return invalid_extruder_error(tmp_extruder);
 
@@ -637,12 +635,12 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
 
   #elif EXTRUDERS < 2
 
-    UNUSED(fr_mm_s);
-    UNUSED(no_move);
+    UNUSED(fr_mm_s); UNUSED(no_move);
+
     if (tmp_extruder) invalid_extruder_error(tmp_extruder);
     return;
 
-  #else
+  #else // EXTRUDERS > 1
 
     planner.synchronize();
 
@@ -721,8 +719,9 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
 
       #endif
 
+      set_destination_from_current();
+
       if (!no_move) {
-        set_destination_from_current();
         #if DISABLED(SWITCHING_NOZZLE)
           // Do a small lift to avoid the workpiece in the move back (below)
           current_position[Z_AXIS] += toolchange_settings.z_raise;
@@ -878,5 +877,5 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
     SERIAL_ECHO_START();
     SERIAL_ECHOLNPAIR(MSG_ACTIVE_EXTRUDER, int(active_extruder));
 
-  #endif // EXTRUDERS <= 1 && (!MIXING_EXTRUDER || MIXING_VIRTUAL_TOOLS <= 1)
+  #endif // EXTRUDERS > 1
 }

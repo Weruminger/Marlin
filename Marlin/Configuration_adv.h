@@ -157,7 +157,7 @@
    * and/or decrease WATCH_TEMP_INCREASE. WATCH_TEMP_INCREASE should not be set
    * below 2.
    */
-  #define WATCH_TEMP_PERIOD 20                // Seconds
+  #define WATCH_TEMP_PERIOD 30                // Seconds
   #define WATCH_TEMP_INCREASE 2               // Degrees Celsius
 #endif
 
@@ -215,7 +215,7 @@
 #endif
 
 // Show extra position information in M114
-//#define M114_DETAIL
+#define M114_DETAIL
 
 // Show Temperature ADC value
 // Enable for M105 to include ADC values read from temperature sensors.
@@ -369,13 +369,13 @@
 /**
  * M355 Case Light on-off / brightness
  */
-//#define CASE_LIGHT_ENABLE
+#define CASE_LIGHT_ENABLE
 #if ENABLED(CASE_LIGHT_ENABLE)
-  //#define CASE_LIGHT_PIN 4                  // Override the default pin if needed
+  #define CASE_LIGHT_PIN ENDER4_FAN_PIN       // Override the default pin if needed
   #define INVERT_CASE_LIGHT false             // Set true if Case Light is ON when pin is LOW
-  #define CASE_LIGHT_DEFAULT_ON true          // Set default power-up state on
+  #define CASE_LIGHT_DEFAULT_ON false         // Set default power-up state on
   #define CASE_LIGHT_DEFAULT_BRIGHTNESS 105   // Set default power-up brightness (0-255, requires PWM pin)
-  //#define MENU_ITEM_CASE_LIGHT              // Add a Case Light option to the LCD main menu
+  #define MENU_ITEM_CASE_LIGHT                // Add a Case Light option to the LCD main menu
   //#define CASE_LIGHT_USE_NEOPIXEL           // Use Neopixel LED as case light, requires NEOPIXEL_LED.
   #if ENABLED(CASE_LIGHT_USE_NEOPIXEL)
     #define CASE_LIGHT_NEOPIXEL_COLOR { 255, 255, 255, 255 } // { Red, Green, Blue, White }
@@ -490,10 +490,10 @@
   #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-                      // However: In this mode the HOTEND_OFFSET_X value for the second extruder provides a software
-                      // override for X2_HOME_POS. This also allow recalibration of the distance between the two endstops
-                      // without modifying the firmware (through the "M218 T1 X???" command).
-                      // Remember: you should set the second extruder x-offset to 0 in your slicer.
+      // However: In this mode the HOTEND_OFFSET_X value for the second extruder provides a software
+      // override for X2_HOME_POS. This also allow recalibration of the distance between the two endstops
+      // without modifying the firmware (through the "M218 T1 X???" command).
+      // Remember: you should set the second extruder x-offset to 0 in your slicer.
 
   // This is the default power-up mode which can be later using M605.
   #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
@@ -514,7 +514,7 @@
 #define Y_HOME_BUMP_MM 5
 #define Z_HOME_BUMP_MM 2
 #define HOMING_BUMP_DIVISOR { 2, 2, 4 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
-//#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
+#define QUICK_HOME                       // If homing includes X and Y, do a diagonal move initially
 //#define HOMING_BACKOFF_MM { 2, 2, 2 }  // (mm) Move away from the endstops after homing
 
 // When G28 is called, this option will make Y home before X
@@ -563,7 +563,7 @@
 #define DEFAULT_STEPPER_DEACTIVE_TIME 120
 #define DISABLE_INACTIVE_X true
 #define DISABLE_INACTIVE_Y true
-#define DISABLE_INACTIVE_Z true  // set to false if the nozzle will fall down on your printed part when print has finished.
+#define DISABLE_INACTIVE_Z false  // set to false if the nozzle will fall down on your printed part when print has finished.
 #define DISABLE_INACTIVE_E true
 
 #define DEFAULT_MINIMUMFEEDRATE       0.0     // minimum feedrate
@@ -626,7 +626,7 @@
       #define BACKLASH_MEASUREMENT_LIMIT       0.5   // (mm)
       #define BACKLASH_MEASUREMENT_RESOLUTION  0.005 // (mm)
       #define BACKLASH_MEASUREMENT_FEEDRATE    Z_PROBE_SPEED_SLOW // (mm/m)
-    #endif
+#endif
   #endif
 #endif
 
@@ -776,7 +776,7 @@
 //#define LCD_INFO_MENU
 
 // Scroll a longer status message into view
-//#define STATUS_MESSAGE_SCROLLING
+#define STATUS_MESSAGE_SCROLLING
 
 // On the Info Screen, display XY with one decimal place when possible
 //#define LCD_DECIMAL_SMALL_XY
@@ -848,7 +848,7 @@
   //#define POWER_LOSS_RECOVERY
   #if ENABLED(POWER_LOSS_RECOVERY)
     //#define POWER_LOSS_PIN         44 // Pin to detect power loss (optional)
-    //#define POWER_LOSS_STATE     HIGH // State of pin indicating power loss
+    //#define POWER_LOSS_STATE HIGH   // State of pin indicating power loss
     //#define POWER_LOSS_PURGE_LEN   20 // (mm) Length of filament to purge on resume
     //#define POWER_LOSS_RETRACT_LEN 10 // (mm) Length of filament to retract on fail. Requires backup power.
 
@@ -899,7 +899,7 @@
   //#define LONG_FILENAME_HOST_SUPPORT
 
   // Enable this option to scroll long filenames in the SD card menu
-  //#define SCROLL_LONG_FILENAMES
+  #define SCROLL_LONG_FILENAMES
 
   /**
    * This option allows you to abort SD printing when any endstop is triggered.
@@ -1007,18 +1007,18 @@
   // Swap the CW/CCW indicators in the graphics overlay
   //#define OVERLAY_GFX_REVERSE
 
-  /**
-   * ST7920-based LCDs can emulate a 16 x 4 character display using
-   * the ST7920 character-generator for very fast screen updates.
-   * Enable LIGHTWEIGHT_UI to use this special display mode.
-   *
-   * Since LIGHTWEIGHT_UI has limited space, the position and status
-   * message occupy the same line. Set STATUS_EXPIRE_SECONDS to the
-   * length of time to display the status message before clearing.
-   *
-   * Set STATUS_EXPIRE_SECONDS to zero to never clear the status.
-   * This will prevent position updates from being displayed.
-   */
+    /**
+     * ST7920-based LCDs can emulate a 16 x 4 character display using
+     * the ST7920 character-generator for very fast screen updates.
+     * Enable LIGHTWEIGHT_UI to use this special display mode.
+     *
+     * Since LIGHTWEIGHT_UI has limited space, the position and status
+     * message occupy the same line. Set STATUS_EXPIRE_SECONDS to the
+     * length of time to display the status message before clearing.
+     *
+     * Set STATUS_EXPIRE_SECONDS to zero to never clear the status.
+     * This will prevent position updates from being displayed.
+     */
   #if ENABLED(U8GLIB_ST7920)
     //#define LIGHTWEIGHT_UI
     #if ENABLED(LIGHTWEIGHT_UI)
@@ -1074,22 +1074,22 @@
  *
  * Warning: Does not respect endstops!
  */
-//#define BABYSTEPPING
+#define BABYSTEPPING
 #if ENABLED(BABYSTEPPING)
   //#define BABYSTEP_WITHOUT_HOMING
   //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
-  #define BABYSTEP_MULTIPLICATOR  1         // Babysteps are very small. Increase for faster motion.
+  #define BABYSTEP_MULTIPLICATOR  5         // Babysteps are very small. Increase for faster motion.
 
-  //#define DOUBLECLICK_FOR_Z_BABYSTEPPING  // Double-click on the Status Screen for Z Babystepping.
+  #define DOUBLECLICK_FOR_Z_BABYSTEPPING    // Double-click on the Status Screen for Z Babystepping.
   #if ENABLED(DOUBLECLICK_FOR_Z_BABYSTEPPING)
     #define DOUBLECLICK_MAX_INTERVAL 1250   // Maximum interval between clicks, in milliseconds.
                                             // Note: Extra time may be added to mitigate controller latency.
     #define BABYSTEP_ALWAYS_AVAILABLE     // Allow babystepping at all times (not just during movement).
-    //#define MOVE_Z_WHEN_IDLE              // Jump to the move Z menu on doubleclick when printer is idle.
-    #if ENABLED(MOVE_Z_WHEN_IDLE)
-      #define MOVE_Z_IDLE_MULTIPLICATOR 1   // Multiply 1mm by this factor for the move step size.
-    #endif
+  //#define MOVE_Z_WHEN_IDLE                // Jump to the move Z menu on doubleclick when printer is idle.
+  #if ENABLED(MOVE_Z_WHEN_IDLE)
+    #define MOVE_Z_IDLE_MULTIPLICATOR 1     // Multiply 1mm by this factor for the move step size.
+  #endif
   #endif
 
   //#define BABYSTEP_DISPLAY_TOTAL          // Display total babysteps since last G28
@@ -1122,8 +1122,8 @@
 //#define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
-  #define LIN_ADVANCE_K 0.22    // Unit: mm compression per 1mm/s extruder speed
-  //#define LA_DEBUG            // If enabled, this will generate debug information output over USB.
+  #define LIN_ADVANCE_K 0.22  // Unit: mm compression per 1mm/s extruder speed
+  //#define LA_DEBUG          // If enabled, this will generate debug information output over USB.
 #endif
 
 // @section leveling
@@ -1289,7 +1289,7 @@
 // enter the serial receive buffer, so they cannot be blocked.
 // Currently handles M108, M112, M410
 // Does not work on boards using AT90USB (USBCON) processors!
-//#define EMERGENCY_PARSER
+#define EMERGENCY_PARSER
 
 // Bad Serial-connections can miss a received command by sending an 'ok'
 // Therefore some clients abort after 30 seconds in a timeout.
@@ -1388,28 +1388,28 @@
  * Requires NOZZLE_PARK_FEATURE.
  * This feature is required for the default FILAMENT_RUNOUT_SCRIPT.
  */
-//#define ADVANCED_PAUSE_FEATURE
+#define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   #define PAUSE_PARK_RETRACT_FEEDRATE         60  // (mm/s) Initial retract feedrate.
   #define PAUSE_PARK_RETRACT_LENGTH            2  // (mm) Initial retract.
                                                   // This short retract is done immediately, before parking the nozzle.
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     35  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      100  // (mm) The length of filament for a complete unload.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH      650  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
   #define FILAMENT_CHANGE_SLOW_LOAD_FEEDRATE   6  // (mm/s) Slow move when starting load.
   #define FILAMENT_CHANGE_SLOW_LOAD_LENGTH     0  // (mm) Slow length, to allow time to insert material.
                                                   // 0 to disable start loading and skip to fast load only
-  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE   6  // (mm/s) Load filament feedrate. This can be pretty fast.
+  #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  35  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH     0  // (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH   600  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
-  //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
+  #define ADVANCED_PAUSE_CONTINUOUS_PURGE         // Purge continuously up to the purge length until interrupted.
   #define ADVANCED_PAUSE_PURGE_FEEDRATE        3  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
-  #define ADVANCED_PAUSE_PURGE_LENGTH         50  // (mm) Length to extrude after loading.
+  #define ADVANCED_PAUSE_PURGE_LENGTH         60  // (mm) Length to extrude after loading.
                                                   //   Set to 0 for manual extrusion.
                                                   //   Filament can be extruded repeatedly from the Filament Change menu
                                                   //   until extrusion is consistent, and to purge old filament.
@@ -1425,10 +1425,10 @@
   #define FILAMENT_CHANGE_ALERT_BEEPS         10  // Number of alert beeps to play when a response is needed.
   #define PAUSE_PARK_NO_STEPPER_TIMEOUT           // Enable for XYZ steppers to stay powered on during filament change.
 
-  //#define PARK_HEAD_ON_PAUSE                    // Park the nozzle during pause and filament change.
-  //#define HOME_BEFORE_FILAMENT_CHANGE           // Ensure homing has been completed prior to parking for filament change
+  #define PARK_HEAD_ON_PAUSE                      // Park the nozzle during pause and filament change.
+  #define HOME_BEFORE_FILAMENT_CHANGE             // Ensure homing has been completed prior to parking for filament change
 
-  //#define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
+  #define FILAMENT_LOAD_UNLOAD_GCODES           // Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
   //#define FILAMENT_UNLOAD_ALL_EXTRUDERS         // Allow M702 to unload all extruders above a minimum target temp (as set by M302)
 #endif
 
@@ -1449,75 +1449,75 @@
   #endif
 
   #if AXIS_DRIVER_TYPE_X2(TMC26X)
-    #define X2_MAX_CURRENT    1000
-    #define X2_SENSE_RESISTOR   91
-    #define X2_MICROSTEPS       16
+  #define X2_MAX_CURRENT    1000
+  #define X2_SENSE_RESISTOR   91
+  #define X2_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_Y(TMC26X)
-    #define Y_MAX_CURRENT     1000
-    #define Y_SENSE_RESISTOR    91
-    #define Y_MICROSTEPS        16
+  #define Y_MAX_CURRENT     1000
+  #define Y_SENSE_RESISTOR    91
+  #define Y_MICROSTEPS        16
   #endif
 
   #if AXIS_DRIVER_TYPE_Y2(TMC26X)
-    #define Y2_MAX_CURRENT    1000
-    #define Y2_SENSE_RESISTOR   91
-    #define Y2_MICROSTEPS       16
+  #define Y2_MAX_CURRENT    1000
+  #define Y2_SENSE_RESISTOR   91
+  #define Y2_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_Z(TMC26X)
-    #define Z_MAX_CURRENT     1000
-    #define Z_SENSE_RESISTOR    91
-    #define Z_MICROSTEPS        16
+  #define Z_MAX_CURRENT     1000
+  #define Z_SENSE_RESISTOR    91
+  #define Z_MICROSTEPS        16
   #endif
 
   #if AXIS_DRIVER_TYPE_Z2(TMC26X)
-    #define Z2_MAX_CURRENT    1000
-    #define Z2_SENSE_RESISTOR   91
-    #define Z2_MICROSTEPS       16
+  #define Z2_MAX_CURRENT    1000
+  #define Z2_SENSE_RESISTOR   91
+  #define Z2_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_Z3(TMC26X)
-    #define Z3_MAX_CURRENT    1000
-    #define Z3_SENSE_RESISTOR   91
-    #define Z3_MICROSTEPS       16
+  #define Z3_MAX_CURRENT    1000
+  #define Z3_SENSE_RESISTOR   91
+  #define Z3_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E0(TMC26X)
-    #define E0_MAX_CURRENT    1000
-    #define E0_SENSE_RESISTOR   91
-    #define E0_MICROSTEPS       16
+  #define E0_MAX_CURRENT    1000
+  #define E0_SENSE_RESISTOR   91
+  #define E0_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E1(TMC26X)
-    #define E1_MAX_CURRENT    1000
-    #define E1_SENSE_RESISTOR   91
-    #define E1_MICROSTEPS       16
+  #define E1_MAX_CURRENT    1000
+  #define E1_SENSE_RESISTOR   91
+  #define E1_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E2(TMC26X)
-    #define E2_MAX_CURRENT    1000
-    #define E2_SENSE_RESISTOR   91
-    #define E2_MICROSTEPS       16
+  #define E2_MAX_CURRENT    1000
+  #define E2_SENSE_RESISTOR   91
+  #define E2_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E3(TMC26X)
-    #define E3_MAX_CURRENT    1000
-    #define E3_SENSE_RESISTOR   91
-    #define E3_MICROSTEPS       16
+  #define E3_MAX_CURRENT    1000
+  #define E3_SENSE_RESISTOR   91
+  #define E3_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E4(TMC26X)
-    #define E4_MAX_CURRENT    1000
-    #define E4_SENSE_RESISTOR   91
-    #define E4_MICROSTEPS       16
+  #define E4_MAX_CURRENT    1000
+  #define E4_SENSE_RESISTOR   91
+  #define E4_MICROSTEPS       16
   #endif
 
   #if AXIS_DRIVER_TYPE_E5(TMC26X)
-    #define E5_MAX_CURRENT    1000
-    #define E5_SENSE_RESISTOR   91
-    #define E5_MICROSTEPS       16
+  #define E5_MAX_CURRENT    1000
+  #define E5_SENSE_RESISTOR   91
+  #define E5_MICROSTEPS       16
   #endif
 
 #endif // TMC26X
@@ -1547,7 +1547,7 @@
 
   #if AXIS_IS_TMC(X)
     #define X_CURRENT     800  // (mA) RMS current. Multiply by 1.414 for peak current.
-    #define X_MICROSTEPS   16  // 0..256
+  #define X_MICROSTEPS        16  // 0..256
     #define X_RSENSE     0.11
   #endif
 
@@ -1558,8 +1558,8 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT     800
-    #define Y_MICROSTEPS   16
+  #define Y_CURRENT          800
+  #define Y_MICROSTEPS        16
     #define Y_RSENSE     0.11
   #endif
 
@@ -1570,56 +1570,56 @@
   #endif
 
   #if AXIS_IS_TMC(Z)
-    #define Z_CURRENT     800
-    #define Z_MICROSTEPS   16
+  #define Z_CURRENT          800
+  #define Z_MICROSTEPS        16
     #define Z_RSENSE     0.11
   #endif
 
   #if AXIS_IS_TMC(Z2)
-    #define Z2_CURRENT    800
-    #define Z2_MICROSTEPS  16
+  #define Z2_CURRENT         800
+  #define Z2_MICROSTEPS       16
     #define Z2_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(Z3)
-    #define Z3_CURRENT    800
-    #define Z3_MICROSTEPS  16
+  #define Z3_CURRENT         800
+  #define Z3_MICROSTEPS       16
     #define Z3_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E0)
-    #define E0_CURRENT    800
-    #define E0_MICROSTEPS  16
+  #define E0_CURRENT         800
+  #define E0_MICROSTEPS       16
     #define E0_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E1)
-    #define E1_CURRENT    800
-    #define E1_MICROSTEPS  16
+  #define E1_CURRENT         800
+  #define E1_MICROSTEPS       16
     #define E1_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E2)
-    #define E2_CURRENT    800
-    #define E2_MICROSTEPS  16
+  #define E2_CURRENT         800
+  #define E2_MICROSTEPS       16
     #define E2_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E3)
-    #define E3_CURRENT    800
-    #define E3_MICROSTEPS  16
+  #define E3_CURRENT         800
+  #define E3_MICROSTEPS       16
     #define E3_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E4)
-    #define E4_CURRENT    800
-    #define E4_MICROSTEPS  16
+  #define E4_CURRENT         800
+  #define E4_MICROSTEPS       16
     #define E4_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E5)
-    #define E5_CURRENT    800
-    #define E5_MICROSTEPS  16
+  #define E5_CURRENT         800
+  #define E5_MICROSTEPS       16
     #define E5_RSENSE    0.11
   #endif
 
@@ -1806,96 +1806,96 @@
 
   #if AXIS_DRIVER_TYPE_X2(L6470)
     #define X2_MICROSTEPS      128
-    #define X2_OVERCURRENT    2000
-    #define X2_STALLCURRENT   1500
+  #define X2_OVERCURRENT    2000
+  #define X2_STALLCURRENT   1500
     #define X2_MAX_VOLTAGE     127
     #define X2_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_Y(L6470)
     #define Y_MICROSTEPS       128
-    #define Y_OVERCURRENT     2000
-    #define Y_STALLCURRENT    1500
+  #define Y_OVERCURRENT     2000
+  #define Y_STALLCURRENT    1500
     #define Y_MAX_VOLTAGE      127
     #define Y_CHAIN_POS          0
   #endif
 
   #if AXIS_DRIVER_TYPE_Y2(L6470)
     #define Y2_MICROSTEPS      128
-    #define Y2_OVERCURRENT    2000
-    #define Y2_STALLCURRENT   1500
+  #define Y2_OVERCURRENT    2000
+  #define Y2_STALLCURRENT   1500
     #define Y2_MAX_VOLTAGE     127
     #define Y2_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_Z(L6470)
     #define Z_MICROSTEPS       128
-    #define Z_OVERCURRENT     2000
-    #define Z_STALLCURRENT    1500
+  #define Z_OVERCURRENT     2000
+  #define Z_STALLCURRENT    1500
     #define Z_MAX_VOLTAGE      127
     #define Z_CHAIN_POS          0
   #endif
 
   #if AXIS_DRIVER_TYPE_Z2(L6470)
     #define Z2_MICROSTEPS      128
-    #define Z2_OVERCURRENT    2000
-    #define Z2_STALLCURRENT   1500
+  #define Z2_OVERCURRENT    2000
+  #define Z2_STALLCURRENT   1500
     #define Z2_MAX_VOLTAGE     127
     #define Z2_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_Z3(L6470)
     #define Z3_MICROSTEPS      128
-    #define Z3_OVERCURRENT    2000
-    #define Z3_STALLCURRENT   1500
+  #define Z3_OVERCURRENT    2000
+  #define Z3_STALLCURRENT   1500
     #define Z3_MAX_VOLTAGE     127
     #define Z3_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E0(L6470)
     #define E0_MICROSTEPS      128
-    #define E0_OVERCURRENT    2000
-    #define E0_STALLCURRENT   1500
+  #define E0_OVERCURRENT    2000
+  #define E0_STALLCURRENT   1500
     #define E0_MAX_VOLTAGE     127
     #define E0_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E1(L6470)
     #define E1_MICROSTEPS      128
-    #define E1_OVERCURRENT    2000
-    #define E1_STALLCURRENT   1500
+  #define E1_OVERCURRENT    2000
+  #define E1_STALLCURRENT   1500
     #define E1_MAX_VOLTAGE     127
     #define E1_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E2(L6470)
     #define E2_MICROSTEPS      128
-    #define E2_OVERCURRENT    2000
-    #define E2_STALLCURRENT   1500
+  #define E2_OVERCURRENT    2000
+  #define E2_STALLCURRENT   1500
     #define E2_MAX_VOLTAGE     127
     #define E2_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E3(L6470)
     #define E3_MICROSTEPS      128
-    #define E3_OVERCURRENT    2000
-    #define E3_STALLCURRENT   1500
+  #define E3_OVERCURRENT    2000
+  #define E3_STALLCURRENT   1500
     #define E3_MAX_VOLTAGE     127
     #define E3_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E4(L6470)
     #define E4_MICROSTEPS      128
-    #define E4_OVERCURRENT    2000
-    #define E4_STALLCURRENT   1500
+  #define E4_OVERCURRENT    2000
+  #define E4_STALLCURRENT   1500
     #define E4_MAX_VOLTAGE     127
     #define E4_CHAIN_POS         0
   #endif
 
   #if AXIS_DRIVER_TYPE_E5(L6470)
     #define E5_MICROSTEPS      128
-    #define E5_OVERCURRENT    2000
-    #define E5_STALLCURRENT   1500
+  #define E5_OVERCURRENT    2000
+  #define E5_STALLCURRENT   1500
     #define E5_MAX_VOLTAGE     127
     #define E5_CHAIN_POS         0
   #endif
@@ -2201,14 +2201,14 @@
 //===========================================================================
 
 /**
- * I2C position encoders for closed loop control.
- * Developed by Chris Barr at Aus3D.
+ *  I2C position encoders for closed loop control.
+ *  Developed by Chris Barr at Aus3D.
  *
- * Wiki: http://wiki.aus3d.com.au/Magnetic_Encoder
- * Github: https://github.com/Aus3D/MagneticEncoder
+ *  Wiki: http://wiki.aus3d.com.au/Magnetic_Encoder
+ *  Github: https://github.com/Aus3D/MagneticEncoder
  *
- * Supplier: http://aus3d.com.au/magnetic-encoder-module
- * Alternative Supplier: http://reliabuild3d.com/
+ *  Supplier: http://aus3d.com.au/magnetic-encoder-module
+ *  Alternative Supplier: http://reliabuild3d.com/
  *
  * Reliabuild encoders have been modified to improve reliability.
  */

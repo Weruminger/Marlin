@@ -90,14 +90,14 @@
 #define E1_DIR_PIN         63
 #define E1_ENABLE_PIN      65
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN        33
+  #define E1_CS_PIN        -1
 #endif
 
 #define E2_STEP_PIN        51
 #define E2_DIR_PIN         53
 #define E2_ENABLE_PIN      49
 #ifndef E2_CS_PIN
-  #define E2_CS_PIN        35
+  #define E2_CS_PIN        -1
 #endif
 
 /**
@@ -209,7 +209,7 @@
 //
 #if ENABLED(ULTRA_LCD)
 
-  #if ENABLED(RADDS_DISPLAY)
+  #if ENABLED(RADDS_DISPLAY) || ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
 
     #define LCD_PINS_RS     42
     #define LCD_PINS_ENABLE 43

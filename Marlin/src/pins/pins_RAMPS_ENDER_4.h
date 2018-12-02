@@ -32,4 +32,4 @@
 // in the default configuration, this is used to control the brightness of the LED band
 // hotend and controller fan are therefore always-on
 #define ENDER4_FAN_PIN RAMPS_D9_PIN
-#undef FAN_PIN
+//#undef FAN_PIN

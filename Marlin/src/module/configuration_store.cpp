@@ -1081,8 +1081,12 @@ void MarlinSettings::postprocess() {
     EEPROM_START();
 
     char stored_ver[4];
+    char origin_ver[4];
     EEPROM_READ_ALWAYS(stored_ver);
-
+    origin_ver[0] = stored_ver[0];
+    origin_ver[1] = stored_ver[1];
+    origin_ver[2] = stored_ver[2];
+    origin_ver[3] = stored_ver[3];
     uint16_t stored_crc;
     EEPROM_READ_ALWAYS(stored_crc);
 
@@ -1096,6 +1100,7 @@ void MarlinSettings::postprocess() {
         SERIAL_ECHO_START_P(port);
         SERIAL_ECHOPGM_P(port, "EEPROM version mismatch ");
         SERIAL_ECHOPAIR_P(port, "(EEPROM=", stored_ver);
+        SERIAL_ECHOPAIR_P(port, "(ORIGIN=", origin_ver);
         SERIAL_ECHOLNPGM_P(port, " Marlin=" EEPROM_VERSION ")");
       #endif
       eeprom_error = true;

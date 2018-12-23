@@ -1151,7 +1151,7 @@
 #define BABYSTEPPING
 #if ENABLED(BABYSTEPPING)
   //#define BABYSTEP_WITHOUT_HOMING
-  //#define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
+  #define BABYSTEP_XY                     // Also enable X/Y Babystepping. Not supported on DELTA!
   #define BABYSTEP_INVERT_Z false           // Change if Z babysteps should go the other way
   #define BABYSTEP_MULTIPLICATOR  5         // Babysteps are very small. Increase for faster motion.
 
@@ -1243,7 +1243,7 @@
 #endif
 
 // Support for G5 with XYZE destination and IJPQ offsets. Requires ~2666 bytes.
-//#define BEZIER_CURVE_SUPPORT
+#define BEZIER_CURVE_SUPPORT
 
 /**
  * G38 Probe Target
@@ -1812,10 +1812,10 @@
    */
   #define HYBRID_THRESHOLD
 
-  #define X_HYBRID_THRESHOLD     100 // [mm/s]
-  #define X2_HYBRID_THRESHOLD    100
-  #define Y_HYBRID_THRESHOLD     100
-  #define Y2_HYBRID_THRESHOLD    100
+  #define X_HYBRID_THRESHOLD     80 // [mm/s]
+  #define X2_HYBRID_THRESHOLD    80
+  #define Y_HYBRID_THRESHOLD     80
+  #define Y2_HYBRID_THRESHOLD    80
   #define Z_HYBRID_THRESHOLD       6
   #define Z2_HYBRID_THRESHOLD      6
   #define Z3_HYBRID_THRESHOLD      6
@@ -1850,8 +1850,8 @@
   //#define SENSORLESS_PROBING // TMC2130 only
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
-    #define X_STALL_SENSITIVITY  0
-    #define Y_STALL_SENSITIVITY  0
+    #define X_STALL_SENSITIVITY  1
+    #define Y_STALL_SENSITIVITY  1
     //#define Z_STALL_SENSITIVITY  8
   #endif
 

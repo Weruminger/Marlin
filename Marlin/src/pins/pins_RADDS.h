@@ -270,6 +270,9 @@
 
 #endif // ULTRA_LCD
 
+#undef SDSS
+#define SDSS 4
+
 #ifndef SDSS
   #define SDSS              4
 #endif

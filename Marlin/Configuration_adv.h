@@ -1763,7 +1763,7 @@
   #define Z_HYBRID_THRESHOLD       6
   #define Z2_HYBRID_THRESHOLD      6
   #define Z3_HYBRID_THRESHOLD      6
-  #define E0_HYBRID_THRESHOLD     30
+  #define E0_HYBRID_THRESHOLD     5
   #define E1_HYBRID_THRESHOLD     30
   #define E2_HYBRID_THRESHOLD     30
   #define E3_HYBRID_THRESHOLD     30

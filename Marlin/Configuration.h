@@ -2117,5 +2117,3 @@
 #elif ENABLED(ULTRA_LCD) && ENABLED(DOGLCD) // No panel, just graphical LCD?
   #define LCD_WIDTH 20 // Default is 22. For this Geeetech use 20
 #endif
-
-#endif // CONFIGURATION_H

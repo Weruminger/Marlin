@@ -163,6 +163,16 @@ bool Running = true;
 #if ENABLED(TEMPERATURE_UNITS_SUPPORT)
   TempUnit input_temp_units = TEMPUNIT_C;
 #endif
+#if FAN_COUNT > 0
+  uint8_t fan_speed[FAN_COUNT] = { 0 };
+  #if ENABLED(EXTRA_FAN_SPEED)
+    uint8_t old_fan_speed[FAN_COUNT], new_fan_speed[FAN_COUNT];
+  #endif
+  #if ENABLED(PROBING_FANS_OFF)
+    bool fans_paused; // = false;
+    uint8_t paused_fan_speed[FAN_COUNT] = { 0 };
+  #endif
+#endif
 
 // For M109 and M190, this flag may be cleared (by M108) to exit the wait loop
 volatile bool wait_for_heatup = true;

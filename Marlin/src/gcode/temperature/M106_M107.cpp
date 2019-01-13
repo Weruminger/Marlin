@@ -35,6 +35,10 @@
   #include "../../module/tool_change.h"
 #endif
 
+#if ENABLED(AUTO_FILAMENT_FAN_SELECTION)
+  #include "../../module/planner.h"
+#endif
+
 /**
  * M106: Set Fan Speed
  *

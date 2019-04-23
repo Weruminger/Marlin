@@ -577,13 +577,13 @@
  *          TMC5130, TMC5130_STANDALONE
  * :['A4988', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE']
  */
-#define X_DRIVER_TYPE  TMC2100
-#define Y_DRIVER_TYPE  TMC2100
-#define Z_DRIVER_TYPE  TMC2100
+#define X_DRIVER_TYPE  LV8729
+#define Y_DRIVER_TYPE  LV8729
+#define Z_DRIVER_TYPE  LV8729
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
-#define E0_DRIVER_TYPE TMC2100
+#define E0_DRIVER_TYPE LV8729
 //#define E1_DRIVER_TYPE A4988
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
@@ -648,13 +648,15 @@
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/64 1600 Steps / mm
 // REMARK CTC Z Steps Dircet driven A8 1.8° 1/128 3200 Steps / mm
 // Ender 3 X/Y 1/16Steps or using TMC 2100 (virtual Microsteps)
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80.00, 80.00, 400, 100}
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80.00, 80.00, 400, 100}
 // CTC X/Y 1/32Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 161, 161, 2545, 152, 152}
 // CTC X/Y 1/64 Steps
 //#define DEFAULT_AXIS_STEPS_PER_UNIT   { 321, 321, 2545, 152, 152}
 // CTC X/Y 1/128 Steps
-//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 642, 642, 2545, 152, 152}
+//#define DEFAULT_AXIS_STEPS_PER_UNIT   { 642, 642, 2545, 152}
+// EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 253, 113, 642, 632}
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -925,8 +927,8 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 230
-#define Y_BED_SIZE 230
+#define X_BED_SIZE 33040
+#define Y_BED_SIZE 15200
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1474,7 +1476,7 @@
  *
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
-//#define DISPLAY_CHARSET_HD44780 JAPANESE
+#define DISPLAY_CHARSET_HD44780 JAPANESE
 
 /**
  * LCD TYPE
@@ -1486,8 +1488,8 @@
  * IMPORTANT: The U8glib library is required for Full Graphic Display!
  *            https://github.com/olikraus/U8glib_Arduino
  */
-//#define ULTRA_LCD   // Character based
-#define DOGLCD      // Full graphics display
+#define ULTRA_LCD   // Character based
+//#define DOGLCD      // Full graphics display
 
 /**
  * SD CARD
@@ -1505,7 +1507,7 @@
  * This may be required to resolve "volume init" errors.
  */
 //#define SPI_SPEED SPI_HALF_SPEED
-#define SPI_SPEED SPI_QUARTER_SPEED
+//#define SPI_SPEED SPI_QUARTER_SPEED
 //#define SPI_SPEED SPI_EIGHTH_SPEED
 
 /**

@@ -137,7 +137,7 @@
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-//#define CUSTOM_MACHINE_NAME "3D Printer"
+#define CUSTOM_MACHINE_NAME "ASTRO Marlin"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
@@ -691,21 +691,40 @@
  */
 //#define DISTINCT_E_FACTORS
 
+#define ARCSEC_F_ROTAT  1296000    // ArcSeconds in a Full earth rotation;
+#define SIDEREAL_DAY 86164.0905    // Sidereal day in seconds
+
+
+#define RA_MOT_PULLEY 16.0
+#define RA_AXIS_PULLEY 60.0
+#define RA_MOT_STEPS_PER_R 200.0
+#define RA_MICROSTEPS 32.0
+#define RA_ARCSEC_PER_R 338 // 607.0
+
+#define RA_STEPS_PER_ARCSEC  (RA_MOT_STEPS_PER_R * RA_MICROSTEPS * RA_AXIS_PULLEY)/(RA_MOT_PULLEY * RA_ARCSEC_PER_R)
+
+
+#define DEC_MOT_PULLEY 16.0
+#define DEC_AXIS_PULLEY 48.0
+#define DEC_MOT_STEPS_PER_R 400.0
+#define DEC_MICROSTEPS 32.0
+#define DEC_ARCSEC_PER_R 657 // 1359.0
+#define DEC_STEPS_PER_ARCSEC  (DEC_MOT_STEPS_PER_R * DEC_MICROSTEPS * DEC_AXIS_PULLEY)/(DEC_MOT_PULLEY * DEC_ARCSEC_PER_R)
+
 /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
 // EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 253, 113, 642, 632}
-
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { RA_STEPS_PER_ARCSEC, DEC_STEPS_PER_ARCSEC, 642, 632}
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 300, 300, 5, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 1000, 1000, 5, 25 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -713,7 +732,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 120, 120, 120, 120 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -723,9 +742,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          120    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  120    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   120    // X, Y, Z acceleration for travel (non printing) moves
 
 //
 // Use Junction Deviation instead of traditional Jerk Limiting
@@ -1004,8 +1023,8 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 200
-#define Y_BED_SIZE 200
+#define X_BED_SIZE ARCSEC_F_ROTAT/2
+#define Y_BED_SIZE ARCSEC_F_ROTAT/2
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1371,9 +1390,9 @@
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //
-//#define EEPROM_SETTINGS // Enable for M500 and M501 commands
+#define EEPROM_SETTINGS // Enable for M500 and M501 commands
 //#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
-#define EEPROM_CHITCHAT   // Give feedback on EEPROM commands. Disable to save PROGMEM.
+//#define EEPROM_CHITCHAT   // Give feedback on EEPROM commands. Disable to save PROGMEM.
 
 //
 // Host Keepalive
@@ -1582,7 +1601,7 @@
  * you must uncomment the following option or it won't work.
  *
  */
-//#define SDSUPPORT
+#define SDSUPPORT
 
 /**
  * SD CARD: SPI SPEED
@@ -1825,7 +1844,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
 //
 // ReprapWorld Graphical LCD

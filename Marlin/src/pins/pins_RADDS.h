@@ -266,7 +266,26 @@
     #define BTN_EN2         33
     #define BTN_ENC         37
 
-  #endif // SPARK_FULL_GRAPHICS
+  #else
+
+    #define LCD_PINS_RS     42
+    #define LCD_PINS_ENABLE 43
+    #define LCD_PINS_D4     44
+    #define LCD_PINS_D5     45
+    #define LCD_PINS_D6     46
+    #define LCD_PINS_D7     47
+
+    #define BEEPER_PIN      41
+
+    #define BTN_EN1         50
+    #define BTN_EN2         52
+    #define BTN_ENC         48
+
+    #define BTN_BACK        71
+
+    #define SDSS            10
+    #define SD_DETECT_PIN   14
+  #endif // Controller selection
 
 #endif // ULTRA_LCD
 

@@ -33,6 +33,7 @@
  */
 #define CONFIGURATION_ADV_H_VERSION 020000
 
+#define MACHINE_UUID_CONFIGURATION "821e09e2-ac62-4c0b-8588-90eb97b6cb43"
 // @section temperature
 
 //===========================================================================

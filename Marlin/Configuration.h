@@ -132,7 +132,7 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_14_RE_ARM_EEB
+  #define MOTHERBOARD BOARD_RADDS
 #endif
 
 // Optional custom name for your RepStrap or other custom machine
@@ -278,7 +278,7 @@
 // CTC MPE (Magnetic Parking Extruder)
 #define HOTEND_OFFSET_X {0.0, 0.7} // (in mm) for each extruder, offset of the hotend on the X axis
 #define HOTEND_OFFSET_Y {0.0, 0.1}  // (in mm) for each extruder, offset of the hotend on the Y axis
-
+#define HOTEND_OFFSET_Z { 0.0, 0.25 }
 // @section machine
 
 /**
@@ -609,8 +609,8 @@
   #define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
-  //#define ENDSTOPPULLUP_ZMIN // RWE Change BLT
-  //#define ENDSTOPPULLUP_ZMIN_PROBE // RWE Change BLT
+  #define ENDSTOPPULLUP_ZMIN // RWE Change BLT
+  #define ENDSTOPPULLUP_ZMIN_PROBE // RWE Change BLT
 #endif
 
 // Enable pulldown for all endstops to prevent a floating state
@@ -1638,7 +1638,7 @@
  * :['JAPANESE', 'WESTERN', 'CYRILLIC']
  */
 // CTC
-// #define DISPLAY_CHARSET_HD44780 JAPANESE
+#define DISPLAY_CHARSET_HD44780 JAPANESE
 
 /**
  * LCD TYPE
@@ -1651,9 +1651,9 @@
  *            https://github.com/olikraus/U8glib_Arduino
  */
 // CTC
-//#define ULTRA_LCD   // Character based
+#define ULTRA_LCD   // Character based
 // ENDER
-#define DOGLCD      // Full graphics display
+//#define DOGLCD      // Full graphics display
 
 /**
  * SD CARD
@@ -1771,7 +1771,7 @@
 // Original RADDS LCD Display+Encoder+SDCardReader
 // http://doku.radds.org/dokumentation/lcd-display/
 //
-//#define RADDS_DISPLAY
+#define RADDS_DISPLAY
 
 //
 // ULTIMAKER Controller.

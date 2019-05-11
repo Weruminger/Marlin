@@ -1670,15 +1670,24 @@
   #define TMC_SW_MISO      37
   #define TMC_SW_SCK       35
 
- /*
+ /**
   on RADDS :
   X_CS_PIN  25
   y_CS_PIN  27
   z_CS_PIN  29
   E0_CS_PIN  31
-  */
+ 
+TMC 2130 SideKick Layout
 
- /*
+    GND  -       - DIR
+    VIO  -       - STEP
+    M1B  -       - NC
+    M1A  -         SDO -
+    M2A  -          CS -
+    M2B  -         SCK -
+    GND  -    x    SDI -  
+    VMot -   d x - EN 
+	
   * on AUX1
   * 
   *   - VCC +5V 

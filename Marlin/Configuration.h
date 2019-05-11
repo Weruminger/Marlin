@@ -104,7 +104,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT 0
+#define SERIAL_PORT -1
 
 /**
  * Select a secondary serial port on the board to use for communication with the host.
@@ -124,7 +124,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 250000
+#define BAUDRATE 115200
 
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH
@@ -132,7 +132,7 @@
 // The following define selects which electronics board you have.
 // Please choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_GT2560_REV_A_PLUS
+  #define MOTHERBOARD BOARD_RAMPS_14_RE_ARM_EEB
 #endif
 
 // Optional custom name for your RepStrap or other custom machine
@@ -699,7 +699,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-// EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm 
+// EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm
 #define DEFAULT_AXIS_STEPS_PER_UNIT   { 253, 113, 642, 632}
 
 

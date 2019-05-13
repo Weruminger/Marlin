@@ -116,22 +116,35 @@
 
   /**
    * Software serial
-   */
 
-   // P2_08 E1-Step
-   // P2_13 E1-Dir
+Interruptable I/O Pins
+ ReArm   (MEGA) Function / Port / Connector
+   P2_08 (D36) E1-Step / / E1_02
+   P2_13 (D34) E1-Dir  / / E1_01
+   P2_06 (D59) LCD / AUX2_3 / J3-05
+   P2_11 (D35) LDC / / J3-10
+   P0_00 (D20) I2C SDA / / I2C
+   P0_01 (D21) I2C SCL / / I2C
+   P0_26 (D63) AUX2_4
+   P0_02 (D01) UART TXD_0 / AUX1_6 / J4_4
+   P0_03 (D00) UART RXD_0 / AUX1_8 / J4_5
+   P0_27 (D57) OC / AUX1_5
+   P0_28 (D58) OC / AUX1_7
+  */
+  #define X_SERIAL_TX_PIN    P0_00
+  #define X_SERIAL_RX_PIN    P0_00
 
-  #define X_SERIAL_TX_PIN    P2_06
-  #define X_SERIAL_RX_PIN    P2_06
+  #define Y_SERIAL_TX_PIN    P0_01
+  #define Y_SERIAL_RX_PIN    P0_01
 
-  #define Y_SERIAL_TX_PIN    P2_11
-  #define Y_SERIAL_RX_PIN    P2_11
+  #define Z_SERIAL_TX_PIN    P0_26
+  #define Z_SERIAL_RX_PIN    P0_26
 
-  #define Z_SERIAL_TX_PIN    P2_08
-  #define Z_SERIAL_RX_PIN    P2_08
+  #define E0_SERIAL_TX_PIN   P0_02
+  #define E0_SERIAL_RX_PIN   P0_02
 
-  #define E0_SERIAL_TX_PIN   P2_13
-  #define E0_SERIAL_RX_PIN   P2_13
+  #define E1_SERIAL_TX_PIN   P0_03
+  #define E1_SERIAL_RX_PIN   P0_03
 
 #endif
 

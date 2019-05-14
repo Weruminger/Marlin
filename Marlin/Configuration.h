@@ -586,9 +586,9 @@
 // Specify here all the endstop connectors that are connected to any endstop or probe.
 // Almost all printers will be using one per axis. Probes will use one or more of the
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
-#define USE_XMIN_PLUG
-#define USE_YMIN_PLUG
-#define USE_ZMIN_PLUG
+//#define USE_XMIN_PLUG
+//#define USE_YMIN_PLUG
+//#define USE_ZMIN_PLUG
 //#define USE_XMAX_PLUG
 //#define USE_YMAX_PLUG
 //#define USE_ZMAX_PLUG
@@ -709,7 +709,7 @@
  #define RA_AXIS_PULLEY 60.0
  #define RA_MOT_STEPS_PER_R 200.0
  #define RA_MICROSTEPS 64.0
- #define RA_ARCSEC_PER_R 338 // 607.0
+ #define RA_ARCSEC_PER_R 615 
 
  #define RA_STEPS_PER_ARCSEC  (RA_MOT_STEPS_PER_R * RA_MICROSTEPS * RA_AXIS_PULLEY)/(RA_MOT_PULLEY * RA_ARCSEC_PER_R)
 
@@ -718,13 +718,13 @@
  #define DEC_AXIS_PULLEY 48.0
  #define DEC_MOT_STEPS_PER_R 400.0
  #define DEC_MICROSTEPS 64.0
- #define DEC_ARCSEC_PER_R 657 // 1359.0
+ #define DEC_ARCSEC_PER_R 1324
  #define DEC_STEPS_PER_ARCSEC  (DEC_MOT_STEPS_PER_R * DEC_MICROSTEPS * DEC_AXIS_PULLEY)/(DEC_MOT_PULLEY * DEC_ARCSEC_PER_R)
 
 
 
 // EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { RA_STEPS_PER_ARCSEC, DEC_STEPS_PER_ARCSEC, 642, 632}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { RA_STEPS_PER_ARCSEC, DEC_STEPS_PER_ARCSEC, 642, 632}  // 
 
 
 /**

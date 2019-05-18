@@ -586,9 +586,9 @@
 // Specify here all the endstop connectors that are connected to any endstop or probe.
 // Almost all printers will be using one per axis. Probes will use one or more of the
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
-//#define USE_XMIN_PLUG
-//#define USE_YMIN_PLUG
-//#define USE_ZMIN_PLUG
+#define USE_XMIN_PLUG
+#define USE_YMIN_PLUG
+#define USE_ZMIN_PLUG
 //#define USE_XMAX_PLUG
 //#define USE_YMAX_PLUG
 //#define USE_ZMAX_PLUG
@@ -709,7 +709,7 @@
  #define RA_AXIS_PULLEY 60.0
  #define RA_MOT_STEPS_PER_R 200.0
  #define RA_MICROSTEPS 64.0
- #define RA_ARCSEC_PER_R 615 
+ #define RA_ARCSEC_PER_R 615
 
  #define RA_STEPS_PER_ARCSEC  (RA_MOT_STEPS_PER_R * RA_MICROSTEPS * RA_AXIS_PULLEY)/(RA_MOT_PULLEY * RA_ARCSEC_PER_R)
 
@@ -724,7 +724,7 @@
 
 
 // EQ3 RA & DEC Steps/Bogensekunde, Fokus Steps/mm
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { RA_STEPS_PER_ARCSEC, DEC_STEPS_PER_ARCSEC, 642, 632}  // 
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { RA_STEPS_PER_ARCSEC, DEC_STEPS_PER_ARCSEC, 642, 632}  //
 
 
 /**
@@ -995,9 +995,9 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR false
-#define INVERT_Y_DIR false
-#define INVERT_Z_DIR false
+#define INVERT_X_DIR true
+#define INVERT_Y_DIR true
+#define INVERT_Z_DIR true
 
 // @section extruder
 
@@ -1024,6 +1024,7 @@
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
 
+#define RWE_FAKE_HOMING 
 // @section machine
 
 // The size of the print bed
@@ -1031,11 +1032,14 @@
 #define Y_BED_SIZE ARCSEC_F_ROTAT/2
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
+#define X_MIN_POS X_BED_SIZE/-2
+#define Y_MIN_POS Y_BED_SIZE/-2
 #define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
+#define X_MAX_POS X_BED_SIZE/2
+#define Y_MAX_POS Y_BED_SIZE/2
+#define Z_MAX_POS 200
+/**
+#de-(/-2ine Y_MAX_POS Y_BED_SIZE
 #define Z_MAX_POS 200
 
 /**

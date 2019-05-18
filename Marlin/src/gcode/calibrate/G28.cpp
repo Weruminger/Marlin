@@ -192,7 +192,7 @@ void GcodeSuite::G28(const bool always_home_all) {
     DualXMode IDEX_saved_mode = dual_x_carriage_mode;
   #endif
 
-  #if ENABLED(MARLIN_DEV_MODE)
+  #if ANY(MARLIN_DEV_MODE, RWE_FAKE_HOMING)
     if (parser.seen('S')) {
       LOOP_XYZ(a) set_axis_is_at_home((AxisEnum)a);
       sync_plan_position();

@@ -1406,7 +1406,7 @@
  */
 #define FWRETRACT
 #if ENABLED(FWRETRACT)
-  #define FWRETRACT_AUTORETRACT           // costs ~500 bytes of PROGMEM
+  //#define FWRETRACT_AUTORETRACT           // costs ~500 bytes of PROGMEM
   #if ENABLED(FWRETRACT_AUTORETRACT)
     #define MIN_AUTORETRACT 0.1           // When auto-retract is on, convert E moves of this length and over
     #define MAX_AUTORETRACT 10.0          // Upper limit for auto-retract conversion
@@ -1750,7 +1750,7 @@
   y_CS_PIN  27
   z_CS_PIN  29
   E0_CS_PIN  31
- 
+
 TMC 2130 SideKick Layout
 
     GND  -       - DIR
@@ -1759,25 +1759,25 @@ TMC 2130 SideKick Layout
     M1A  -         SDO -
     M2A  -          CS -
     M2B  -         SCK -
-    GND  -    x    SDI -  
-    VMot -   d x - EN 
-	
+    GND  -    x    SDI -
+    VMot -   d x - EN
+
   * on AUX1
-  * 
-  *   - VCC +5V 
-  *   - TX1 
-  *   - RX1 
-  *   - GND 
-  *   - 25 
-  *   - 27 
-  *   - 29 
-  *   - 31 
-  *   - 33 
-  *   - 35 
-  *   - 37 
-  *   - GND  
+  *
+  *   - VCC +5V
+  *   - TX1
+  *   - RX1
+  *   - GND
+  *   - 25
+  *   - 27
+  *   - 29
+  *   - 31
+  *   - 33
+  *   - 35
+  *   - 37
+  *   - GND
   */
- 
+
   /**
    * Software enable
    *

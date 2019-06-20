@@ -483,12 +483,12 @@
  *       Set the initial X offset and temperature differential with M605 S2 X[offs] R[deg] and
  *       follow with M605 S3 to initiate mirrored movement.
  */
-//#define DUAL_X_CARRIAGE
+#define DUAL_X_CARRIAGE
 #if ENABLED(DUAL_X_CARRIAGE)
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_BED_SIZE  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-  #define X2_MIN_POS    80       // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
-  #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
+  #define X2_MIN_POS    51       // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
+  #define X2_MAX_POS   299       // Set this to the distance between toolheads when both heads are homed
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
       // However: In this mode the HOTEND_OFFSET_X value for the second extruder provides a software
@@ -1519,7 +1519,7 @@
   #if AXIS_DRIVER_TYPE_X(TMC26X)
     #define X_MAX_CURRENT     1000  // (mA)
     #define X_SENSE_RESISTOR    91  // (mOhms)
-    #define X_MICROSTEPS        16  // Number of microsteps
+    #define X_MICROSTEPS        32  // Number of microsteps
   #endif
 
   #if AXIS_DRIVER_TYPE_X2(TMC26X)
@@ -1531,7 +1531,7 @@
   #if AXIS_DRIVER_TYPE_Y(TMC26X)
   #define Y_MAX_CURRENT     1000
   #define Y_SENSE_RESISTOR    91
-  #define Y_MICROSTEPS        16
+  #define Y_MICROSTEPS        32
   #endif
 
   #if AXIS_DRIVER_TYPE_Y2(TMC26X)
@@ -1543,7 +1543,7 @@
   #if AXIS_DRIVER_TYPE_Z(TMC26X)
   #define Z_MAX_CURRENT     1000
   #define Z_SENSE_RESISTOR    91
-  #define Z_MICROSTEPS        16
+  #define Z_MICROSTEPS        32
   #endif
 
   #if AXIS_DRIVER_TYPE_Z2(TMC26X)
@@ -1573,7 +1573,7 @@
   #if AXIS_DRIVER_TYPE_E2(TMC26X)
   #define E2_MAX_CURRENT    1000
   #define E2_SENSE_RESISTOR   91
-  #define E2_MICROSTEPS       16
+  #define E2_MICROSTEPS       32
   #endif
 
   #if AXIS_DRIVER_TYPE_E3(TMC26X)
@@ -1626,8 +1626,8 @@
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT         900
-    #define X2_MICROSTEPS       16
+    #define X2_CURRENT         800
+    #define X2_MICROSTEPS       32
     #define X2_RSENSE    0.11
   #endif
 
@@ -1675,7 +1675,7 @@
 
   #if AXIS_IS_TMC(E2)
   #define E2_CURRENT         800
-  #define E2_MICROSTEPS       16
+  #define E2_MICROSTEPS       32
     #define E2_RSENSE    0.11
   #endif
 

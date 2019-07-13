@@ -706,7 +706,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
 //#define DEFAULT_AXIS_STEPS_PER_UNIT { 320, 320, 400, 440 }
-#define DEFAULT_AXIS_STEPS_PER_UNIT    { 640, 640, 6400 , 12800, 12800 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT    { 320, 400, 1600 , 1829, 1829 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -721,7 +721,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_ACCELERATION { 3000, 3000, 100, 10000, 10000 }
+#define DEFAULT_MAX_ACCELERATION { 1500, 1500, 50, 10000, 10000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -731,7 +731,7 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION 1500 // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION 800 // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION 1500 // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION 1500 // X, Y, Z acceleration for travel (non printing) moves
 
@@ -752,8 +752,8 @@
  * value set here, it may happen instantaneously.
  */
 #if DISABLED(JUNCTION_DEVIATION)
-  #define DEFAULT_XJERK 8.0
-  #define DEFAULT_YJERK 8.0
+  #define DEFAULT_XJERK 4.0
+  #define DEFAULT_YJERK 4.0
   #define DEFAULT_ZJERK 0.3
 #endif
 
@@ -1002,7 +1002,7 @@
 
 //#define UNKNOWN_Z_NO_RAISE // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
-//#define Z_HOMING_HEIGHT 4  // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT 4  // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                              // Be sure you have this distance over your Z_MAX_POS in case.
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
@@ -1014,7 +1014,7 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 249
+#define X_BED_SIZE 260
 #define Y_BED_SIZE 300
 
 // Travel limits (mm) after homing, corresponding to endstop positions.

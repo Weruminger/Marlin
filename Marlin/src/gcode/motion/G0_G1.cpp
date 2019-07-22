@@ -70,6 +70,9 @@ void GcodeSuite::G0_G1(
 
     get_destination_from_command(); // For X Y Z E F
 
+
+// RWE FIX MPE Calibration 
+// Possibly Dead Code or if MPE_Z_OFFSET or MPE_XY_OFFSET is set it may cause the issue
     #if ENABLED(MAGNETIC_PARKING_EXTRUDER) && HAS_HOTEND_OFFSET
       #if ENABLED(MPE_Z_OFFSET)
         if (active_extruder)

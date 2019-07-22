@@ -415,7 +415,7 @@ void GcodeSuite::G28(const bool always_home_all) {
 
   // Restore the active tool after homing
   #if HOTENDS > 1 && (DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE))
-    #if EITHER(PARKING_EXTRUDER, DUAL_X_CARRIAGE)
+    #if EITHER(PARKING_EXTRUDER, MAGNETIC_PARKING_EXTRUDER, DUAL_X_CARRIAGE) // RWE FIX MPE Calibration
       #define NO_FETCH false // fetch the previous toolhead
     #else
       #define NO_FETCH true

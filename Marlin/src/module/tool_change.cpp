@@ -150,6 +150,7 @@ inline void fast_line_to_current(const AxisEnum fr_axis) {
 
     const float oldx = current_position[X_AXIS],
                 grabpos = mpe_settings.parking_xpos[new_tool] + (new_tool ? mpe_settings.grab_distance : -mpe_settings.grab_distance),
+// RWE FIX MPE Calibration officecompensation M951 C[-1;0;1] may cause the issue i n new context
                 offsetcompensation =
                   #if HAS_HOTEND_OFFSET
                     hotend_offset[X_AXIS][active_extruder] * mpe_settings.compensation_factor

@@ -706,7 +706,9 @@
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
 //#define DEFAULT_AXIS_STEPS_PER_UNIT { 320, 320, 400, 440 }
-#define DEFAULT_AXIS_STEPS_PER_UNIT    { 320, 400, 1600 , 1829, 1829 }
+// all TMC
+//#define DEFAULT_AXIS_STEPS_PER_UNIT    { 320, 400, 1600 , 802, 802 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT    { 320, 400, 1600 , 1604, 1604 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1382,7 +1384,7 @@
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //
 #define EEPROM_SETTINGS  // Enable for M500 and M501 commands
-#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
+//#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
 #define EEPROM_CHITCHAT  // Give feedback on EEPROM commands. Disable to save PROGMEM.
 #if ENABLED(EEPROM_SETTINGS)
   //#define EEPROM_AUTO_INIT  // Init EEPROM automatically on any errors.

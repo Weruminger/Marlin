@@ -83,14 +83,14 @@
 #define E0_DIR_PIN         60
 #define E0_ENABLE_PIN      62
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN        -1
+  #define E0_CS_PIN        46
 #endif
 
 #define E1_STEP_PIN        64
 #define E1_DIR_PIN         63
 #define E1_ENABLE_PIN      65
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN        -1
+  #define E1_CS_PIN        47
 #endif
 
 #define E2_STEP_PIN        51

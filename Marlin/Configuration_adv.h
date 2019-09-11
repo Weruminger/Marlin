@@ -1662,14 +1662,14 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-  #define E0_CURRENT         800
-  #define E0_MICROSTEPS       16
+  #define E0_CURRENT         750
+  #define E0_MICROSTEPS       32
     #define E0_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E1)
-  #define E1_CURRENT         800
-  #define E1_MICROSTEPS       16
+  #define E1_CURRENT         750
+  #define E1_MICROSTEPS       32
     #define E1_RSENSE    0.11
   #endif
 
@@ -1776,6 +1776,17 @@ TMC 2130 SideKick Layout
   *   - 35
   *   - 37
   *   - GND
+  
+  for TMC 2208 E0 TX & RX Pin 46 (LCD 6) 
+  for TMC 2208 E0 TX & RX Pin 47 (LCD 7) 
+  
+  AUX LCD
+    GND        5V
+    LCD RS     LCD EN
+    LCD 4      LCD 5
+    LCD 6      LCD 7
+    Beep       ENC P
+    ENC B      ENC A
   */
 
   /**

@@ -1620,19 +1620,19 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT     800  // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT     750 // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_MICROSTEPS        32  // 0..256
     #define X_RSENSE     0.11
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT         800
+    #define X2_CURRENT         750
     #define X2_MICROSTEPS       32
     #define X2_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT          900
+    #define Y_CURRENT          750
     #define Y_MICROSTEPS        32
     #define Y_RSENSE     0.11
   #endif
@@ -1662,19 +1662,19 @@
   #endif
 
   #if AXIS_IS_TMC(E0)
-  #define E0_CURRENT         750
-  #define E0_MICROSTEPS       32
+  #define E0_CURRENT         650
+  #define E0_MICROSTEPS       64
     #define E0_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E1)
-  #define E1_CURRENT         750
-  #define E1_MICROSTEPS       32
+  #define E1_CURRENT         650
+  #define E1_MICROSTEPS       64
     #define E1_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E2)
-  #define E2_CURRENT         800
+  #define E2_CURRENT         750
   #define E2_MICROSTEPS       32
     #define E2_RSENSE    0.11
   #endif

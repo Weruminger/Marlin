@@ -452,26 +452,12 @@
 
   // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
 
-  // Ender-4
-  #define DEFAULT_Kp 16.67
-  #define DEFAULT_Ki 1.12
-  #define DEFAULT_Kd 62.14
-
-  // Ultimaker
-//  #define DEFAULT_Kp 22.2
-//  #define DEFAULT_Ki 1.08
-//  #define DEFAULT_Kd 114
-
-  // MakerGear
-  //#define DEFAULT_Kp 7.0
-  //#define DEFAULT_Ki 0.1
-  //#define DEFAULT_Kd 12
-
-  // Mendel Parts V9 on 12V
-  //#define DEFAULT_Kp 63.0
-  //#define DEFAULT_Ki 2.25
-  //#define DEFAULT_Kd 440
-
+  // GIMLI E3D JHead V6
+  // result by M303 S240
+  #define DEFAULT_Kp 23.76
+  #define DEFAULT_Ki 1.78
+  #define DEFAULT_Kd 79.35
+  
 #endif // PIDTEMP
 
 //===========================================================================
@@ -507,22 +493,11 @@
 
   // #define PID_BED_DEBUG  // Sends debug data to the serial port.
 
-  // Ender-4
-  #define DEFAULT_bedKp 426.68
-  #define DEFAULT_bedKi 78.92
-  #define DEFAULT_bedKd 576.71
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  //#define DEFAULT_bedKp 10.00
-  //#define DEFAULT_bedKi .023
-  //#define DEFAULT_bedKd 305.4
-
-  //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
-  //from pidautotune
-  //#define DEFAULT_bedKp 97.1
-  //#define DEFAULT_bedKi 1.41
-  //#define DEFAULT_bedKd 1675.16
+  // GIMLI 240V 650W silicone heater 200mm*300mm
+  // result by M303 E-1 S80
+  #define DEFAULT_bedKp 138.46
+  #define DEFAULT_bedKi 23.39
+  #define DEFAULT_bedKd 204.92
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -708,7 +683,7 @@
 //#define DEFAULT_AXIS_STEPS_PER_UNIT { 320, 320, 400, 440 }
 // all TMC
 //#define DEFAULT_AXIS_STEPS_PER_UNIT    { 320, 400, 1600 , 802, 802 }
-#define DEFAULT_AXIS_STEPS_PER_UNIT    { 316, 395, 1600 , 1604, 1604 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT    { 317, 197.5, 1616 , 1653, 1653 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -723,7 +698,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_MAX_ACCELERATION { 1500, 1500, 50, 8000, 8000 }
+#define DEFAULT_MAX_ACCELERATION { 800, 800, 50, 8000, 8000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -733,7 +708,7 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION 1000 // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION 800 // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION 750 // E acceleration for retracts
 #define DEFAULT_TRAVEL_ACCELERATION 1500 // X, Y, Z acceleration for travel (non printing) moves
 
@@ -755,7 +730,7 @@
  */
 #if DISABLED(JUNCTION_DEVIATION)
   #define DEFAULT_XJERK 10.0
-  #define DEFAULT_YJERK 10.0
+  #define DEFAULT_YJERK 5.0
   #define DEFAULT_ZJERK 0.3
 #endif
 
@@ -892,7 +867,7 @@
  */
 #define X_PROBE_OFFSET_FROM_EXTRUDER -5 // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 30 // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -0.33 // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -3.4 // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
 #define MIN_PROBE_EDGE 10
@@ -925,7 +900,7 @@
  * Example: `M851 Z-5` with a CLEARANCE of 4  =>  9mm from bed to nozzle.
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
-#define Z_CLEARANCE_DEPLOY_PROBE 10 // Z Clearance for Deploy/Stow
+#define Z_CLEARANCE_DEPLOY_PROBE 15 // Z Clearance for Deploy/Stow
 #define Z_CLEARANCE_BETWEEN_PROBES 5 // Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done

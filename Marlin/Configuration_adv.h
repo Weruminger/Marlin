@@ -1193,7 +1193,7 @@
  * See http://marlinfw.org/docs/features/lin_advance.html for full instructions.
  * Mention @Sebastianv650 on GitHub to alert the author of any issues.
  */
-#define LIN_ADVANCE
+// #define LIN_ADVANCE
 #if ENABLED(LIN_ADVANCE)
   //#define EXTRA_LIN_ADVANCE_K // Enable for second linear advance constants
   #define LIN_ADVANCE_K 0.22  // Unit: mm compression per 1mm/s extruder speed
@@ -1406,19 +1406,19 @@
  */
 #define FWRETRACT
 #if ENABLED(FWRETRACT)
-  //#define FWRETRACT_AUTORETRACT           // costs ~500 bytes of PROGMEM
+  #define FWRETRACT_AUTORETRACT           // costs ~500 bytes of PROGMEM
   #if ENABLED(FWRETRACT_AUTORETRACT)
     #define MIN_AUTORETRACT 0.1           // When auto-retract is on, convert E moves of this length and over
     #define MAX_AUTORETRACT 10.0          // Upper limit for auto-retract conversion
   #endif
-  #define RETRACT_LENGTH 3                // Default retract length (positive mm)
-  #define RETRACT_LENGTH_SWAP 13          // Default swap retract length (positive mm), for extruder change
+  #define RETRACT_LENGTH 5                // Default retract length (positive mm)
+  #define RETRACT_LENGTH_SWAP 35          // Default swap retract length (positive mm), for extruder change
   #define RETRACT_FEEDRATE 45             // Default feedrate for retracting (mm/s)
-  #define RETRACT_ZRAISE 0.8                // Default retract Z-raise (mm)
+  #define RETRACT_ZRAISE 0.6                // Default retract Z-raise (mm)
   #define RETRACT_RECOVER_LENGTH 0        // Default additional recover length (mm, added to retract length when recovering)
   #define RETRACT_RECOVER_LENGTH_SWAP 0   // Default additional swap recover length (mm, added to retract length when recovering from extruder change)
-  #define RETRACT_RECOVER_FEEDRATE 8      // Default feedrate for recovering from retraction (mm/s)
-  #define RETRACT_RECOVER_FEEDRATE_SWAP 8 // Default feedrate for recovering from swap retraction (mm/s)
+  #define RETRACT_RECOVER_FEEDRATE 30      // Default feedrate for recovering from retraction (mm/s)
+  #define RETRACT_RECOVER_FEEDRATE_SWAP 30 // Default feedrate for recovering from swap retraction (mm/s)
   #if ENABLED(MIXING_EXTRUDER)
     //#define RETRACT_SYNC_MIXING         // Retract and restore all mixing steppers simultaneously
   #endif
@@ -1469,7 +1469,7 @@
                                                   // This short retract is done immediately, before parking the nozzle.
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     35  // (mm/s) Unload filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_UNLOAD_ACCEL        25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      650  // (mm) The length of filament for a complete unload.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH      65  // (mm) The length of filament for a complete unload.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
                                                   //   Set to 0 for manual unloading.
@@ -1478,7 +1478,7 @@
                                                   // 0 to disable start loading and skip to fast load only
   #define FILAMENT_CHANGE_FAST_LOAD_FEEDRATE  35  // (mm/s) Load filament feedrate. This can be pretty fast.
   #define FILAMENT_CHANGE_FAST_LOAD_ACCEL     25  // (mm/s^2) Lower acceleration may allow a faster feedrate.
-  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH   600  // (mm) Load length of filament, from extruder gear to nozzle.
+  #define FILAMENT_CHANGE_FAST_LOAD_LENGTH   60  // (mm) Load length of filament, from extruder gear to nozzle.
                                                   //   For Bowden, the full length of the tube and nozzle.
                                                   //   For direct drive, the full length of the nozzle.
   #define ADVANCED_PAUSE_CONTINUOUS_PURGE         // Purge continuously up to the purge length until interrupted.
@@ -1620,20 +1620,20 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT     750 // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT     800 // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_MICROSTEPS        32  // 0..256
     #define X_RSENSE     0.11
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT         750
+    #define X2_CURRENT         800
     #define X2_MICROSTEPS       32
     #define X2_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT          750
-    #define Y_MICROSTEPS        32
+    #define Y_CURRENT          900
+    #define Y_MICROSTEPS        16
     #define Y_RSENSE     0.11
   #endif
 
@@ -1674,13 +1674,13 @@
   #endif
 
   #if AXIS_IS_TMC(E2)
-  #define E2_CURRENT         750
+  #define E2_CURRENT         850
   #define E2_MICROSTEPS       32
     #define E2_RSENSE    0.11
   #endif
 
   #if AXIS_IS_TMC(E3)
-  #define E3_CURRENT         800
+  #define E3_CURRENT         850
   #define E3_MICROSTEPS       16
     #define E3_RSENSE    0.11
   #endif
@@ -1850,16 +1850,16 @@ TMC 2130 SideKick Layout
    */
   #define HYBRID_THRESHOLD
 
-  #define X_HYBRID_THRESHOLD     80 // [mm/s]
-  #define X2_HYBRID_THRESHOLD    80
-  #define Y_HYBRID_THRESHOLD     80
-  #define Y2_HYBRID_THRESHOLD    80
+  #define X_HYBRID_THRESHOLD     40 // [mm/s]
+  #define X2_HYBRID_THRESHOLD    40
+  #define Y_HYBRID_THRESHOLD     40
+  #define Y2_HYBRID_THRESHOLD    40
   #define Z_HYBRID_THRESHOLD       6
   #define Z2_HYBRID_THRESHOLD      6
   #define Z3_HYBRID_THRESHOLD      6
-  #define E0_HYBRID_THRESHOLD     5
+  #define E0_HYBRID_THRESHOLD     30
   #define E1_HYBRID_THRESHOLD     30
-  #define E2_HYBRID_THRESHOLD     30
+  #define E2_HYBRID_THRESHOLD     50
   #define E3_HYBRID_THRESHOLD     30
   #define E4_HYBRID_THRESHOLD     30
   #define E5_HYBRID_THRESHOLD     30

@@ -1412,7 +1412,7 @@
     #define MAX_AUTORETRACT 10.0          // Upper limit for auto-retract conversion
   #endif
   #define RETRACT_LENGTH 5                // Default retract length (positive mm)
-  #define RETRACT_LENGTH_SWAP 35          // Default swap retract length (positive mm), for extruder change
+  #define RETRACT_LENGTH_SWAP 12          // Default swap retract length (positive mm), for extruder change
   #define RETRACT_FEEDRATE 45             // Default feedrate for retracting (mm/s)
   #define RETRACT_ZRAISE 0.6                // Default retract Z-raise (mm)
   #define RETRACT_RECOVER_LENGTH 0        // Default additional recover length (mm, added to retract length when recovering)

@@ -1532,8 +1532,8 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MINIMUM_STEPPER_POST_DIR_DELAY 650
-//#define MINIMUM_STEPPER_PRE_DIR_DELAY 650
+#define MINIMUM_STEPPER_POST_DIR_DELAY 20
+#define MINIMUM_STEPPER_PRE_DIR_DELAY 20
 
 /**
  * Minimum stepper driver pulse width (in µs)
@@ -1546,7 +1546,7 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MINIMUM_STEPPER_PULSE 2
+#define MINIMUM_STEPPER_PULSE 0
 
 /**
  * Maximum stepping rate (in Hz) the stepper driver allows
@@ -1560,12 +1560,12 @@
  *
  * Override the default value based on the driver type set in Configuration.h.
  */
-//#define MAXIMUM_STEPPER_RATE 250000
+#define MAXIMUM_STEPPER_RATE 400000
 
 // @section temperature
 
 // Control heater 0 and heater 1 in parallel.
-//#define HEATERS_PARALLEL
+// #define HEATERS_PARALLEL
 
 //===========================================================================
 //================================= Buffers =================================
@@ -1883,7 +1883,7 @@
   #define INTERPOLATE       true  // Interpolate X/Y/Z_MICROSTEPS to 256
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       750        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16    // 0..256
     #define X_RSENSE          0.11
@@ -1891,7 +1891,7 @@
   #endif
 
   #if AXIS_IS_TMC(X2)
-    #define X2_CURRENT      800
+    #define X2_CURRENT      750
     #define X2_CURRENT_HOME X2_CURRENT
     #define X2_MICROSTEPS    16
     #define X2_RSENSE         0.11
@@ -1917,7 +1917,7 @@
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT       800
     #define Z_CURRENT_HOME  Z_CURRENT
-    #define Z_MICROSTEPS     16
+    #define Z_MICROSTEPS     4
     #define Z_RSENSE          0.11
     #define Z_CHAIN_POS      -1
   #endif
@@ -1925,7 +1925,7 @@
   #if AXIS_IS_TMC(Z2)
     #define Z2_CURRENT      800
     #define Z2_CURRENT_HOME Z2_CURRENT
-    #define Z2_MICROSTEPS    16
+    #define Z2_MICROSTEPS    4
     #define Z2_RSENSE         0.11
     #define Z2_CHAIN_POS     -1
   #endif
@@ -1933,7 +1933,7 @@
   #if AXIS_IS_TMC(Z3)
     #define Z3_CURRENT      800
     #define Z3_CURRENT_HOME Z3_CURRENT
-    #define Z3_MICROSTEPS    16
+    #define Z3_MICROSTEPS    4
     #define Z3_RSENSE         0.11
     #define Z3_CHAIN_POS     -1
   #endif
@@ -2146,9 +2146,9 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
-    #define X_STALL_SENSITIVITY  8
+    #define X_STALL_SENSITIVITY  32
     #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
-    #define Y_STALL_SENSITIVITY  8
+    #define Y_STALL_SENSITIVITY  32
     //#define Z_STALL_SENSITIVITY  8
     //#define SPI_ENDSTOPS              // TMC2130 only
     //#define HOME_USING_SPREADCYCLE
@@ -2165,7 +2165,7 @@
    * Enable M122 debugging command for TMC stepper drivers.
    * M122 S0/1 will enable continous reporting.
    */
-  //#define TMC_DEBUG
+  #define TMC_DEBUG
 
   /**
    * You can set your own advanced settings by filling in predefined functions.

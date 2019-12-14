@@ -641,7 +641,7 @@
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
 #define USE_XMAX_PLUG // RWE Change MPE
-//#define USE_YMAX_PLUG
+#define USE_YMAX_PLUG // Shifting sensor
 //#define USE_ZMAX_PLUG
 
 // Enable pullup for all endstops to prevent a floating state
@@ -649,8 +649,8 @@
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
   // #define ENDSTOPPULLUP_XMAX // RWE Change MPE
-  #define ENDSTOPPULLUP_YMAX
-  #define ENDSTOPPULLUP_ZMAX
+  //#define ENDSTOPPULLUP_YMAX
+  //#define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN
   #define ENDSTOPPULLUP_YMIN
   #define ENDSTOPPULLUP_ZMIN // RWE Change BLT
@@ -662,8 +662,8 @@
 #if DISABLED(ENDSTOPPULLDOWNS)
   // Disable ENDSTOPPULLDOWNS to set pulldowns individually
   //#define ENDSTOPPULLDOWN_XMAX
-  //#define ENDSTOPPULLDOWN_YMAX
-  //#define ENDSTOPPULLDOWN_ZMAX
+  #define ENDSTOPPULLDOWN_YMAX
+  #define ENDSTOPPULLDOWN_ZMAX
   //#define ENDSTOPPULLDOWN_XMIN
   //#define ENDSTOPPULLDOWN_YMIN
   //#define ENDSTOPPULLDOWN_ZMIN
@@ -675,8 +675,8 @@
 #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.  // RWE Change MPE
-//#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-//#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 
 /**
@@ -694,8 +694,8 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  TMC2208
-#define Y_DRIVER_TYPE  TMC2208
+#define X_DRIVER_TYPE  TMC2209
+#define Y_DRIVER_TYPE  TMC2209
 #define Z_DRIVER_TYPE  TMC2208
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
@@ -755,9 +755,9 @@
 /* Driver Microsteps swithed/programmed values */
 #define RWE_Microsteps_X  16
 #define RWE_Microsteps_Y  16
-#define RWE_Microsteps_Z  128
-#define RWE_Microsteps_E0 128
-#define RWE_Microsteps_E1 128
+#define RWE_Microsteps_Z  4
+#define RWE_Microsteps_E0 16
+#define RWE_Microsteps_E1 16
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
 #define RWE_StepsPerRotation_X  400
 #define RWE_StepsPerRotation_Y  400
@@ -773,7 +773,7 @@
 /* legth of any pitch */
 #define RWE_PitchPerTooth_X  2
 #define RWE_PitchPerTooth_Y  2
-#define RWE_PitchPerTooth_Z  8
+#define RWE_PitchPerTooth_Z  2
 #define RWE_PitchPerTooth_E0 7.711
 #define RWE_PitchPerTooth_E1 7.711
 /* length per rotation */

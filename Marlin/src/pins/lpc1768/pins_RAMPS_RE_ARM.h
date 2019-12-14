@@ -114,52 +114,97 @@
   #endif
 #endif
 
-#if HAS_TMC220x
+#if HAS_DRIVER(TMC2208)
   /**
-   * TMC2208/TMC2209 stepper drivers
+   * TMC2208 stepper drivers
    *
    * Hardware serial communication ports.
    * If undefined software serial is used according to the pins below
    */
 
-  //
-  // Software serial
-  //
+  /**
+   * Software serial
 
-  // P2_08 E1-Step
-  // P2_13 E1-Dir
+Interruptable I/O Pins
+Used ReArm (MEGA) Function   / Port   / Connector
+   + P2_08 (D36)  E1-Step    /        / E1_02
+   + P2_13 (D34)  E1-Dir     /        / E1_01
+   + P2_06 (D59)  LCD        / AUX2_3 / J3-05
+   + P2_11 (D35)  LDC        /        / J3-10
+   + P0_00 (D20)  I2C SDA    /        / I2C
+   + P0_01 (D21)  I2C SCL    /        / I2C
+   + P0_26 (D63)             / AUX2_4
+   + P0_02 (D01)  UART TXD_0 / AUX1_6 / J4_4
+   + P0_03 (D00)  UART RXD_0 / AUX1_8 / J4_5
+   - P0_27 (D57)  OC         / AUX1_5
+   - P0_28 (D58)  OC         / AUX1_7
+  */
+  #define X_SERIAL_TX_PIN   P0_02
+  #define X_SERIAL_RX_PIN   P0_02
 
-  #ifndef X_SERIAL_TX_PIN
-    #define X_SERIAL_TX_PIN  P0_01
-  #endif
-  #ifndef X_SERIAL_RX_PIN
-    #define X_SERIAL_RX_PIN  P0_01
-  #endif
+  #define Y_SERIAL_TX_PIN   P0_03
+  #define Y_SERIAL_RX_PIN   P0_03
 
-  #ifndef Y_SERIAL_TX_PIN
-    #define Y_SERIAL_TX_PIN  P0_00
-  #endif
-  #ifndef Y_SERIAL_RX_PIN
-    #define Y_SERIAL_RX_PIN  P0_00
-  #endif
+  #define Z_SERIAL_TX_PIN    P0_26
+  #define Z_SERIAL_RX_PIN    P0_26
 
-  #ifndef Z_SERIAL_TX_PIN
-    #define Z_SERIAL_TX_PIN  P2_13
-  #endif
-  #ifndef Z_SERIAL_RX_PIN
-    #define Z_SERIAL_RX_PIN  P2_13
-  #endif
+  #define E0_SERIAL_TX_PIN    P0_00
+  #define E0_SERIAL_RX_PIN    P0_00
 
-  #ifndef E0_SERIAL_TX_PIN
-    #define E0_SERIAL_TX_PIN P2_08
-  #endif
-  #ifndef E0_SERIAL_RX_PIN
-    #define E0_SERIAL_RX_PIN P2_08
-  #endif
+  #define E1_SERIAL_TX_PIN    P0_01
+  #define E1_SERIAL_RX_PIN    P0_01
+ 
+ // Reduce baud rate to improve software serial reliability
+ // #define TMC_BAUD_RATE 19200
 
-  // Reduce baud rate to improve software serial reliability
-  #define TMC_BAUD_RATE 19200
 #endif
+
+//#if HAS_TMC220x
+//  /**
+//   * TMC2208/TMC2209 stepper drivers
+//   *
+//   * Hardware serial communication ports.
+//   * If undefined software serial is used according to the pins below
+//   */
+//
+//  //
+//  // Software serial
+//  //
+//
+//  // P2_08 E1-Step
+//  // P2_13 E1-Dir
+//
+//  #ifndef X_SERIAL_TX_PIN
+//    #define X_SERIAL_TX_PIN  P0_01
+//  #endif
+//  #ifndef X_SERIAL_RX_PIN
+//    #define X_SERIAL_RX_PIN  P0_01
+//  #endif
+//
+//  #ifndef Y_SERIAL_TX_PIN
+//    #define Y_SERIAL_TX_PIN  P0_00
+//  #endif
+//  #ifndef Y_SERIAL_RX_PIN
+//    #define Y_SERIAL_RX_PIN  P0_00
+//  #endif
+//
+//  #ifndef Z_SERIAL_TX_PIN
+//    #define Z_SERIAL_TX_PIN  P2_13
+//  #endif
+//  #ifndef Z_SERIAL_RX_PIN
+//    #define Z_SERIAL_RX_PIN  P2_13
+//  #endif
+//
+//  #ifndef E0_SERIAL_TX_PIN
+//    #define E0_SERIAL_TX_PIN P2_08
+//  #endif
+//  #ifndef E0_SERIAL_RX_PIN
+//    #define E0_SERIAL_RX_PIN P2_08
+//  #endif
+//
+//  // Reduce baud rate to improve software serial reliability
+//  #define TMC_BAUD_RATE 19200
+//#endif
 
 //
 // Temperature Sensors
@@ -168,11 +213,11 @@
 #define TEMP_0_PIN          P0_23_A0   // A0 (T0) - (67) - TEMP_0_PIN
 #define TEMP_BED_PIN        P0_24_A1   // A1 (T1) - (68) - TEMP_BED_PIN
 #define TEMP_1_PIN          P0_25_A2   // A2 (T2) - (69) - TEMP_1_PIN
-#define TEMP_2_PIN          P0_26_A3   // A3 - (63) - J5-3 & AUX-2
+// #define TEMP_2_PIN          P0_26_A3   // A3 - (63) - J5-3 & AUX-2
 #define TEMP_3_PIN          P1_30_A4   // A4 - (37) - BUZZER_PIN
 //#define TEMP_4_PIN          P1_31_A5   // A5 - (49) - SD_DETECT_PIN
 //#define ??                  P0_03_A6   // A6 - ( 0)  - RXD0 - J4-4 & AUX-1
-#define FILWIDTH_PIN        P0_02_A7   // A7 - ( 1)  - TXD0 - J4-5 & AUX-1
+//#define FILWIDTH_PIN        P0_02_A7   // A7 - ( 1)  - TXD0 - J4-5 & AUX-1
 
 //
 // Augmentation for auto-assigning RAMPS plugs
@@ -281,12 +326,12 @@
 //
 // Průša i3 MK2 Multiplexer Support
 //
-#if SERIAL_PORT != 0 && SERIAL_PORT_2 != 0
-  #define E_MUX0_PIN       P0_03   // ( 0) Z_CS_PIN
-  #define E_MUX1_PIN       P0_02   // ( 1) E0_CS_PIN
-#endif
-#define E_MUX2_PIN         P0_26   // (63) E1_CS_PIN
-
+//#if SERIAL_PORT != 0 && SERIAL_PORT_2 != 0
+//  #define E_MUX0_PIN       P0_03   // ( 0) Z_CS_PIN
+//  #define E_MUX1_PIN       P0_02   // ( 1) E0_CS_PIN
+//#endif
+//#define E_MUX2_PIN         P0_26   // (63) E1_CS_PIN
+//
 /**
  * LCD / Controller
  *
@@ -370,7 +415,7 @@
     #define DOGLCD_SCK     SCK_PIN
     #define DOGLCD_MOSI    MOSI_PIN
 
-    #define STAT_LED_BLUE_PIN P0_26 //(63)  may change if cable changes
+//    #define STAT_LED_BLUE_PIN P0_26 //(63)  may change if cable changes
     #define STAT_LED_RED_PIN P1_21 // ( 6)  may change if cable changes
   #else
 
@@ -400,7 +445,7 @@
         #define NEOPIXEL_PIN P1_00
       #endif
     #else
-      #define DOGLCD_CS    P0_26   // (63) J5-3 & AUX-2
+//      #define DOGLCD_CS    P0_26   // (63) J5-3 & AUX-2
       #define DOGLCD_A0    P2_06   // (59) J3-8 & AUX-2
     #endif
 

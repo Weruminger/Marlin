@@ -223,7 +223,7 @@
  */
 #define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_PARKING_X { 0, 109 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
+  #define PARKING_EXTRUDER_PARKING_X { 0, 192 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
 // RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
   //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
@@ -649,8 +649,8 @@
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
   #define ENDSTOPPULLUP_XMAX // RWE MPE HAL Sensor
-  #define ENDSTOPPULLUP_YMAX 
-  #define ENDSTOPPULLUP_ZMAX
+  //#define ENDSTOPPULLUP_YMAX 
+  //#define ENDSTOPPULLUP_ZMAX
   #define ENDSTOPPULLUP_XMIN // RWE MPE HAL Sensor
   #define ENDSTOPPULLUP_YMIN // RWE MPE HAL Sensor
   #define ENDSTOPPULLUP_ZMIN // RWE BLT
@@ -759,14 +759,14 @@
 #define RWE_Microsteps_E0 16
 #define RWE_Microsteps_E1 16
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
-#define RWE_StepsPerRotation_X  400
-#define RWE_StepsPerRotation_Y  400
+#define RWE_StepsPerRotation_X  200
+#define RWE_StepsPerRotation_Y  200
 #define RWE_StepsPerRotation_Z  200
 #define RWE_StepsPerRotation_E0 200
 #define RWE_StepsPerRotation_E1 200
 /* Tooth/pitch count of pully or 1 id not pully or tooth belt is used */
-#define RWE_ToothPerRotation_X  20
-#define RWE_ToothPerRotation_Y  20
+#define RWE_ToothPerRotation_X  16
+#define RWE_ToothPerRotation_Y  16
 #define RWE_ToothPerRotation_Z  1
 #define RWE_ToothPerRotation_E0 1
 #define RWE_ToothPerRotation_E1 1
@@ -2242,12 +2242,12 @@
 // @section extras
 
 // Increase the FAN PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
-#define FAST_PWM_FAN
+//#define FAST_PWM_FAN
 
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-//#define FAN_SOFT_PWM
+#define FAN_SOFT_PWM
 
 // Incrementing this by 1 will double the software PWM frequency,
 // affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
@@ -2260,7 +2260,7 @@
 // be used to mitigate the associated resolution loss. If enabled,
 // some of the PWM cycles are stretched so on average the desired
 // duty cycle is attained.
-//#define SOFT_PWM_DITHER
+#define SOFT_PWM_DITHER
 
 // Temperature status LEDs that display the hotend and bed temperature.
 // If all hotends, bed temperature, and target temperature are under 54C

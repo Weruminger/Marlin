@@ -45,9 +45,9 @@
 //
 // Servos
 //
-#define SERVO0_PIN         P1_20   // (11)
-#define SERVO1_PIN         P1_21   // ( 6) also on J5-1
-#define SERVO2_PIN         P1_19   // ( 5)
+#define SERVO0_PIN         P1_20   // (11)              // RWE MPE BLT_Servo
+#define SERVO1_PIN         P1_21   // ( 6) also on J5-1 // RWE MPE FAN_PIN PWM 
+#define SERVO2_PIN         P1_19   // ( 5)              // RWE MPE FAN1_PIN PWM 
 #define SERVO3_PIN         P1_18   // ( 4) 5V output
 
 //
@@ -56,10 +56,9 @@
 #define X_MIN_PIN          P1_24   // ( 3) 10k pullup to 3.3V, 1K series
 #define X_MAX_PIN          P1_25   // ( 2) 10k pullup to 3.3V, 1K series
 #define Y_MIN_PIN          P1_26   // (14) 10k pullup to 3.3V, 1K series
-#define Y_MAX_PIN          P1_27   // (15) 10k pullup to 3.3V, 1K series
+#define Y_MAX_PIN          -1 // P1_27   // (15) 10k pullup to 3.3V, 1K series
 #define Z_MIN_PIN          P1_29   // (18) 10k pullup to 3.3V, 1K series
-#define Z_MAX_PIN          P1_28   // (19) 10k pullup to 3.3V, 1K series
-#define ONBOARD_ENDSTOPPULLUPS     // Board has built-in pullups
+#define Z_MAX_PIN          -1 // P1_28   // (19) 10k pullup to 3.3V, 1K series
 
 //
 // Steppers
@@ -261,6 +260,8 @@ Used ReArm (MEGA) Function   / Port   / Connector
 #elif ENABLED(IS_RAMPS_EEB)                    // Hotend, Hotend, Bed
   #define HEATER_1_PIN     RAMPS_D9_PIN
   #define HEATER_BED_PIN   RAMPS_D8_PIN
+  #define FAN_PIN  SERVO1_PIN
+  #define FAN1_PIN  SERVO2_PIN
 #elif ENABLED(IS_RAMPS_EFF)                    // Hotend, Fan, Fan
   #define FAN1_PIN         RAMPS_D8_PIN
 #elif DISABLED(IS_RAMPS_SF)                    // Not Spindle, Fan (i.e., "EFBF" or "EFBE")
@@ -458,6 +459,20 @@ Used ReArm (MEGA) Function   / Port   / Connector
       #define LCD_PINS_D7  P1_10   // (75) ENET_RXD1
     #endif
   #endif
+
+  #define BEEPER_PIN       P2_11   // J3-3 & AUX-4
+
+  //#define BTN_EN1          P0_16   // J3-7 & AUX-4
+  //#define BTN_EN2          P1_23   // J3-5 & AUX-4
+  //#define BTN_ENC          P1_30   // J3-4 & AUX-4
+  #define BTN_EN2           P3_25 // (D33) 
+  #define BTN_EN1           P3_26 // (D31) 
+  #define BTN_ENC           P2_11 // (D35)
+  //#define SD_DETECT_PIN     P1_31 // (D49)
+  //#define LCD_PINS_RS       // (D16)   // CS chip select /SS chip slave select
+  //#define LCD_PINS_ENABLE   // (D51)   // SID (MOSI)
+  //#define LCD_PINS_D4       // (D52)   // SCK (CLK) clock
+
 
   #if ENABLED(MINIPANEL)
     // GLCD features

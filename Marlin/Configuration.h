@@ -755,7 +755,7 @@
 /* Driver Microsteps swithed/programmed values */
 #define RWE_Microsteps_X  16
 #define RWE_Microsteps_Y  16
-#define RWE_Microsteps_Z  4
+#define RWE_Microsteps_Z  16
 #define RWE_Microsteps_E0 16
 #define RWE_Microsteps_E1 16
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
@@ -768,8 +768,8 @@
 #define RWE_ToothPerRotation_X  16
 #define RWE_ToothPerRotation_Y  16
 #define RWE_ToothPerRotation_Z  1
-#define RWE_ToothPerRotation_E0 1
-#define RWE_ToothPerRotation_E1 1
+#define RWE_ToothPerRotation_E0 1 // Number of Starts
+#define RWE_ToothPerRotation_E1 1 // Number of Starts
 /* legth of any pitch */
 #define RWE_PitchPerTooth_X  2
 #define RWE_PitchPerTooth_Y  2
@@ -783,11 +783,17 @@
 #define RWE_mmPerRotation_E0 (RWE_ToothPerRotation_E0*RWE_PitchPerTooth_E0)
 #define RWE_mmPerRotation_E1 (RWE_ToothPerRotation_E1*RWE_PitchPerTooth_E1)
 
-#define RWE_STEPS_PER_UNIT_X  ((RWE_Microsteps_X  * RWE_StepsPerRotation_X ) / RWE_mmPerRotation_X )
-#define RWE_STEPS_PER_UNIT_Y  ((RWE_Microsteps_Y  * RWE_StepsPerRotation_Y ) / RWE_mmPerRotation_Y )
-#define RWE_STEPS_PER_UNIT_Z  ((RWE_Microsteps_Z  * RWE_StepsPerRotation_Z ) / RWE_mmPerRotation_Z )
-#define RWE_STEPS_PER_UNIT_E0 ((RWE_Microsteps_E0 * RWE_StepsPerRotation_E0) / RWE_mmPerRotation_E0)
-#define RWE_STEPS_PER_UNIT_E1 ((RWE_Microsteps_E1 * RWE_StepsPerRotation_E1) / RWE_mmPerRotation_E1)
+#define RWE_CalibrationRelation_X (20/20)
+#define RWE_CalibrationRelation_Y (20/20)
+#define RWE_CalibrationRelation_Z (20/20)
+#define RWE_CalibrationRelation_E0 (20/20)
+#define RWE_CalibrationRelation_E1 (20/20)
+
+#define RWE_STEPS_PER_UNIT_X  ((RWE_Microsteps_X  * RWE_StepsPerRotation_X * RWE_CalibrationRelation_X) / RWE_mmPerRotation_X )
+#define RWE_STEPS_PER_UNIT_Y  ((RWE_Microsteps_Y  * RWE_StepsPerRotation_Y * RWE_CalibrationRelation_Y) / RWE_mmPerRotation_Y )
+#define RWE_STEPS_PER_UNIT_Z  ((RWE_Microsteps_Z  * RWE_StepsPerRotation_Z * RWE_CalibrationRelation_Z) / RWE_mmPerRotation_Z )
+#define RWE_STEPS_PER_UNIT_E0 ((RWE_Microsteps_E0 * RWE_StepsPerRotation_E0 * RWE_CalibrationRelation_E0) / RWE_mmPerRotation_E0)
+#define RWE_STEPS_PER_UNIT_E1 ((RWE_Microsteps_E1 * RWE_StepsPerRotation_E1 * RWE_CalibrationRelation_E1) / RWE_mmPerRotation_E1)
  /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
@@ -800,11 +806,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 400, 400, 16, 45, 45 }
+#define DEFAULT_MAX_FEEDRATE          { 120, 120, 8, 45, 45 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 10, 50 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 240, 240, 16, 90 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -828,9 +834,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          1000   // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          800   // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  750   // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1500  // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   1000  // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -1184,7 +1190,7 @@
 
 // The size of the print bed
 #define X_BED_SIZE 210
-#define Y_BED_SIZE 250
+#define Y_BED_SIZE 210
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0

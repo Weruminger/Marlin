@@ -25,6 +25,7 @@
 #if HAS_TRINAMIC
 
 #include "../../gcode.h"
+#include "../../../module/stepper/trinamic.h"
 #include "../../../feature/tmc_util.h"
 
 /**
@@ -52,5 +53,8 @@ void GcodeSuite::M122() {
 
   test_tmc_connection(print_axis.x, print_axis.y, print_axis.z, print_axis.e);
 }
-
+void GcodeSuite::M916() {
+  reset_trinamic_drivers();
+  M122();
+}
 #endif // HAS_TRINAMIC

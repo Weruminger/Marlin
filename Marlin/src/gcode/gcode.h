@@ -895,6 +895,7 @@ private:
 
   #if HAS_TRINAMIC
     static void M122();
+    static void M916();
     static void M906();
     #if HAS_STEALTHCHOP
       static void M569();

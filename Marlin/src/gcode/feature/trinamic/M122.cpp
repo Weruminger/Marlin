@@ -34,6 +34,12 @@
 void GcodeSuite::M122() {
   xyze_bool_t print_axis = { false, false, false, false };
   bool print_all = true;
+ 
+  if (parser.seen('R'))
+    reset_trinamic_drivers();
+  if (parser.seen('L'))
+    restore_trinamic_drivers();
+
   LOOP_XYZE(i) if (parser.seen(axis_codes[i])) { print_axis[i] = true; print_all = false; }
 
   if (print_all) LOOP_XYZE(i) print_axis[i] = true;
@@ -44,7 +50,7 @@ void GcodeSuite::M122() {
       if (sflag) tmc_set_report_interval(s0 ? 0 : MONITOR_DRIVER_STATUS_INTERVAL_MS);
       if (!s0 && parser.seenval('P')) tmc_set_report_interval(_MIN(parser.value_ushort(), MONITOR_DRIVER_STATUS_INTERVAL_MS));
     #endif
-
+    
     if (parser.seen('V'))
       tmc_get_registers(print_axis.x, print_axis.y, print_axis.z, print_axis.e);
     else

@@ -143,6 +143,18 @@
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
 #define MACHINE_UUID "821e09e2-ac62-4c0b-8588-90eb97b6cb43"
 
+
+// The size of the print bed
+#define X_BED_SIZE 192
+#define Y_BED_SIZE 280
+// Travel limits (mm) after homing, corresponding to endstop positions.
+#define X_MIN_POS 0
+#define Y_MIN_POS 0
+#define Z_MIN_POS 0
+#define X_MAX_POS X_BED_SIZE
+#define Y_MAX_POS Y_BED_SIZE
+#define Z_MAX_POS 280
+
 // @section extruder
 
 // This defines the number of extruders
@@ -223,7 +235,7 @@
  */
 #define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_PARKING_X { 0, 192 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
+  #define PARKING_EXTRUDER_PARKING_X { X_MIN_POS, X_BED_SIZE }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
 // RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
   //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
@@ -327,14 +339,14 @@
  * Enable and connect the power supply to the PS_ON_PIN.
  * Specify whether the power supply is active HIGH or active LOW.
  */
-//#define PSU_CONTROL
-//#define PSU_NAME "Power Supply"
+#define PSU_CONTROL
+#define PSU_NAME "Power Supply"
 
 #if ENABLED(PSU_CONTROL)
   #define PSU_ACTIVE_HIGH false     // Set 'false' for ATX, 'true' for X-Box
 
-  //#define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
-  //#define PSU_POWERUP_DELAY 100   // (ms) Delay for the PSU to warm up to full power
+  #define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
+  #define PSU_POWERUP_DELAY 100   // (ms) Delay for the PSU to warm up to full power
 
   //#define AUTO_POWER_CONTROL      // Enable automatic control of the PS_ON pin
   #if ENABLED(AUTO_POWER_CONTROL)
@@ -1188,17 +1200,6 @@
 
 // @section machine
 
-// The size of the print bed
-#define X_BED_SIZE 210
-#define Y_BED_SIZE 210
-
-// Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
-#define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 220
 
 /**
  * Software Endstops

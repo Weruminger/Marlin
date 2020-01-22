@@ -1302,15 +1302,15 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR
-//#define AUTO_BED_LEVELING_UBL
+//#define AUTO_BED_LEVELING_BILINEAR
+#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-//#define RESTORE_LEVELING_AFTER_G28
+#define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1334,7 +1334,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  //#define G26_MESH_VALIDATION
+  #define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
@@ -1352,10 +1352,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define MIN_PROBE_EDGE_LEFT 0
-  #define MIN_PROBE_EDGE_RIGH 109
+  #define MIN_PROBE_EDGE_LEFT 10
+  #define MIN_PROBE_EDGE_RIGH X_BED_SIZE -10
   #define MIN_PROBE_EDGE_FRONT 32
-  #define MIN_PROBE_EDGE_BACK 168
+  #define MIN_PROBE_EDGE_BACK Y_BED_SIZE -32
 
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
@@ -1382,12 +1382,12 @@
 
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
-  #define ABL_PROBE_PT_1_X 0
-  #define ABL_PROBE_PT_1_Y 168
-  #define ABL_PROBE_PT_2_X 54
-  #define ABL_PROBE_PT_2_Y 97
-  #define ABL_PROBE_PT_3_X 109
-  #define ABL_PROBE_PT_3_Y 32
+  #define ABL_PROBE_PT_1_X 15 
+  #define ABL_PROBE_PT_1_Y 32
+  #define ABL_PROBE_PT_2_X X_BED_SIZE / 2 
+  #define ABL_PROBE_PT_2_Y Y_BED_SIZE / 2 
+  #define ABL_PROBE_PT_3_X X_BED_SIZE -15
+  #define ABL_PROBE_PT_3_Y Y_BED_SIZE -32
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1397,7 +1397,7 @@
 
   //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 1              // Set Mesh bounds as an inset region of the bed
+  #define MESH_INSET 20              // Set Mesh bounds as an inset region of the bed
   #define GRID_MAX_POINTS_X 7     // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
@@ -1425,14 +1425,14 @@
  * Points to probe for all 3-point Leveling procedures.
  * Override if the automatically selected points are inadequate.
  */
-#if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
-  #define UBL_PROBE_PT_1_X 39       // Probing points for 3-Point leveling of the mesh
-  #define UBL_PROBE_PT_1_Y 160
-  #define UBL_PROBE_PT_2_X 39
-  #define UBL_PROBE_PT_2_Y 35
-  #define UBL_PROBE_PT_3_X 160
-  #define UBL_PROBE_PT_3_Y 35
-#endif
+/* #if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
+  #define UBL_PROBE_PT_1_X 15       // Probing points for 3-Point leveling of the mesh
+  #define UBL_PROBE_PT_1_Y Y_BED_SIZE - 32
+  #define UBL_PROBE_PT_2_X 15
+  #define UBL_PROBE_PT_2_Y 32
+  #define UBL_PROBE_PT_3_X X_BED_SIZE - 15
+  #define UBL_PROBE_PT_3_Y 32
+#endif */
 
 /**
  * Add a bed leveling sub-menu for ABL or MBL.

@@ -460,7 +460,6 @@ Used ReArm (MEGA) Function   / Port   / Connector
     #endif
   #endif
 
-  #define BEEPER_PIN       P2_11   // J3-3 & AUX-4
 
   //#define BTN_EN1          P0_16   // J3-7 & AUX-4
   //#define BTN_EN2          P1_23   // J3-5 & AUX-4

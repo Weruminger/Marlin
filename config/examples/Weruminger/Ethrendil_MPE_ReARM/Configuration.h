@@ -74,7 +74,9 @@
 // startup. Implementation of an idea by Prof Braino to inform user that any changes made to this
 // build by the user have been successfully uploaded into firmware.
 #define STRING_CONFIG_H_AUTHOR "(weruminger)" // Who made the changes.
-//#define SHOW_BOOTSCREEN
+#define SHOW_BOOTSCREEN
+#define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
+#define STRING_SPLASH_LINE2 WEBSITE_URL         // will be shown during bootup in line 2
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -88,7 +90,7 @@
  */
 
 // Show the Marlin bootscreen on startup. ** ENABLE FOR PRODUCTION **
-//#define SHOW_BOOTSCREEN
+#define SHOW_BOOTSCREEN
 
 // Show the bitmap in Marlin/_Bootscreen.h on startup.
 //#define SHOW_CUSTOM_BOOTSCREEN
@@ -137,23 +139,11 @@
 
 // Optional custom name for your RepStrap or other custom machine
 // Displayed in the LCD "Ready" message
-#define CUSTOM_MACHINE_NAME "Ethrendil ReARM"
+#define CUSTOM_MACHINE_NAME "Ethrendil 3D"
 
 // Define this to set a unique identifier for this printer, (Used by some programs to differentiate between machines)
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
 #define MACHINE_UUID "821e09e2-ac62-4c0b-8588-90eb97b6cb43"
-
-
-// The size of the print bed
-#define X_BED_SIZE 192
-#define Y_BED_SIZE 280
-// Travel limits (mm) after homing, corresponding to endstop positions.
-#define X_MIN_POS 0
-#define Y_MIN_POS 0
-#define Z_MIN_POS 0
-#define X_MAX_POS X_BED_SIZE
-#define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 280
 
 // @section extruder
 
@@ -235,7 +225,7 @@
  */
 #define MAGNETIC_PARKING_EXTRUDER
 #if ENABLED(PARKING_EXTRUDER) || ENABLED(MAGNETIC_PARKING_EXTRUDER)
-  #define PARKING_EXTRUDER_PARKING_X { X_MIN_POS, X_BED_SIZE }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
+  #define PARKING_EXTRUDER_PARKING_X { 0, 109 }     // X positions for parking the extruders. M951 L{X_Pos_Left} R{X_Pos_Right}
   #define PARKING_EXTRUDER_GRAB_DISTANCE 32            // mm to move beyond the parking point to grab the extruder. M951 I{Grab_Distance}
 // RWE MPE_SP  #define TOOLCHANGE_ZRAISE 5                               // Z-raise before parking
   //#define MANUAL_SOLENOID_CONTROL                   // Manual control of docking solenoids with M380 S / M381
@@ -339,14 +329,14 @@
  * Enable and connect the power supply to the PS_ON_PIN.
  * Specify whether the power supply is active HIGH or active LOW.
  */
-#define PSU_CONTROL
-#define PSU_NAME "Power Supply"
+//#define PSU_CONTROL
+//#define PSU_NAME "Power Supply"
 
 #if ENABLED(PSU_CONTROL)
   #define PSU_ACTIVE_HIGH false     // Set 'false' for ATX, 'true' for X-Box
 
-  #define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
-  #define PSU_POWERUP_DELAY 100   // (ms) Delay for the PSU to warm up to full power
+  //#define PSU_DEFAULT_OFF         // Keep power off until enabled directly with M80
+  //#define PSU_POWERUP_DELAY 100   // (ms) Delay for the PSU to warm up to full power
 
   //#define AUTO_POWER_CONTROL      // Enable automatic control of the PS_ON pin
   #if ENABLED(AUTO_POWER_CONTROL)
@@ -653,20 +643,20 @@
 #define USE_YMIN_PLUG
 #define USE_ZMIN_PLUG
 #define USE_XMAX_PLUG // RWE Change MPE
-//#define USE_YMAX_PLUG // Shifting sensor
+//#define USE_YMAX_PLUG
 //#define USE_ZMAX_PLUG
 
 // Enable pullup for all endstops to prevent a floating state
 //#define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
-  #define ENDSTOPPULLUP_XMAX // RWE MPE HAL Sensor
-  //#define ENDSTOPPULLUP_YMAX 
-  //#define ENDSTOPPULLUP_ZMAX
-  #define ENDSTOPPULLUP_XMIN // RWE MPE HAL Sensor
-  #define ENDSTOPPULLUP_YMIN // RWE MPE HAL Sensor
-  #define ENDSTOPPULLUP_ZMIN // RWE BLT
-  #define ENDSTOPPULLUP_ZMIN_PROBE // RWE BLT
+  // #define ENDSTOPPULLUP_XMAX // RWE Change MPE
+  #define ENDSTOPPULLUP_YMAX
+  #define ENDSTOPPULLUP_ZMAX
+  #define ENDSTOPPULLUP_XMIN
+  #define ENDSTOPPULLUP_YMIN
+  #define ENDSTOPPULLUP_ZMIN // RWE Change BLT
+  #define ENDSTOPPULLUP_ZMIN_PROBE // RWE Change BLT
 #endif
 
 // Enable pulldown for all endstops to prevent a floating state
@@ -683,12 +673,12 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop. // RWE MPE HAL Sensor
-#define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop. // RWE HAL Sensor
+#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop. // RWE Change MPE
+#define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.  // RWE MPE HAL Sensor
-#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+#define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.  // RWE Change MPE
+//#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+//#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 
 /**
@@ -706,15 +696,15 @@
  *          TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
  * :['A4988', 'A5984', 'DRV8825', 'LV8729', 'L6470', 'TB6560', 'TB6600', 'TMC2100', 'TMC2130', 'TMC2130_STANDALONE', 'TMC2160', 'TMC2160_STANDALONE', 'TMC2208', 'TMC2208_STANDALONE', 'TMC2209', 'TMC2209_STANDALONE', 'TMC26X', 'TMC26X_STANDALONE', 'TMC2660', 'TMC2660_STANDALONE', 'TMC5130', 'TMC5130_STANDALONE', 'TMC5160', 'TMC5160_STANDALONE']
  */
-#define X_DRIVER_TYPE  TMC2208
-#define Y_DRIVER_TYPE  TMC2208
-#define Z_DRIVER_TYPE  TMC2208
+#define X_DRIVER_TYPE  TMC2208_STANDALONE
+#define Y_DRIVER_TYPE  TMC2208_STANDALONE
+#define Z_DRIVER_TYPE  LV8729
 //#define X2_DRIVER_TYPE A4988
 //#define Y2_DRIVER_TYPE A4988
 //#define Z2_DRIVER_TYPE A4988
 //#define Z3_DRIVER_TYPE A4988
-#define E0_DRIVER_TYPE TMC2208
-#define E1_DRIVER_TYPE TMC2208
+#define E0_DRIVER_TYPE LV8729
+#define E1_DRIVER_TYPE LV8729
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -722,7 +712,7 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-// #define ENDSTOP_INTERRUPTS_FEATURE
+#define ENDSTOP_INTERRUPTS_FEATURE
 
 /**
  * Endstop Noise Threshold
@@ -767,25 +757,25 @@
 /* Driver Microsteps swithed/programmed values */
 #define RWE_Microsteps_X  16
 #define RWE_Microsteps_Y  16
-#define RWE_Microsteps_Z  16
-#define RWE_Microsteps_E0 16
-#define RWE_Microsteps_E1 16
+#define RWE_Microsteps_Z  128
+#define RWE_Microsteps_E0 128
+#define RWE_Microsteps_E1 128
 /* Stepper motor steps per rotation (1.8°=200, 0.9°=400) */
-#define RWE_StepsPerRotation_X  200
-#define RWE_StepsPerRotation_Y  200
+#define RWE_StepsPerRotation_X  400
+#define RWE_StepsPerRotation_Y  400
 #define RWE_StepsPerRotation_Z  200
 #define RWE_StepsPerRotation_E0 200
 #define RWE_StepsPerRotation_E1 200
 /* Tooth/pitch count of pully or 1 id not pully or tooth belt is used */
-#define RWE_ToothPerRotation_X  16
-#define RWE_ToothPerRotation_Y  16
+#define RWE_ToothPerRotation_X  20
+#define RWE_ToothPerRotation_Y  20
 #define RWE_ToothPerRotation_Z  1
-#define RWE_ToothPerRotation_E0 1 // Number of Starts
-#define RWE_ToothPerRotation_E1 1 // Number of Starts
+#define RWE_ToothPerRotation_E0 1
+#define RWE_ToothPerRotation_E1 1
 /* legth of any pitch */
 #define RWE_PitchPerTooth_X  2
 #define RWE_PitchPerTooth_Y  2
-#define RWE_PitchPerTooth_Z  2
+#define RWE_PitchPerTooth_Z  8
 #define RWE_PitchPerTooth_E0 7.711
 #define RWE_PitchPerTooth_E1 7.711
 /* length per rotation */
@@ -795,17 +785,11 @@
 #define RWE_mmPerRotation_E0 (RWE_ToothPerRotation_E0*RWE_PitchPerTooth_E0)
 #define RWE_mmPerRotation_E1 (RWE_ToothPerRotation_E1*RWE_PitchPerTooth_E1)
 
-#define RWE_CalibrationRelation_X (20/20)
-#define RWE_CalibrationRelation_Y (20/20)
-#define RWE_CalibrationRelation_Z (20/20)
-#define RWE_CalibrationRelation_E0 (20/20)
-#define RWE_CalibrationRelation_E1 (20/20)
-
-#define RWE_STEPS_PER_UNIT_X  ((RWE_Microsteps_X  * RWE_StepsPerRotation_X * RWE_CalibrationRelation_X) / RWE_mmPerRotation_X )
-#define RWE_STEPS_PER_UNIT_Y  ((RWE_Microsteps_Y  * RWE_StepsPerRotation_Y * RWE_CalibrationRelation_Y) / RWE_mmPerRotation_Y )
-#define RWE_STEPS_PER_UNIT_Z  ((RWE_Microsteps_Z  * RWE_StepsPerRotation_Z * RWE_CalibrationRelation_Z) / RWE_mmPerRotation_Z )
-#define RWE_STEPS_PER_UNIT_E0 ((RWE_Microsteps_E0 * RWE_StepsPerRotation_E0 * RWE_CalibrationRelation_E0) / RWE_mmPerRotation_E0)
-#define RWE_STEPS_PER_UNIT_E1 ((RWE_Microsteps_E1 * RWE_StepsPerRotation_E1 * RWE_CalibrationRelation_E1) / RWE_mmPerRotation_E1)
+#define RWE_STEPS_PER_UNIT_X  ((RWE_Microsteps_X  * RWE_StepsPerRotation_X ) / RWE_mmPerRotation_X )
+#define RWE_STEPS_PER_UNIT_Y  ((RWE_Microsteps_Y  * RWE_StepsPerRotation_Y ) / RWE_mmPerRotation_Y )
+#define RWE_STEPS_PER_UNIT_Z  ((RWE_Microsteps_Z  * RWE_StepsPerRotation_Z ) / RWE_mmPerRotation_Z )
+#define RWE_STEPS_PER_UNIT_E0 ((RWE_Microsteps_E0 * RWE_StepsPerRotation_E0) / RWE_mmPerRotation_E0)
+#define RWE_STEPS_PER_UNIT_E1 ((RWE_Microsteps_E1 * RWE_StepsPerRotation_E1) / RWE_mmPerRotation_E1)
  /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
@@ -818,11 +802,11 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 120, 120, 8, 45, 45 }
+#define DEFAULT_MAX_FEEDRATE          { 400, 400, 16, 45, 45 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
-  #define MAX_FEEDRATE_EDIT_VALUES    { 240, 240, 16, 90 } // ...or, set your own edit limits
+  #define MAX_FEEDRATE_EDIT_VALUES    { 600, 600, 10, 50 } // ...or, set your own edit limits
 #endif
 
 /**
@@ -846,9 +830,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          800   // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          1000   // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  750   // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   1000  // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   1500  // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -1122,7 +1106,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-#define Z_MIN_PROBE_REPEATABILITY_TEST
+//#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1169,18 +1153,19 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true // TMC
-#define INVERT_Y_DIR true // TMC
-#define INVERT_Z_DIR true // TMC
+#define INVERT_X_DIR true
+#define INVERT_Y_DIR false
+#define INVERT_Z_DIR false
 
 // @section extruder
 
+// CTC Chimera Nozzle Shifter (Lift)
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false // Geared & TMC
-#define INVERT_E1_DIR false // Geared & TMC
-#define INVERT_E2_DIR false
-#define INVERT_E3_DIR false
-#define INVERT_E4_DIR false
+#define INVERT_E0_DIR false // Geared
+#define INVERT_E1_DIR true // twisted Wire & Geared
+#define INVERT_E2_DIR true
+#define INVERT_E3_DIR true
+#define INVERT_E4_DIR true
 #define INVERT_E5_DIR false
 
 // @section homing
@@ -1200,6 +1185,17 @@
 
 // @section machine
 
+// The size of the print bed
+#define X_BED_SIZE 140
+#define Y_BED_SIZE 220
+
+// Travel limits (mm) after homing, corresponding to endstop positions.
+#define X_MIN_POS 0
+#define Y_MIN_POS 0
+#define Z_MIN_POS 0
+#define X_MAX_POS X_BED_SIZE
+#define Y_MAX_POS Y_BED_SIZE
+#define Z_MAX_POS 180
 
 /**
  * Software Endstops
@@ -1240,7 +1236,7 @@
  */
 //#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define NUM_RUNOUT_SENSORS   2     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
+  #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   #define FIL_RUNOUT_INVERTING false // Set to true to invert the logic of the sensor.
   #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN      // Use internal pulldown for filament runout pins.
@@ -1252,7 +1248,7 @@
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  #define FILAMENT_RUNOUT_DISTANCE_MM 25
+  //#define FILAMENT_RUNOUT_DISTANCE_MM 25
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
@@ -1302,15 +1298,15 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL
+#define AUTO_BED_LEVELING_BILINEAR
+//#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-#define RESTORE_LEVELING_AFTER_G28
+//#define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1334,7 +1330,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #define G26_MESH_VALIDATION
+  //#define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
@@ -1352,10 +1348,10 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  #define MIN_PROBE_EDGE_LEFT 10
-  #define MIN_PROBE_EDGE_RIGH X_BED_SIZE -10
-  #define MIN_PROBE_EDGE_FRONT 32
-  #define MIN_PROBE_EDGE_BACK Y_BED_SIZE -32
+  #define LEFT_PROBE_BED_POSITION 0
+  #define RIGHT_PROBE_BED_POSITION 109
+  #define FRONT_PROBE_BED_POSITION 32
+  #define BACK_PROBE_BED_POSITION 168
 
   // Probe along the Y axis, advancing X after each column
   //#define PROBE_Y_FIRST
@@ -1382,12 +1378,12 @@
 
   // 3 arbitrary points to probe.
   // A simple cross-product is used to estimate the plane of the bed.
-  #define ABL_PROBE_PT_1_X 15 
-  #define ABL_PROBE_PT_1_Y 32
-  #define ABL_PROBE_PT_2_X X_BED_SIZE / 2 
-  #define ABL_PROBE_PT_2_Y Y_BED_SIZE / 2 
-  #define ABL_PROBE_PT_3_X X_BED_SIZE -15
-  #define ABL_PROBE_PT_3_Y Y_BED_SIZE -32
+  #define ABL_PROBE_PT_1_X 0
+  #define ABL_PROBE_PT_1_Y 168
+  #define ABL_PROBE_PT_2_X 54
+  #define ABL_PROBE_PT_2_Y 97
+  #define ABL_PROBE_PT_3_X 109
+  #define ABL_PROBE_PT_3_Y 32
 
 #elif ENABLED(AUTO_BED_LEVELING_UBL)
 
@@ -1397,7 +1393,7 @@
 
   //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 20              // Set Mesh bounds as an inset region of the bed
+  #define MESH_INSET 1              // Set Mesh bounds as an inset region of the bed
   #define GRID_MAX_POINTS_X 7     // Don't use more than 15 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
@@ -1425,14 +1421,14 @@
  * Points to probe for all 3-point Leveling procedures.
  * Override if the automatically selected points are inadequate.
  */
-/* #if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
-  #define UBL_PROBE_PT_1_X 15       // Probing points for 3-Point leveling of the mesh
-  #define UBL_PROBE_PT_1_Y Y_BED_SIZE - 32
-  #define UBL_PROBE_PT_2_X 15
-  #define UBL_PROBE_PT_2_Y 32
-  #define UBL_PROBE_PT_3_X X_BED_SIZE - 15
-  #define UBL_PROBE_PT_3_Y 32
-#endif */
+#if EITHER(AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
+  #define UBL_PROBE_PT_1_X 39       // Probing points for 3-Point leveling of the mesh
+  #define UBL_PROBE_PT_1_Y 160
+  #define UBL_PROBE_PT_2_X 39
+  #define UBL_PROBE_PT_2_Y 35
+  #define UBL_PROBE_PT_3_X 160
+  #define UBL_PROBE_PT_3_Y 35
+#endif
 
 /**
  * Add a bed leveling sub-menu for ABL or MBL.
@@ -1778,7 +1774,7 @@
  * :[0:'Classic', 1:'Prusa']
  */
 #define LCD_INFO_SCREEN_STYLE 0
-//#define ULTRA_LCD   // Character based
+#define ULTRA_LCD   // Character based
 
 /**
  * SD CARD
@@ -2038,7 +2034,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
 //
 // ReprapWorld Graphical LCD
@@ -2254,7 +2250,7 @@
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-#define FAN_SOFT_PWM
+//#define FAN_SOFT_PWM
 
 // Incrementing this by 1 will double the software PWM frequency,
 // affecting heaters, and the fan if FAN_SOFT_PWM is enabled.
@@ -2267,7 +2263,7 @@
 // be used to mitigate the associated resolution loss. If enabled,
 // some of the PWM cycles are stretched so on average the desired
 // duty cycle is attained.
-#define SOFT_PWM_DITHER
+//#define SOFT_PWM_DITHER
 
 // Temperature status LEDs that display the hotend and bed temperature.
 // If all hotends, bed temperature, and target temperature are under 54C

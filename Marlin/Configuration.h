@@ -505,9 +505,21 @@
   //#define DEFAULT_Kd 440
 
   // FLSUN QQ-S, 200 C with 100% part cooling
-  #define DEFAULT_Kp 28.16
-  #define DEFAULT_Ki 3.38
-  #define DEFAULT_Kd 58.69
+  // #define DEFAULT_Kp 28.16
+  // #define DEFAULT_Ki 3.38
+  // #define DEFAULT_Kd 58.69
+
+  // Dwalin, 210 C with 0% part cooling
+  //#define DEFAULT_Kp 16.19
+  //#define DEFAULT_Ki 1.03
+  //#define DEFAULT_Kd 63.60
+
+  // Dwalin, 210 C with 100% part cooling
+  #define DEFAULT_Kp 16.79
+  #define DEFAULT_Ki 1.09
+  #define DEFAULT_Kd 64.61
+
+
 #endif // PIDTEMP
 
 //===========================================================================
